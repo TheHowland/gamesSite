@@ -31,19 +31,33 @@
   </div>
 </div>
 
+<label id="PlayerNameNI">Stiche für </label>
+<div id="adjustScore" class="row w-100 d-flex justify-content-center align-items-center no-gutters mt-3">
+  <!-- Input Column -->
+  <div class="col-6 col-md-6">
+    <input id="numberInput" type="number" placeholder="Stiche" name="player1" value="" class="form-control">
+  </div>
+  <div class="col-2 col-md-1">
+    <img id="HeartPicture" name="heartX2.svg" src="heartX2.svg" class="img-fluid" alt="x2">
+  </div>
+  <!-- Button Column -->
+  <div class="col-4 col-md-2" >
+    <button type="button" class="btn btn-primary w-100" onclick="adjustPoints(players, selectedPlayer)">Hinzufügen</button>
+  </div>
+</div>
+
 <!-- Full-Width Div for the Start Button -->
 <div id="startButton" class="d-flex justify-content-center w-100 mt-3">
   <button type="button" class="btn btn-primary w-50" onclick="startGame()">Spiel starten</button>
 </div>
 
-<!-- Full-Width Div for the Adjust Points Button -->
-<div id="adjustPointsButton" hidden="hidden" class="d-flex justify-content-center w-100 mt-3">
-  <button type="button" class="btn btn-primary w-50" onclick="adjustAllPoints(players)">Punkte eingeben</button>
-</div>
-
 <script>
   let players = new Map();
-  document.getElementById("adjustPointsButton").classList.add("d-none");
+  let selectedPlayer = null;
+  document.getElementById("adjustScore").classList.add("d-none");
+  document.getElementById("PlayerNameNI").classList.add("d-none");
+  document.getElementById('playerList').addEventListener('click', toggleRowSelection);
+  document.getElementById('HeartPicture').addEventListener('click', toggleHeratPicture);
 </script>
 </body>
 </html>

@@ -13,6 +13,7 @@ function addPlayer(players) {
 
     let playerRow = document.createElement("div");
     playerRow.className = "row";
+    playerRow.id = playerTag;
 
     let playerNameField = document.createElement('div');
     playerNameField.className = "col-8 col-md-6";
@@ -39,18 +40,10 @@ function startGame() {
   document.getElementById("playerInput").classList.add("d-none");
   document.getElementById("startButton").classList.add("d-none");
 
-  // Show the adjust points button
-  document.getElementById("adjustPointsButton").classList.remove("d-none");
+  document.getElementById("adjustScore").classList.remove('d-none')
+  document.getElementById("PlayerNameNI").classList.remove("d-none");
 }
 
-
-async function adjustAllPoints(players){
-  for(let [id, player] of players){
-    let name = await player.name;
-    await player.adjustPoints(-5);
-    console.log(name + ": " + player.points);
-  }
-}
 
 class Player{
   tagName = null
@@ -66,5 +59,61 @@ class Player{
   adjustPoints(points){
     this.points += points;
     document.getElementById(this.tagName + " - points").innerHTML = this.points
+  }
+}
+
+function resetBackgroundColor(){
+  let selected = document.getElementById("playerList").querySelector('.selected');
+  if (selected){
+    selected.classList.remove('bg-secondary');
+    selected.classList.remove('selected');
+  }
+}
+
+function toggleRowSelection(event) {
+  console.log(event.target.parentNode.id)
+  resetBackgroundColor();
+  let elmRow = document.getElementById(event.target.parentNode.id);
+
+  elmRow.classList.add('bg-secondary');
+  elmRow.classList.add('selected');
+
+  let text = "Stiche für "
+  let label = document.getElementById("PlayerNameNI");
+  label.innerText = text + document.getElementById(event.target.parentNode.id + " - name").innerText;
+
+}
+
+async function adjustPoints(players, selectedPlayer){
+  let input = document.getElementById("numberInput")
+  let stiche = parseInt(input.value);
+  input.value = "";
+
+  let points = 5;
+
+  let isHeartRount = 1;
+  if (document.getElementById('HeartPicture').name === "heartX2Fill.svg"){
+    isHeartRount = 2;
+  }
+
+  let list = document.getElementById("playerList")
+  let palyerId = list.querySelector('.selected').id;
+
+  if (stiche > 0){
+    points = -1 * stiche * isHeartRount;
+  }
+  await players.get(palyerId).adjustPoints(points);
+
+}
+
+function toggleHeratPicture(){
+  let heartPicture = document.getElementById('HeartPicture')
+  if (heartPicture.name === "heartX2.svg"){
+    heartPicture.name = "heartX2Fill.svg";
+    heartPicture.src = "heartX2Fill.svg";
+  }
+  else{
+    heartPicture.name = "heartX2.svg";
+    heartPicture.src = "heartX2.svg";
   }
 }
