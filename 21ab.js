@@ -1,40 +1,43 @@
-function addPlayer(players){
-  let listView = document.getElementById("playerList")
+function addPlayer(players) {
+  let listView = document.getElementById("playerList");
   let count = players.size;
-  let input = document.getElementById("playerName")
-  let playerName = input.value;
+  let input = document.getElementById("playerNameInput");
+  let playerName = input.value.trim();
   input.value = "";
 
-  let playerTag = "player"+count.toString()
-  let listElm = document.createElement("tbody");
+  if (playerName) {
+    let playerTag = "player" + count.toString();
+    let listElm = document.createElement("li");
 
-  players.set(playerTag, new Player(playerName, playerTag));
-  let playerTable = document.createElement("tr");
+    players.set(playerTag, new Player(playerName, playerTag));
 
-  let playerNameFiled = document.createElement('td')
-  playerNameFiled.id = playerTag+" - name";
-  playerNameFiled.innerText = playerName;
+    let playerRow = document.createElement("div");
+    playerRow.className = "row";
 
-  let playerPointsField = document.createElement("td");
-  playerPointsField.id = playerTag+" - points";
-  playerPointsField.innerText = "21";
+    let playerNameField = document.createElement('div');
+    playerNameField.className = "col-8 col-md-6";
+    playerNameField.id = playerTag + " - name";
+    playerNameField.innerText = playerName;
 
+    let playerPointsField = document.createElement("div");
+    playerPointsField.className = "col-4 col-md-3"
+    playerPointsField.id = playerTag + " - points";
+    playerPointsField.innerText = "21";
 
-  playerTable.appendChild(playerNameFiled);
-  playerTable.appendChild(playerPointsField);
+    playerRow.appendChild(playerNameField);
+    playerRow.appendChild(playerPointsField);
 
-  listElm.className = "dropdown-item"
-  listElm.id = playerTag
+    listElm.className = "dropdown-item";
+    listElm.id = playerTag;
 
-  listElm.appendChild(playerTable);
-  listView.appendChild(listElm);
-  console.log(listElm.textContent);
+    listView.appendChild(playerRow);
+  }
 }
 
 function startGame(){
-  document.getElementById("playerInputForm").style.display = 'none';
-  document.getElementById("startButton").style.display = 'none';
-  document.getElementById("adjustPointsButton").style.display = 'block';
+  document.getElementById("playerInputForm").display = 'none';
+  document.getElementById("startButton").display = 'none';
+  document.getElementById("adjustPointsButton").display = 'block';
 }
 
 async function adjustAllPoints(players){
