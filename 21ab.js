@@ -34,11 +34,15 @@ function addPlayer(players) {
   }
 }
 
-function startGame(){
-  document.getElementById("playerInputForm").display = 'none';
-  document.getElementById("startButton").display = 'none';
-  document.getElementById("adjustPointsButton").display = 'block';
+function startGame() {
+  // Hide the input form and start button
+  document.getElementById("playerInput").classList.add("d-none");
+  document.getElementById("startButton").classList.add("d-none");
+
+  // Show the adjust points button
+  document.getElementById("adjustPointsButton").classList.remove("d-none");
 }
+
 
 async function adjustAllPoints(players){
   for(let [id, player] of players){
