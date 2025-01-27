@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1">
+  <title>21ab</title>
+  <script src="21ab.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
+  <style>
+      #playerList {
+          list-style: none;
+      }
+      td {
+          padding-right: 15px;
+          justify-content: center;
+      }
+  </style>
+</head>
+<body>
+<div id="main-div" class="container-fluid w-100 main_container">
+  <ul class="dropdown-menu w-100 justify-content-center" id="playerList">
+  </ul>
+  <form id="playerInputForm" class="w-100 d-flex flex-column align-items-center">
+      <input id="playerName" type="text" placeholder="Spieler Name" name="player1" value="" class="form-control w-75 w-md-50 mb-2">
+      <button type="button" class="btn btn-primary w-25 w-md-25" onclick="addPlayer(players)">Hinzufügen</button>
+  </form>
+  <div id="startButton" class="d-flex justify-content-center mt-3">
+    <button type="button" class="btn btn-primary w-100 w-md-50" onclick="startGame()">Spiel starten</button>
+  </div>
+  <div id="adjustPointsButton" hidden="hidden" class="d-flex justify-content-center mt-3">
+    <button type="button" class="btn btn-primary w-100 w-md-50" onclick="adjustAllPoints(players)">Punkte eingeben</button>
+  </div>
+</div>
+</body>
+<script>
+  let players = new Map();
+  document.getElementById('adjustPointsButton').style.display = 'none';
+  document.getElementById("adjustPointsButton").style.display = 'none'
+</script>
+</html>
