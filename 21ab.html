@@ -3,7 +3,9 @@
 <head>
   <meta charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1">
   <title>21ab</title>
-  <script src="21ab.js"></script>
+  <script src="src/scripts/player.js"></script>
+  <script src="src/scripts/21ab.js"></script>
+
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
   <style>
       #playerList {
@@ -27,7 +29,7 @@
   </div>
   <!-- Button Column -->
   <div class="col-4 col-md-2">
-    <button type="button" class="btn btn-primary w-100" onclick="addPlayer(players)">Hinzufügen</button>
+    <button id="addPlayerBtn" type="button" class="btn btn-primary w-100">Hinzufügen</button>
   </div>
 </div>
 
@@ -35,20 +37,20 @@
 <div id="adjustScore" class="row w-100 d-flex justify-content-center align-items-center no-gutters mt-3">
   <!-- Input Column -->
   <div class="col-6 col-md-6">
-    <input id="numberInput" type="number" placeholder="Stiche" name="player1" value="" class="form-control">
+    <input id="numberInput" type="number" placeholder="0 Stiche" name="player1" value="" class="form-control">
   </div>
   <div class="col-2 col-md-1">
-    <img id="HeartPicture" name="heartX2.svg" src="heartX2.svg" class="img-fluid" alt="x2">
+    <img id="HeartPicture" name="heartX2.svg" src="src/resources/heartX2.svg" class="img-fluid" alt="x2">
   </div>
   <!-- Button Column -->
   <div class="col-4 col-md-2" >
-    <button type="button" class="btn btn-primary w-100" onclick="adjustPoints(players, selectedPlayer)">Hinzufügen</button>
+    <button id="adjustPointsBtn" type="button" class="btn btn-primary w-100">Hinzufügen</button>
   </div>
 </div>
 
 <!-- Full-Width Div for the Start Button -->
 <div id="startButton" class="d-flex justify-content-center w-100 mt-3">
-  <button type="button" class="btn btn-primary w-50" onclick="startGame()">Spiel starten</button>
+  <button type="button" class="btn btn-primary w-50">Spiel starten</button>
 </div>
 
 <script>
@@ -56,8 +58,12 @@
   let selectedPlayer = null;
   document.getElementById("adjustScore").classList.add("d-none");
   document.getElementById("PlayerNameNI").classList.add("d-none");
+
   document.getElementById('playerList').addEventListener('click', toggleRowSelectionEvent);
   document.getElementById('HeartPicture').addEventListener('click', toggleHeratPicture);
+  document.getElementById('addPlayerBtn').addEventListener('click', () => {addPlayer(players)});
+  document.getElementById('adjustPointsBtn').addEventListener('click', () => {adjustPoints(players)});
+  document.getElementById('startButton').addEventListener('click', () => {startGame(players)});
 </script>
 </body>
 </html>

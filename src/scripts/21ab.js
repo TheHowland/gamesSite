@@ -32,6 +32,7 @@ function addPlayer(players) {
     listElm.id = playerTag;
 
     listView.appendChild(playerRow);
+    document.getElementById('playerNameInput').focus()
   }
 }
 
@@ -40,26 +41,9 @@ function startGame() {
   document.getElementById("playerInput").classList.add("d-none");
   document.getElementById("startButton").classList.add("d-none");
 
-  document.getElementById("adjustScore").classList.remove('d-none')
+  document.getElementById("adjustScore").classList.remove('d-none');
   document.getElementById("PlayerNameNI").classList.remove("d-none");
-}
-
-
-class Player{
-  playerID = null
-  name = null;
-  points = 0;
-
-  constructor(name, playerID){
-    this.name = name;
-    this.points = 21;
-    this.playerID = playerID
-  }
-
-  adjustPoints(points){
-    this.points += points;
-    document.getElementById(this.playerID + " - points").innerHTML = this.points
-  }
+  toggleRowSelection('player0');
 }
 
 function resetBackgroundColor(){
@@ -88,6 +72,13 @@ function toggleRowSelection(playerID){
   label.innerText = text + document.getElementById(playerID + " - name").innerText;
 }
 
+function selectNextPlayer(players, playerId) {
+  let keys = Array.from(players.keys());
+  let playerIndex = keys.indexOf(playerId);
+  let playerID = keys[(playerIndex + 1) % players.size];
+  toggleRowSelection(playerID);
+}
+
 async function adjustPoints(players){
   let input = document.getElementById("numberInput")
   let stiche = parseInt(input.value);
@@ -108,11 +99,8 @@ async function adjustPoints(players){
   }
   await players.get(playerId).adjustPoints(points);
 
-  //set focus to next player
-  let keys = Array.from(players.keys())
-  let playerIndex = keys.indexOf(playerId);
-  let playerID = keys[(playerIndex + 1) % players.size];
-  toggleRowSelection(playerID);
+  selectNextPlayer(players, playerId);
+  document.getElementById('numberInput').focus();
 
 
 }
@@ -121,10 +109,10 @@ function toggleHeratPicture(){
   let heartPicture = document.getElementById('HeartPicture')
   if (heartPicture.name === "heartX2.svg"){
     heartPicture.name = "heartX2Fill.svg";
-    heartPicture.src = "heartX2Fill.svg";
+    heartPicture.src = "src/resources/heartX2Fill.svg";
   }
   else{
     heartPicture.name = "heartX2.svg";
-    heartPicture.src = "heartX2.svg";
+    heartPicture.src = "src/resources/heartX2.svg";
   }
 }
