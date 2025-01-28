@@ -32,7 +32,7 @@ function addPlayer(players) {
     listElm.id = playerTag;
 
     listView.appendChild(playerRow);
-    document.getElementById('playerNameInput').focus()
+    setFocusToElementID('playerNameInput');
   }
 }
 
@@ -44,6 +44,7 @@ function startGame() {
   document.getElementById("adjustScore").classList.remove('d-none');
   document.getElementById("PlayerNameNI").classList.remove("d-none");
   toggleRowSelection('player0');
+  setFocusToElementID('numberInput');
 }
 
 function resetBackgroundColor(){
@@ -100,7 +101,7 @@ async function adjustPoints(players){
   await players.get(playerId).adjustPoints(points);
 
   selectNextPlayer(players, playerId);
-  document.getElementById('numberInput').focus();
+  setFocusToElementID('numberInput');
 
 
 }
@@ -115,4 +116,9 @@ function toggleHeratPicture(){
     heartPicture.name = "heartX2.svg";
     heartPicture.src = "src/resources/heartX2.svg";
   }
+  setFocusToElementID('numberInput');
+}
+
+function setFocusToElementID(ElementID){
+  document.getElementById(ElementID).focus();
 }
