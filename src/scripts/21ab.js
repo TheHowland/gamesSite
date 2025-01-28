@@ -28,3 +28,24 @@ function toggleHeratPicture(){
   setFocusToElementID('numberInput');
 }
 
+function setUp21ab(){
+  document.getElementById("adjustScore").classList.add("d-none");
+  document.getElementById("PlayerNameNI").classList.add("d-none");
+
+  document.getElementById('playerList').addEventListener('click', toggleRowSelectionEvent);
+  document.getElementById('HeartPicture').addEventListener('click', toggleHeratPicture);
+  document.getElementById('addPlayerBtn').addEventListener('click', () => {addPlayer(players)});
+  document.getElementById('adjustPointsBtn').addEventListener('click', () => {adjustPoints(players, (mul) => {
+    let isHeartRound = 1;
+    if (document.getElementById('HeartPicture').name === 'heartX2Fill.svg') {
+      isHeartRound = 2;
+    }
+    if (mul > 0) {
+      return -1 * mul * isHeartRound;
+    }
+    else {
+      return 5 * isHeartRound;
+    }
+  })});
+  document.getElementById('startButton').addEventListener('click', () => {startGame(players)});
+}

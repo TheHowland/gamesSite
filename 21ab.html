@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1">
   <title>21ab</title>
+  <script src="src/scripts/uiElements.js"></script>
   <script src="src/scripts/player.js"></script>
   <script src="src/scripts/21ab.js"></script>
 
@@ -19,62 +20,26 @@
 </head>
 <body>
 
-<ul class="container-fluid w-100 justify-content-center" id="playerList"></ul>
-
-<!-- Row with Input and Button -->
-<div id="playerInput" class="row w-100 d-flex justify-content-center align-items-center no-gutters mt-3">
-  <!-- Input Column -->
-  <div class="col-8 col-md-6">
-    <input id="playerNameInput" type="text" placeholder="Spieler Name" name="player1" value="" class="form-control">
-  </div>
-  <!-- Button Column -->
-  <div class="col-4 col-md-2">
-    <button id="addPlayerBtn" type="button" class="btn btn-primary w-100">Hinzufügen</button>
-  </div>
-</div>
-
-<label id="PlayerNameNI">Stiche für </label>
-<div id="adjustScore" class="row w-100 d-flex justify-content-center align-items-center no-gutters mt-3">
-  <!-- Input Column -->
-  <div class="col-6 col-md-6">
-    <input id="numberInput" type="number" placeholder="0 Stiche" name="player1" value="" class="form-control">
-  </div>
-  <div class="col-2 col-md-1">
-    <img id="HeartPicture" name="heartX2.svg" src="src/resources/heartX2.svg" class="img-fluid" alt="x2">
-  </div>
-  <!-- Button Column -->
-  <div class="col-4 col-md-2" >
-    <button id="adjustPointsBtn" type="button" class="btn btn-primary w-100">Hinzufügen</button>
-  </div>
-</div>
-
-<!-- Full-Width Div for the Start Button -->
-<div id="startButton" class="d-flex justify-content-center w-100 mt-3">
-  <button type="button" class="btn btn-primary w-50">Spiel starten</button>
-</div>
 
 <script>
-  let players = new Map();
-  let selectedPlayer = null;
-  document.getElementById("adjustScore").classList.add("d-none");
-  document.getElementById("PlayerNameNI").classList.add("d-none");
+  createPlayerList();
+  createPlayerNameInput("Spieler Name", "Hinzufügen");
 
-  document.getElementById('playerList').addEventListener('click', toggleRowSelectionEvent);
-  document.getElementById('HeartPicture').addEventListener('click', toggleHeratPicture);
-  document.getElementById('addPlayerBtn').addEventListener('click', () => {addPlayer(players)});
-  document.getElementById('adjustPointsBtn').addEventListener('click', () => {adjustPoints(players, (mul) => {
-    let isHeartRound = 1;
-    if (document.getElementById('HeartPicture').name === 'heartX2Fill.svg') {
-      isHeartRound = 2;
-    }
-    if (mul > 0) {
-      return -1 * mul * isHeartRound;
-    }
-    else {
-      return 5 * isHeartRound;
-    }
-  })});
-  document.getElementById('startButton').addEventListener('click', () => {startGame(players)});
+  let heartPicture = document.createElement("div")
+  heartPicture.className = "col-2 col-md-1";
+  let img = document.createElement("img");
+  img.id = "HeartPicture";
+  img.name="heartX2.svg";
+  img.src="src/resources/heartX2.svg";
+  img.className="img-fluid";
+  img.alt="x2";
+  heartPicture.appendChild(img);
+
+  createPointsInput("Stiche für ", "0 Stiche", "Hinzufügen", heartPicture);
+  createStartBtn("Spiel starten");
+
+  let players = new Map();
+  setUp21ab();
 </script>
 </body>
 </html>

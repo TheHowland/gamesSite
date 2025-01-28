@@ -82,7 +82,7 @@ function selectNextPlayer(players, playerId) {
   toggleRowSelection(playerID);
 }
 
-async function adjustPoints(players, pointsFkt) {
+function adjustPoints(players, pointsFkt) {
   let input = document.getElementById('numberInput');
   let stiche = parseInt(input.value);
   input.value = '';
@@ -92,12 +92,10 @@ async function adjustPoints(players, pointsFkt) {
   let list = document.getElementById('playerList');
   let playerId = list.querySelector('.selected').id;
 
-  await players.get(playerId).adjustPoints(points);
+  players.get(playerId).adjustPoints(points);
 
   selectNextPlayer(players, playerId);
   setFocusToElementID('numberInput');
-
-
 }
 
 function setFocusToElementID(ElementID) {
