@@ -46,19 +46,19 @@ function startGame() {
 
 
 class Player{
-  tagName = null
+  playerID = null
   name = null;
   points = 0;
 
-  constructor(name, tagName){
+  constructor(name, playerID){
     this.name = name;
     this.points = 21;
-    this.tagName = tagName
+    this.playerID = playerID
   }
 
   adjustPoints(points){
     this.points += points;
-    document.getElementById(this.tagName + " - points").innerHTML = this.points
+    document.getElementById(this.playerID + " - points").innerHTML = this.points
   }
 }
 
@@ -70,21 +70,25 @@ function resetBackgroundColor(){
   }
 }
 
-function toggleRowSelection(event) {
-  console.log(event.target.parentNode.id)
+function toggleRowSelectionEvent(event) {
+  let playerID = event.target.parentNode.id;
+  console.log(playerID)
+  toggleRowSelection(playerID)
+}
+
+function toggleRowSelection(playerID){
   resetBackgroundColor();
-  let elmRow = document.getElementById(event.target.parentNode.id);
+  let elmRow = document.getElementById(playerID);
 
   elmRow.classList.add('bg-secondary');
   elmRow.classList.add('selected');
 
   let text = "Stiche für "
   let label = document.getElementById("PlayerNameNI");
-  label.innerText = text + document.getElementById(event.target.parentNode.id + " - name").innerText;
-
+  label.innerText = text + document.getElementById(playerID + " - name").innerText;
 }
 
-async function adjustPoints(players, selectedPlayer){
+async function adjustPoints(players){
   let input = document.getElementById("numberInput")
   let stiche = parseInt(input.value);
   input.value = "";
@@ -97,12 +101,19 @@ async function adjustPoints(players, selectedPlayer){
   }
 
   let list = document.getElementById("playerList")
-  let palyerId = list.querySelector('.selected').id;
+  let playerId = list.querySelector('.selected').id;
 
   if (stiche > 0){
     points = -1 * stiche * isHeartRount;
   }
-  await players.get(palyerId).adjustPoints(points);
+  await players.get(playerId).adjustPoints(points);
+
+  //set focus to next player
+  let keys = Array.from(players.keys())
+  let playerIndex = keys.indexOf(playerId);
+  let playerID = keys[(playerIndex + 1) % players.size];
+  toggleRowSelection(playerID);
+
 
 }
 
