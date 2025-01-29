@@ -1,6 +1,6 @@
 class TwentyOneDown extends gameBase{
-  constructor(pointsInfoText) {
-    super(pointsInfoText);
+  constructor() {
+    super(21, "Stiche für ");
   }
 
 
@@ -60,9 +60,10 @@ class TwentyOneDown extends gameBase{
     let winningPlayer = "";
 
     for (let player of sortedPlayers){
-      if (player.points === 0){
+      if (player.points <= 0){
         isEnding = true;
         winningPlayer = player.name
+        player.points = 0;
       }
 
       modalBody += player.name + " - " + player.points +"\n";
@@ -78,7 +79,7 @@ class TwentyOneDown extends gameBase{
     }
   }
 
-  setUp21ab(){
+  setUp(){
     document.getElementById("adjustScore").classList.add("d-none");
     document.getElementById("PlayerNameNI").classList.add("d-none");
 
@@ -90,4 +91,4 @@ class TwentyOneDown extends gameBase{
   }
 }
 
-window.twentyOneDown = TwentyOneDown;
+window.TwentyOneDown = TwentyOneDown;

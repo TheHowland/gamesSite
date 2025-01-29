@@ -3,9 +3,9 @@ class Player{
   name = null;
   points = 0;
 
-  constructor(name, playerID){
+  constructor(name, playerID, points){
     this.name = name;
-    this.points = 21;
+    this.points = points;
     this.playerID = playerID
     console.log(this.playerID)
   }
@@ -20,9 +20,11 @@ window.Player = Player;
 
 class gameBase{
   players = new Map();
-  pointsAdjutsInfoTextPrefixForName = null;
-  constructor(pointsAdjutsInfoTextPrefixForNameps) {
-    this.pointsAdjutsInfoTextPrefixForNameps = pointsAdjutsInfoTextPrefixForNameps;
+  pointsInfoText = null;
+  startPoints;
+  constructor(startPoints, pointsInfoText) {
+    this.pointsInfoText = pointsInfoText;
+    this.startPoints = startPoints;
   }
 
 
@@ -37,7 +39,7 @@ class gameBase{
       let playerTag = 'player' + count.toString();
       let listElm = document.createElement('li');
 
-      this.players.set(playerTag, new Player(playerName, playerTag));
+      this.players.set(playerTag, new Player(playerName, playerTag, this.startPoints));
 
       let playerRow = document.createElement('div');
       playerRow.className = 'row';
@@ -51,7 +53,7 @@ class gameBase{
       let playerPointsField = document.createElement('div');
       playerPointsField.className = 'col-4 col-md-3';
       playerPointsField.id = playerTag + ' - points';
-      playerPointsField.innerText = '21';
+      playerPointsField.innerText = this.startPoints.toString();
 
       playerRow.appendChild(playerNameField);
       playerRow.appendChild(playerPointsField);
@@ -85,7 +87,7 @@ class gameBase{
     elmRow.classList.add('bg-secondary');
     elmRow.classList.add('selected');
 
-    let text = this.pointsAdjutsInfoTextPrefixForNameps;
+    let text = this.pointsInfoText;
     let label = document.getElementById('PlayerNameNI');
     label.innerText = text + document.getElementById(playerID + ' - name').innerText;
   }

@@ -181,12 +181,3 @@ function addModal(modalHeading, modalText = "") {
   document.body.appendChild(modal);
 
 }
-
-function openModal() {
-  document.getElementById("winModal").style.display = "block"
-  document.getElementById("winModal").classList.add("show")
-}
-function closeModal() {
-  document.getElementById("winModal").style.display = "none"
-  document.getElementById("winModal").classList.remove("show")
-}
