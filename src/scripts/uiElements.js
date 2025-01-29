@@ -120,3 +120,73 @@ function createStartBtn(btnText){
   startButton.appendChild(button);
   document.body.appendChild(startButton);
 }
+
+function addModal(modalHeading, modalText = "") {
+  /*
+
+  */
+  let modal = document.createElement('div');
+  modal.className = "modal fade";
+  modal.id = "winModal";
+  modal.setAttribute("data-bs-backdrop", "static");
+  modal.setAttribute("data-bs-keyboard", "false");
+  modal.tabIndex = "-1";
+  modal.setAttribute("aria-labelledby", "staticBackdropLabel");
+  modal.setAttribute("aria-hidden", "true");
+
+  let modalDialog = document.createElement('div');
+  modalDialog.className = "modal-dialog";
+
+  let modalContent = document.createElement('div');
+  modalContent.className = "modal-content";
+  let modalHeader = document.createElement('div');
+  modalHeader.className = "modal-header";
+  let h1 = document.createElement('h1');
+  h1.className = "modal-title fs-5";
+  h1.id = "modalHeading";
+  h1.textContent = modalHeading;
+  let button = document.createElement('button');
+  button.type = "button";
+  button.className = "btn-close";
+  button.setAttribute("data-bs-dismiss", "modal");
+  button.setAttribute("aria-label", "Close");
+
+  modalHeader.appendChild(h1);
+  modalHeader.appendChild(button);
+
+  let modalBody = document.createElement('div');
+  modalBody.className = "modal-body";
+  let h5 = document.createElement('h6');
+  h5.id = "modalText";
+  h5.textContent = modalText;
+  modalBody.appendChild(h5);
+
+  let modalFooter = document.createElement('div');
+  modalFooter.className = "modal-footer";
+  let understoodButton = document.createElement('button');
+  understoodButton.type = "button";
+  understoodButton.className = "btn btn-primary";
+  understoodButton.setAttribute("data-bs-dismiss", "modal");
+  understoodButton.textContent = "Okay";
+
+  modalFooter.appendChild(understoodButton);
+
+  modalContent.appendChild(modalHeader);
+  modalContent.appendChild(modalBody);
+  modalContent.appendChild(modalFooter);
+
+  modalDialog.appendChild(modalContent);
+  modal.appendChild(modalDialog);
+
+  document.body.appendChild(modal);
+
+}
+
+function openModal() {
+  document.getElementById("winModal").style.display = "block"
+  document.getElementById("winModal").classList.add("show")
+}
+function closeModal() {
+  document.getElementById("winModal").style.display = "none"
+  document.getElementById("winModal").classList.remove("show")
+}

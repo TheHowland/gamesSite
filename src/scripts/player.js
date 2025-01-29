@@ -17,6 +17,7 @@ class Player{
 
 window.Player = Player;
 
+
 function addPlayer(players) {
   let listView = document.getElementById('playerList');
   let count = players.size;
@@ -82,9 +83,12 @@ function selectNextPlayer(players, playerId) {
   toggleRowSelection(playerID);
 }
 
-function adjustPoints(players, pointsFkt) {
+function adjustPoints(players, pointsFkt, endGameFkt) {
   let input = document.getElementById('numberInput');
   let stiche = parseInt(input.value);
+  if (isNaN(stiche)){
+    stiche = 0;
+  }
   input.value = '';
 
   let points = pointsFkt(stiche);
@@ -93,6 +97,8 @@ function adjustPoints(players, pointsFkt) {
   let playerId = list.querySelector('.selected').id;
 
   players.get(playerId).adjustPoints(points);
+
+  endGameFkt(players);
 
   selectNextPlayer(players, playerId);
   setFocusToElementID('numberInput');
