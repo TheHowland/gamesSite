@@ -177,6 +177,8 @@ class Wizard extends gameBase{
     document.getElementById('playerTableBody').addEventListener('click', (event) => {
       this.toggleRowSelectionEvent.bind(this, event, 'playerTableBody', 'table-info')();
     });
+
+    //long press
     document.getElementById('playerTableBody').addEventListener('mousedown', (event) => {
       this.toggleRowSelectionEvent.bind(this, event, 'playerTableBody', 'table-info')();
       this.longHold = window.setTimeout(() => {
@@ -189,6 +191,7 @@ class Wizard extends gameBase{
     document.getElementById('playerTableBody').addEventListener('mouseup', (event) => {
       window.clearTimeout(this.longHold);
     });
+
     document.getElementById('addPlayerBtn').addEventListener('click', this.addPlayerToTable.bind(this));
     document.getElementById('adjustPointsBtn').addEventListener('click', this.adjustSticheHandler);
     document.getElementById('startButton').addEventListener('click', this.startGameHandler);

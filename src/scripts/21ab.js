@@ -21,6 +21,17 @@ class TwentyOneDown extends gameBase{
     this.setFocusToElementID('numberInput');
   }
 
+  correctPoints(){
+    let selectedPlayer = this.getSelectedPlayer();
+    let points = Number(document.getElementById('longPressModalInput').value);
+    if (isNaN(points)){
+      points = 0;
+    }
+    this.players.get(selectedPlayer).setPoints(points);
+    document.getElementById(selectedPlayer + ' - ' + this.pointsFieldName).innerHTML =  points.toString();
+    this.ui.longPressModalTexts(null, null, null, "");
+  }
+
   toggleHeratPicture(){
     let heartPicture = document.getElementById('HeartPicture')
     if (heartPicture.name === "heartX2.svg"){
@@ -103,6 +114,21 @@ class TwentyOneDown extends gameBase{
     document.getElementById('playerTableBody').addEventListener('click', (event) => {
       this.toggleRowSelectionEvent.bind(this, event, 'playerTableBody', 'table-info')();
     });
+
+    //long press
+    document.getElementById('playerTableBody').addEventListener('mousedown', (event) => {
+      this.toggleRowSelectionEvent.bind(this, event, 'playerTableBody', 'table-info')();
+      this.longHold = window.setTimeout(() => {
+        let myModal = new bootstrap.Modal(document.getElementById('longPressModal'));
+        myModal.show();
+      }, 500);
+
+    });
+    document.getElementById('playerTableBody').addEventListener('mouseup', (event) => {
+      window.clearTimeout(this.longHold);
+    });
+    document.getElementById('longPressModalSaveBtn').addEventListener('click', this.correctPoints.bind(this));
+
     document.getElementById('HeartPicture').addEventListener('click', this.toggleHeratPicture.bind(this));
     document.getElementById('addPlayerBtn').addEventListener('click', this.addPlayerToTable.bind(this));
     document.getElementById('adjustPointsBtn').addEventListener('click', this.adjustPoints.bind(this));
@@ -130,6 +156,10 @@ class TwentyOneDownUI extends UIElements{
     this.createPointsInput("Stiche für ", "0 Stiche", "Hinzufügen", heartPicture);
     this.createStartBtn("Spiel starten");
     this.infoModal("Spiel zu Ende");
+
+    this.longPressModal();
+    this.longPressModalTexts("Punkte anpassen", "", "neue Punkte eingeben", null);
+
   }
 }
 window.TwentyOneDownUI = TwentyOneDownUI;
