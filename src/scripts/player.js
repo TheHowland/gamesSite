@@ -66,45 +66,6 @@ class gameBase{
     }
   }
 
-  addPlayerToTable() {
-    let listView = document.getElementById('playerTableBody');
-    let count = this.players.size;
-    let input = document.getElementById('playerNameInput');
-    let playerName = input.value.trim();
-    input.value = '';
-
-    if (playerName) {
-      let playerTag = 'player' + count.toString();
-      let tableRow = document.createElement('tr');
-      tableRow.id = playerTag;
-      tableRow.className = 'row-cols-3';
-
-      this.players.set(playerTag, new Player(playerName, playerTag, this.startPoints));
-
-      let playerNameField = document.createElement('td');
-      playerNameField.className = 'col-7';
-      playerNameField.id = playerTag + ' - name';
-      playerNameField.innerText = playerName;
-
-      let playerPointsField = document.createElement('td');
-      playerPointsField.className = 'col-3';
-      playerPointsField.id = playerTag + ' - points';
-      playerPointsField.innerText = this.startPoints.toString();
-
-      let playerSticheField = document.createElement('td');
-      playerSticheField.className = 'col-2';
-      playerSticheField.id = playerTag + ' - stiche';
-      playerSticheField.innerText = '-';
-
-      tableRow.appendChild(playerNameField);
-      tableRow.appendChild(playerPointsField);
-      tableRow.appendChild(playerSticheField);
-
-      listView.appendChild(tableRow);
-      this.setFocusToElementID('playerNameInput');
-    }
-  }
-
   resetBackgroundColor(ElementID, classListArg) {
     let selected = document.getElementById(ElementID).querySelector('.selected');
     if (selected) {

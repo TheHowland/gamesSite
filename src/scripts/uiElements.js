@@ -10,7 +10,13 @@ class UIElements{
     document.body.appendChild(playerList);
   }
 
-  createPlayerTable() {
+  createPlayerTable(headings, spacing) {
+
+    if (headings.length !== spacing.length) {
+      console.log("Error: Headings and Spacing must be the same length");
+      return;
+    }
+
     let tableContainer = document.createElement('div');
     tableContainer.id = 'playerTableContainer';
     tableContainer.className = 'container-fluid w-100 justify-content-center';
@@ -18,17 +24,16 @@ class UIElements{
     table.id = 'playerTable';
     table.className = 'table borderless table-striped';
 
-    let tableHead = document.createElement('thead');
     let tableHeadRow = document.createElement('tr');
-    let tableHeadName = document.createElement('th');
-    tableHeadName.innerText = "Name";
-    let tableHeadPoints = document.createElement('th');
-    tableHeadPoints.innerText = "Punkte";
-    let tableHeadStiche = document.createElement('th');
-    tableHeadStiche.innerText = "Stiche";
-    tableHeadRow.appendChild(tableHeadName);
-    tableHeadRow.appendChild(tableHeadPoints);
-    tableHeadRow.appendChild(tableHeadStiche);
+    tableHeadRow.className = 'row-col-' + headings.length.toString();
+
+    let tableHead = document.createElement('thead');
+    for (let i = 0; i < headings.length; i++) {
+        let heading = document.createElement('th');
+        heading.innerText = headings[i];
+        heading.className = spacing[i];
+        tableHeadRow.appendChild(heading);
+    }
 
     tableHead.appendChild(tableHeadRow);
     table.appendChild(tableHead);
