@@ -168,7 +168,7 @@ class Wizard extends gameBase{
     });
 
     //long press
-    document.getElementById('playerTableBody').addEventListener('mousedown', (event) => {
+    document.getElementById('playerTableBody').addEventListener('touchstart', (event) => {
       this.toggleRowSelectionEvent.bind(this, event, 'playerTableBody', 'table-info')();
       this.longHold = window.setTimeout(() => {
         console.log("Timout passed");
@@ -177,7 +177,7 @@ class Wizard extends gameBase{
         }, 500);
 
     });
-    document.getElementById('playerTableBody').addEventListener('mouseup', (event) => {
+    document.getElementById('playerTableBody').addEventListener('touchend', (event) => {
       window.clearTimeout(this.longHold);
     });
 
