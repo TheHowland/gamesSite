@@ -1,8 +1,9 @@
 class TwentyOneDown extends gameBase{
+  ui = null;
   constructor() {
     super(21, "Stiche für ");
+    this.ui = new TwentyOneDownUI();
   }
-
 
   startGame() {
     // Hide the input form and start button
@@ -80,6 +81,7 @@ class TwentyOneDown extends gameBase{
   }
 
   setUp(){
+    this.ui.setUp();
     document.getElementById("adjustScore").classList.add("d-none");
     document.getElementById("PlayerNameNI").classList.add("d-none");
 
@@ -90,5 +92,27 @@ class TwentyOneDown extends gameBase{
     document.getElementById('startButton').addEventListener('click', this.startGame.bind(this, this.players));
   }
 }
-
 window.TwentyOneDown = TwentyOneDown;
+
+class TwentyOneDownUI extends UIElements{
+  setUp(){
+    this.createHeading("Spiel: 21ab");
+    this.createPlayerList();
+    this.createPlayerNameInput("Spieler Name", "Hinzufügen");
+
+    let heartPicture = document.createElement("div")
+    heartPicture.className = "col-2 col-md-1";
+    let img = document.createElement("img");
+    img.id = "HeartPicture";
+    img.name="heartX2.svg";
+    img.src="src/resources/heartX2.svg";
+    img.className="img-fluid";
+    img.alt="x2";
+    heartPicture.appendChild(img);
+
+    this.createPointsInput("Stiche für ", "0 Stiche", "Hinzufügen", heartPicture);
+    this.createStartBtn("Spiel starten");
+    this.addModal("Spiel zu Ende");
+  }
+}
+window.TwentyOneDownUI = TwentyOneDownUI;

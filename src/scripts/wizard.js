@@ -1,8 +1,8 @@
-class Phase10 extends gameBase{
+class Wizard extends gameBase{
   ui = null;
   constructor() {
     super(0, "Strafpunkte für ");
-    this.ui = new Phase10UI();
+    this.ui = new WizardUI();
   }
 
   startGame() {
@@ -54,13 +54,13 @@ class Phase10 extends gameBase{
 
 window.Phase10 = Phase10;
 
-class Phase10UI extends UIElements{
+class WizardUI extends UIElements{
   setUp(){
-    this.createHeading("Spiel: Phase 10");
+    this.createHeading("Spiel: Wizard");
     this.createPlayerList();
     this.createPlayerNameInput("Spieler Name", "Hinzufügen");
 
-    this.createPointsInput("Strafpunkte für: ", "0 Punkte", "Hinzufügen");
+    this.createPointsInput("Stiche: ", "0 Punkte", "Hinzufügen");
     this.createStartBtn("Spiel starten");
     this.addModal("Spiel zu Ende");
   }
