@@ -45,19 +45,21 @@ class Wizard extends gameBase{
     document.getElementById("adjustScore").classList.add("d-none");
     document.getElementById("PlayerNameNI").classList.add("d-none");
 
-    document.getElementById('playerList').addEventListener('click', this.toggleRowSelectionEvent.bind(this));
-    document.getElementById('addPlayerBtn').addEventListener('click', this.addPlayer.bind(this));
+    document.getElementById('playerTableBody').addEventListener('click', (event) => {
+      this.toggleRowSelectionEvent.bind(this, event, 'playerTableBody', 'table-info')();
+    });
+    document.getElementById('addPlayerBtn').addEventListener('click', this.addPlayerToTable.bind(this));
     document.getElementById('adjustPointsBtn').addEventListener('click', this.adjustPoints.bind(this));
     document.getElementById('startButton').addEventListener('click', this.startGame.bind(this, this.players));
   }
 }
 
-window.Phase10 = Phase10;
+window.Wizard = Wizard;
 
 class WizardUI extends UIElements{
   setUp(){
     this.createHeading("Spiel: Wizard");
-    this.createPlayerList();
+    this.createPlayerTable();
     this.createPlayerNameInput("Spieler Name", "Hinzufügen");
 
     this.createPointsInput("Stiche: ", "0 Punkte", "Hinzufügen");
@@ -67,4 +69,4 @@ class WizardUI extends UIElements{
 
 }
 
-window.Phase10UI = Phase10UI;
+window.WizardUI = WizardUI;

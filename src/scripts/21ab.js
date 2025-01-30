@@ -85,7 +85,9 @@ class TwentyOneDown extends gameBase{
     document.getElementById("adjustScore").classList.add("d-none");
     document.getElementById("PlayerNameNI").classList.add("d-none");
 
-    document.getElementById('playerList').addEventListener('click', this.toggleRowSelectionEvent.bind(this));
+    document.getElementById('playerList').addEventListener('click', (event) => {
+      this.toggleRowSelectionEvent.bind(this, 'playerList', 'bg-secondary')();
+    });
     document.getElementById('HeartPicture').addEventListener('click', this.toggleHeratPicture.bind(this));
     document.getElementById('addPlayerBtn').addEventListener('click', this.addPlayer.bind(this));
     document.getElementById('adjustPointsBtn').addEventListener('click', this.adjustPoints.bind(this));

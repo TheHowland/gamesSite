@@ -10,6 +10,38 @@ class UIElements{
     document.body.appendChild(playerList);
   }
 
+  createPlayerTable() {
+    let tableContainer = document.createElement('div');
+    tableContainer.id = 'playerTableContainer';
+    tableContainer.className = 'container-fluid w-100 justify-content-center';
+    let table = document.createElement('table');
+    table.id = 'playerTable';
+    table.className = 'table borderless table-striped';
+
+    let tableHead = document.createElement('thead');
+    let tableHeadRow = document.createElement('tr');
+    let tableHeadName = document.createElement('th');
+    tableHeadName.innerText = "Name";
+    let tableHeadPoints = document.createElement('th');
+    tableHeadPoints.innerText = "Punkte";
+    let tableHeadStiche = document.createElement('th');
+    tableHeadStiche.innerText = "Stiche";
+    tableHeadRow.appendChild(tableHeadName);
+    tableHeadRow.appendChild(tableHeadPoints);
+    tableHeadRow.appendChild(tableHeadStiche);
+
+    tableHead.appendChild(tableHeadRow);
+    table.appendChild(tableHead);
+
+    let tableBody = document.createElement('tbody');
+    tableBody.id = 'playerTableBody';
+    table.appendChild(tableBody);
+
+    tableContainer.appendChild(table)
+
+    document.body.appendChild(tableContainer);
+  }
+
   createHeading(headingText){
     let heading = document.createElement('h1');
     heading.innerText = headingText;
