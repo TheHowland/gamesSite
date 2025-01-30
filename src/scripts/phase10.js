@@ -1,7 +1,9 @@
 class Phase10 extends gameBase{
   ui = null;
   constructor() {
-    super(0, "Strafpunkte für ");
+    super(0, "Strafpunkte für ",
+      ["Name", "Punkte"],
+      ["col-8 col-md-6", "col-4 col-md-3"]);
     this.ui = new Phase10UI();
   }
 
@@ -38,6 +40,44 @@ class Phase10 extends gameBase{
 
   endGame(){
 
+  }
+
+  addPlayer() {
+    let listView = document.getElementById('playerList');
+    let count = this.players.size;
+    let input = document.getElementById('playerNameInput');
+    let playerName = input.value.trim();
+    input.value = '';
+
+    if (playerName) {
+      let playerTag = 'player' + count.toString();
+      let listElm = document.createElement('li');
+
+      this.players.set(playerTag, new Player(playerName, playerTag, this.startPoints));
+
+      let playerRow = document.createElement('div');
+      playerRow.className = 'row';
+      playerRow.id = playerTag;
+
+      let playerNameField = document.createElement('div');
+      playerNameField.className = 'col-8 col-md-6';
+      playerNameField.id = playerTag + ' - ' + this.colHeadings[0].toLowerCase();
+      playerNameField.innerText = playerName;
+
+      let playerPointsField = document.createElement('div');
+      playerPointsField.className = 'col-4 col-md-3';
+      playerPointsField.id = playerTag + ' - ' + this.colHeadings[1].toLowerCase();
+      playerPointsField.innerText = this.startPoints.toString();
+
+      playerRow.appendChild(playerNameField);
+      playerRow.appendChild(playerPointsField);
+
+      listElm.className = 'dropdown-item';
+      listElm.id = playerTag;
+
+      listView.appendChild(playerRow);
+      this.setFocusToElementID('playerNameInput');
+    }
   }
 
   setUp(){

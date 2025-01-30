@@ -10,9 +10,9 @@ class Player{
     console.log(this.playerID)
   }
 
-  adjustPoints(points){
+  adjustPoints(points, fieldName){
     this.points += points;
-    document.getElementById(this.playerID + " - points").innerHTML = this.points
+    return this.points;
   }
 }
 
@@ -22,14 +22,18 @@ class gameBase{
   players = new Map();
   pointsInfoText = null;
   startPoints;
-  constructor(startPoints, pointsInfoText) {
+  colHeadings = null;
+  colSpacings = null;
+
+  constructor(startPoints, pointsInfoText, colHeadings, colSpacings){
     this.pointsInfoText = pointsInfoText;
     this.startPoints = startPoints;
+    this.colHeadings = colHeadings;
+    this.colSpacings = colSpacings;
   }
 
-
-  addPlayer() {
-    let listView = document.getElementById('playerList');
+  addPlayerToTable() {
+    let listView = document.getElementById('playerTableBody');
     let count = this.players.size;
     let input = document.getElementById('playerNameInput');
     let playerName = input.value.trim();
@@ -37,33 +41,25 @@ class gameBase{
 
     if (playerName) {
       let playerTag = 'player' + count.toString();
-      let listElm = document.createElement('li');
+      let tableRow = document.createElement('tr');
+      tableRow.id = playerTag;
+      tableRow.className = 'row-col-' + this.colHeadings.length.toString();
 
       this.players.set(playerTag, new Player(playerName, playerTag, this.startPoints));
 
-      let playerRow = document.createElement('div');
-      playerRow.className = 'row';
-      playerRow.id = playerTag;
-
-      let playerNameField = document.createElement('div');
-      playerNameField.className = 'col-8 col-md-6';
-      playerNameField.id = playerTag + ' - name';
-      playerNameField.innerText = playerName;
-
-      let playerPointsField = document.createElement('div');
-      playerPointsField.className = 'col-4 col-md-3';
-      playerPointsField.id = playerTag + ' - points';
-      playerPointsField.innerText = this.startPoints.toString();
-
-      playerRow.appendChild(playerNameField);
-      playerRow.appendChild(playerPointsField);
-
-      listElm.className = 'dropdown-item';
-      listElm.id = playerTag;
-
-      listView.appendChild(playerRow);
-      this.setFocusToElementID('playerNameInput');
+      let elms = [];
+      for (let i = 0; i < this.colHeadings.length; i++) {
+        let col = document.createElement('td');
+        col.className = this.colSpacings[i];
+        col.id = playerTag + ' - ' + this.colHeadings[i].toLowerCase();
+        tableRow.appendChild(col);
+        elms.push(col);
+      }
+      elms[0].innerText = playerName;
+      listView.appendChild(tableRow);
+      return elms;
     }
+    return [];
   }
 
   resetBackgroundColor(ElementID, classListArg) {
@@ -89,14 +85,14 @@ class gameBase{
 
     let text = this.pointsInfoText;
     let label = document.getElementById('PlayerNameNI');
-    label.innerText = text + document.getElementById(playerID + ' - name').innerText;
+    label.innerText = text + this.players.get(playerID).name;
   }
 
-  selectNextPlayer(playerId) {
+  selectNextPlayer(playerId, ElementID, classListArg) {
     let keys = Array.from(this.players.keys());
     let playerIndex = keys.indexOf(playerId);
     let nextPlayerID = keys[(playerIndex + 1) % this.players.size];
-    this.toggleRowSelection(nextPlayerID);
+    this.toggleRowSelection(nextPlayerID, ElementID, classListArg);
   }
 
   getNumberInput(){
@@ -107,7 +103,7 @@ class gameBase{
   }
 
   getSelectedPlayer(){
-    let list = document.getElementById('playerList');
+    let list = document.getElementById('playerTableBody');
     return list.querySelector('.selected').id;
   }
 

@@ -1,8 +1,10 @@
 class Wizard extends gameBase{
   ui = null;
   constructor() {
-    super(0, "Strafpunkte für ");
-    this.ui = new WizardUI();
+    super(0, "Stiche für ",
+      ["Name", "Punkte", "Stiche"],
+      ["col-7", "col-3", "col-2"]);
+    this.ui = new WizardUI(this.colHeadings, this.colSpacings);
   }
 
   startGame() {
@@ -41,42 +43,12 @@ class Wizard extends gameBase{
   }
 
   addPlayerToTable() {
-    let listView = document.getElementById('playerTableBody');
-    let count = this.players.size;
-    let input = document.getElementById('playerNameInput');
-    let playerName = input.value.trim();
-    input.value = '';
+    let elms = super.addPlayerToTable();
+    //Name is set in parent (elms[0])
+    elms[1].innerText = this.startPoints.toString();
+    elms[2].innerText = '-';
 
-    if (playerName) {
-      let playerTag = 'player' + count.toString();
-      let tableRow = document.createElement('tr');
-      tableRow.id = playerTag;
-      tableRow.className = 'row-col-3';
-
-      this.players.set(playerTag, new Player(playerName, playerTag, this.startPoints));
-
-      let playerNameField = document.createElement('td');
-      playerNameField.className = 'col-7';
-      playerNameField.id = playerTag + ' - name';
-      playerNameField.innerText = playerName;
-
-      let playerPointsField = document.createElement('td');
-      playerPointsField.className = 'col-3';
-      playerPointsField.id = playerTag + ' - points';
-      playerPointsField.innerText = this.startPoints.toString();
-
-      let playerSticheField = document.createElement('td');
-      playerSticheField.className = 'col-2';
-      playerSticheField.id = playerTag + ' - stiche';
-      playerSticheField.innerText = '-';
-
-      tableRow.appendChild(playerNameField);
-      tableRow.appendChild(playerPointsField);
-      tableRow.appendChild(playerSticheField);
-
-      listView.appendChild(tableRow);
-      this.setFocusToElementID('playerNameInput');
-    }
+    this.setFocusToElementID('playerNameInput');
   }
 
   setUp(){
@@ -96,9 +68,14 @@ class Wizard extends gameBase{
 window.Wizard = Wizard;
 
 class WizardUI extends UIElements{
+
+  constructor(colHeadings, colSpacing){
+    super(colHeadings, colSpacing);
+  }
+
   setUp(){
     this.createHeading("Spiel: Wizard");
-    this.createPlayerTable(["Name", "Punkte", "Stiche"], ["col-7", "col-3", "col-2"]);
+    this.createPlayerTable(this.colHeadings, this.colSpacings);
     this.createPlayerNameInput("Spieler Name", "Hinzufügen");
 
     this.createPointsInput("Stiche: ", "0 Punkte", "Hinzufügen");

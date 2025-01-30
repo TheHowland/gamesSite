@@ -1,5 +1,10 @@
 class UIElements{
-  constructor() {
+  colHeadings = null;
+  colSpacings = null;
+
+  constructor(colHeadings, colSpacings){
+  this.colHeadings = colHeadings;
+  this.colSpacings = colSpacings;
   }
 
   createPlayerList() {
@@ -10,9 +15,9 @@ class UIElements{
     document.body.appendChild(playerList);
   }
 
-  createPlayerTable(headings, spacing) {
+  createPlayerTable() {
 
-    if (headings.length !== spacing.length) {
+    if (this.colHeadings.length !== this.colSpacings.length) {
       console.log("Error: Headings and Spacing must be the same length");
       return;
     }
@@ -25,13 +30,13 @@ class UIElements{
     table.className = 'table borderless table-striped';
 
     let tableHeadRow = document.createElement('tr');
-    tableHeadRow.className = 'row-col-' + headings.length.toString();
+    tableHeadRow.className = 'row-col-' + this.colHeadings.length.toString();
 
     let tableHead = document.createElement('thead');
-    for (let i = 0; i < headings.length; i++) {
+    for (let i = 0; i < this.colHeadings.length; i++) {
         let heading = document.createElement('th');
-        heading.innerText = headings[i];
-        heading.className = spacing[i];
+        heading.innerText = this.colHeadings[i];
+        heading.className = this.colSpacings[i];
         tableHeadRow.appendChild(heading);
     }
 
