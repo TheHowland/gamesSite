@@ -81,7 +81,7 @@ class TwentyOneDown extends gameBase{
     }
 
     if (isEnding){
-      document.getElementById('modalText').innerText = "Gewonnen hat: " + winningPlayer + "\n" + modalBody;
+      document.getElementById('infoModalText').innerText = "Gewonnen hat: " + winningPlayer + "\n" + modalBody;
       let myModal = new bootstrap.Modal(document.getElementById('winModal'));
       myModal.show();
     }
@@ -129,7 +129,7 @@ class TwentyOneDownUI extends UIElements{
 
     this.createPointsInput("Stiche für ", "0 Stiche", "Hinzufügen", heartPicture);
     this.createStartBtn("Spiel starten");
-    this.addModal("Spiel zu Ende");
+    this.infoModal("Spiel zu Ende");
   }
 }
 window.TwentyOneDownUI = TwentyOneDownUI;

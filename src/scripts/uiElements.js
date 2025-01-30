@@ -5,6 +5,7 @@ class UIElements{
   constructor(colHeadings, colSpacings){
   this.colHeadings = colHeadings;
   this.colSpacings = colSpacings;
+  this.modalHeading = "Punkte korrigieren";
   }
 
   createPlayerList() {
@@ -173,7 +174,7 @@ class UIElements{
     document.body.appendChild(startButton);
   }
 
-  addModal(modalHeading, modalText = "") {
+  infoModal(modalHeading, modalText = "") {
     /*
 
     */
@@ -195,7 +196,7 @@ class UIElements{
     modalHeader.className = "modal-header";
     let h1 = document.createElement('h1');
     h1.className = "modal-title fs-5";
-    h1.id = "modalHeading";
+    h1.id = "infoModalHeading";
     h1.textContent = modalHeading;
     let button = document.createElement('button');
     button.type = "button";
@@ -209,7 +210,7 @@ class UIElements{
     let modalBody = document.createElement('div');
     modalBody.className = "modal-body";
     let h5 = document.createElement('h6');
-    h5.id = "modalText";
+    h5.id = "infoModalText";
     h5.textContent = modalText;
     modalBody.appendChild(h5);
 
@@ -234,8 +235,32 @@ class UIElements{
 
   }
 
-  longPressModalTexts(){
+  infoModalTexts(heading, body){
+    if (heading !== null){
+      document.getElementById('infoModalHeading').textContent = heading;
+    }
+    if (body !== null){
+      document.getElementById('modalText').textContent = body;
+    }
+  }
 
+  longPressModalTexts(heading, body, placeholder, value){
+    if (heading !== null){
+      document.getElementById('longPressModalHeading').textContent = heading;
+    }
+    if (body !== null){
+      document.getElementById('longPressModalText').textContent = body;
+    }
+    if (placeholder !== null){
+      document.getElementById('longPressModalInput').placeholder = placeholder;
+    }
+    if (value !== null){
+      document.getElementById('longPressModalInput').value = value;
+    }
+  }
+
+  inputLongPressModal(){
+    document.getElementById('longPressModalInput');
   }
 
   longPressModal() {
@@ -257,8 +282,8 @@ class UIElements{
     modalHeader.className = 'modal-header';
     let h1 = document.createElement('h1');
     h1.className = 'modal-title fs-5';
-    h1.id = 'modalHeading';
-    h1.textContent = 'Punkte korrigieren';
+    h1.id = 'longPressModalHeading';
+    h1.textContent = "";
 
     /*
     <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>;
@@ -276,14 +301,14 @@ class UIElements{
     let modalBody = document.createElement('div');
     modalBody.className = 'modal-body';
     let h5 = document.createElement('h6');
-    h5.id = 'correctModalText';
-    h5.textContent = "Punktestand zu eingegebner Zahl ändern";
+    h5.id = 'longPressModalText';
+    h5.textContent = "";
     modalBody.appendChild(h5);
     let input = document.createElement('input');
     input.type = 'number';
     input.id = 'longPressModalInput';
     input.className = 'form-control';
-    input.placeholder = 'Neue punkte eingeben';
+    input.placeholder = '';
     modalBody.appendChild(input);
 
     let modalFooter = document.createElement('div');

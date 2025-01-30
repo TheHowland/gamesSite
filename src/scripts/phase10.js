@@ -78,7 +78,7 @@ class Phase10UI extends UIElements{
 
     this.createPointsInput("Strafpunkte für: ", "0 Punkte", "Hinzufügen");
     this.createStartBtn("Spiel starten");
-    this.addModal("Spiel zu Ende");
+    this.infoModal("Spiel zu Ende");
   }
 
 }

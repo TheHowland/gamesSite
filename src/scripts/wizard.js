@@ -62,6 +62,8 @@ class Wizard extends gameBase{
       //use longpress for points
       document.getElementById('longPressModalSaveBtn').removeEventListener('click', this.correctSticheHandler);
       document.getElementById('longPressModalSaveBtn').addEventListener('click', this.correctPointsHandler);
+      this.ui.longPressModalTexts("Punkte anpassen", "", "neue Punkte eingeben", null);
+
 
       document.getElementById("PlayerNameNI").innerText = "Tatsächliche Stiche von ";
       this.inputExplText = "Tatsächliche Stiche von ";
@@ -76,6 +78,7 @@ class Wizard extends gameBase{
       //use longpress for stiche
       document.getElementById('longPressModalSaveBtn').removeEventListener('click', this.correctPointsHandler);
       document.getElementById('longPressModalSaveBtn').addEventListener('click', this.correctSticheHandler);
+      this.ui.longPressModalTexts("Stiche anpassen", "", "neue Stiche Anzahl eingeben", null);
 
 
       document.getElementById("PlayerNameNI").innerText = "Angesagte Stiche von ";
@@ -124,7 +127,7 @@ class Wizard extends gameBase{
     }
     this.players.get(selectedPlayer).setPoints(points);
     document.getElementById(selectedPlayer + ' - ' + this.pointsFieldName).innerHTML =  points.toString();
-
+    this.ui.longPressModalTexts(null, null, null, "");
   }
 
   correctStiche(){
@@ -135,7 +138,7 @@ class Wizard extends gameBase{
     }
     this.playerStiche.set(selectedPlayer, points);
     document.getElementById(selectedPlayer + ' - ' + this.sticheFieldName).innerHTML =  points.toString();
-
+    this.ui.longPressModalTexts(null, null, null, "");
   }
 
   endGame(){
@@ -152,6 +155,7 @@ class Wizard extends gameBase{
     document.getElementById(selectedPlayer + ' - ' + this.sticheFieldName).innerHTML = stiche.toString();
     this.selectNextPlayer(selectedPlayer, 'playerTableBody', 'table-info');
     this.setFocusToElementID('numberInput');
+
   }
 
   addPlayerToTable() {
@@ -216,8 +220,10 @@ class WizardUI extends UIElements{
 
     this.createPointsInput("Angesagte Stiche für", "0 Stiche", "Hinzufügen");
     this.createStartBtn("Spiel starten");
-    this.addModal("Spiel zu Ende");
+    this.infoModal("Spiel zu Ende");
     this.longPressModal();
+    this.longPressModalTexts("Stiche anpassen", "", "neue Stiche Anzahl eingeben", null);
+
 
   }
 
