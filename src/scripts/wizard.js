@@ -119,17 +119,6 @@ class Wizard extends gameBase{
     this.setFocusToElementID('numberInput');
   }
 
-  correctPoints(){
-    let selectedPlayer = this.getSelectedPlayer();
-    let points = Number(document.getElementById('longPressModalInput').value);
-    if (isNaN(points)){
-      points = 0;
-    }
-    this.players.get(selectedPlayer).setPoints(points);
-    document.getElementById(selectedPlayer + ' - ' + this.pointsFieldName).innerHTML =  points.toString();
-    this.ui.longPressModalTexts(null, null, null, "");
-  }
-
   correctStiche(){
     let selectedPlayer = this.getSelectedPlayer();
     let points = Number(document.getElementById('longPressModalInput').value);

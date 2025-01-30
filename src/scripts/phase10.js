@@ -65,6 +65,21 @@ class Phase10 extends gameBase{
     document.getElementById('addPlayerBtn').addEventListener('click', this.addPlayerToTable.bind(this));
     document.getElementById('adjustPointsBtn').addEventListener('click', this.adjustPoints.bind(this));
     document.getElementById('startButton').addEventListener('click', this.startGame.bind(this, this.players));
+
+    //long press
+    document.getElementById('playerTableBody').addEventListener('mousedown', (event) => {
+      this.toggleRowSelectionEvent.bind(this, event, 'playerTableBody', 'table-info')();
+      this.longHold = window.setTimeout(() => {
+        let myModal = new bootstrap.Modal(document.getElementById('longPressModal'));
+        myModal.show();
+      }, 500);
+
+    });
+    document.getElementById('playerTableBody').addEventListener('mouseup', (event) => {
+      window.clearTimeout(this.longHold);
+    });
+    document.getElementById('longPressModalSaveBtn').addEventListener('click', this.correctPoints.bind(this));
+
   }
 }
 
@@ -79,6 +94,10 @@ class Phase10UI extends UIElements{
     this.createPointsInput("Strafpunkte für: ", "0 Punkte", "Hinzufügen");
     this.createStartBtn("Spiel starten");
     this.infoModal("Spiel zu Ende");
+
+    this.longPressModal();
+    this.longPressModalTexts("Strafpunkte anpassen", "", "neue Punkte eingeben", null);
+
   }
 
 }
