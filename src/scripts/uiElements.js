@@ -234,5 +234,86 @@ class UIElements{
 
   }
 
+  longPressModalTexts(){
+
+  }
+
+  longPressModal() {
+    let modal = document.createElement('div');
+    modal.className = 'modal fade';
+    modal.id = 'longPressModal';
+    modal.setAttribute('data-bs-backdrop', 'static');
+    modal.setAttribute('data-bs-keyboard', 'false');
+    modal.tabIndex = '-1';
+    modal.setAttribute('aria-labelledby', 'staticBackdropLabel');
+    modal.setAttribute('aria-hidden', 'true');
+
+    let modalDialog = document.createElement('div');
+    modalDialog.className = 'modal-dialog';
+
+    let modalContent = document.createElement('div');
+    modalContent.className = 'modal-content';
+    let modalHeader = document.createElement('div');
+    modalHeader.className = 'modal-header';
+    let h1 = document.createElement('h1');
+    h1.className = 'modal-title fs-5';
+    h1.id = 'modalHeading';
+    h1.textContent = 'Punkte korrigieren';
+
+    /*
+    <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>;
+    <button type="button" className="btn btn-primary">Save changes</button>;
+    */
+    let buttonClose = document.createElement('button');
+    buttonClose.type = 'button';
+    buttonClose.className = 'btn-close';
+    buttonClose.setAttribute('data-bs-dismiss', 'modal');
+    buttonClose.setAttribute('aria-label', 'Close');
+
+    modalHeader.appendChild(h1);
+    modalHeader.appendChild(buttonClose);
+
+    let modalBody = document.createElement('div');
+    modalBody.className = 'modal-body';
+    let h5 = document.createElement('h6');
+    h5.id = 'correctModalText';
+    h5.textContent = "Punktestand zu eingegebner Zahl ändern";
+    modalBody.appendChild(h5);
+    let input = document.createElement('input');
+    input.type = 'number';
+    input.id = 'longPressModalInput';
+    input.className = 'form-control';
+    input.placeholder = 'Neue punkte eingeben';
+    modalBody.appendChild(input);
+
+    let modalFooter = document.createElement('div');
+    modalFooter.className = 'modal-footer';
+
+    let buttonCancle = document.createElement('button');
+    buttonCancle.type = 'button';
+    buttonCancle.className = 'btn btn-cancel';
+    buttonCancle.setAttribute('data-bs-dismiss', 'modal');
+    buttonCancle.textContent = 'Abbrechen';
+
+    let saveButton = document.createElement('button');
+    saveButton.type = 'button';
+    saveButton.className = 'btn btn-primary';
+    saveButton.setAttribute('data-bs-dismiss', 'modal');
+    saveButton.textContent = 'Okay';
+    saveButton.id = 'longPressModalSaveBtn';
+
+    modalFooter.appendChild(buttonCancle);
+    modalFooter.appendChild(saveButton);
+
+    modalContent.appendChild(modalHeader);
+    modalContent.appendChild(modalBody);
+    modalContent.appendChild(modalFooter);
+
+    modalDialog.appendChild(modalContent);
+    modal.appendChild(modalDialog);
+
+    document.body.appendChild(modal);
+  }
+
 }
 
