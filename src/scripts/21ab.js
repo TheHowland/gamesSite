@@ -4,7 +4,8 @@ class TwentyOneDown extends gameBase{
   constructor() {
     super(21, "Stiche für ",
       ["Name", "Punkte"],
-      ["col-8 col-md-6", "col-4 col-md-3"]);
+      ["col-8 col-md-6", "col-4 col-md-3"],
+      "Stiche für ");
     this.ui = new TwentyOneDownUI(this.colHeadings, this.colSpacings);
     this.pointsFieldName = this.colHeadings[1].toLowerCase();
   }
@@ -16,7 +17,7 @@ class TwentyOneDown extends gameBase{
 
     document.getElementById("adjustScore").classList.remove('d-none');
     document.getElementById("PlayerNameNI").classList.remove("d-none");
-    this.toggleRowSelection('player0', 'playerTableBody', 'table-info');
+    this.toggleRowSelection('player0', 'playerTableBody', 'table-info', "Stiche für ");
     this.setFocusToElementID('numberInput');
   }
 
@@ -83,44 +84,6 @@ class TwentyOneDown extends gameBase{
       document.getElementById('modalText').innerText = "Gewonnen hat: " + winningPlayer + "\n" + modalBody;
       let myModal = new bootstrap.Modal(document.getElementById('winModal'));
       myModal.show();
-    }
-  }
-
-  addPlayer() {
-    let listView = document.getElementById('playerList');
-    let count = this.players.size;
-    let input = document.getElementById('playerNameInput');
-    let playerName = input.value.trim();
-    input.value = '';
-
-    if (playerName) {
-      let playerTag = 'player' + count.toString();
-      let listElm = document.createElement('li');
-
-      this.players.set(playerTag, new Player(playerName, playerTag, this.startPoints));
-
-      let playerRow = document.createElement('div');
-      playerRow.className = 'row';
-      playerRow.id = playerTag;
-
-      let playerNameField = document.createElement('div');
-      playerNameField.className = 'col-8 col-md-6';
-      playerNameField.id = playerTag + ' - ' + this.colHeadings[0].toLowerCase();
-      playerNameField.innerText = playerName;
-
-      let playerPointsField = document.createElement('div');
-      playerPointsField.className = 'col-4 col-md-3';
-      playerPointsField.id = playerTag + ' - ' + this.colHeadings[1].toLowerCase();
-      playerPointsField.innerText = this.startPoints.toString();
-
-      playerRow.appendChild(playerNameField);
-      playerRow.appendChild(playerPointsField);
-
-      listElm.className = 'dropdown-item';
-      listElm.id = playerTag;
-
-      listView.appendChild(playerRow);
-      this.setFocusToElementID('playerNameInput');
     }
   }
 

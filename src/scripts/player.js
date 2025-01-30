@@ -10,6 +10,10 @@ class Player{
     console.log(this.playerID)
   }
 
+  setPoints(points){
+    this.points = points;
+  }
+
   adjustPoints(points, fieldName){
     this.points += points;
     return this.points;
@@ -24,12 +28,14 @@ class gameBase{
   startPoints;
   colHeadings = null;
   colSpacings = null;
+  inputExplText = null;
 
-  constructor(startPoints, pointsInfoText, colHeadings, colSpacings){
+  constructor(startPoints, pointsInfoText, colHeadings, colSpacings, inputExplText){
     this.pointsInfoText = pointsInfoText;
     this.startPoints = startPoints;
     this.colHeadings = colHeadings;
     this.colSpacings = colSpacings;
+    this.inputExplText = inputExplText;
   }
 
   addPlayerToTable() {
@@ -83,7 +89,7 @@ class gameBase{
     elmRow.classList.add(classListArg);
     elmRow.classList.add('selected');
 
-    let text = this.pointsInfoText;
+    let text = this.inputExplText;
     let label = document.getElementById('PlayerNameNI');
     label.innerText = text + this.players.get(playerID).name;
   }

@@ -3,8 +3,10 @@ class Phase10 extends gameBase{
   constructor() {
     super(0, "Strafpunkte für ",
       ["Name", "Punkte"],
-      ["col-8 col-md-6", "col-4 col-md-3"]);
-    this.ui = new Phase10UI();
+      ["col-8 col-md-6", "col-4 col-md-3"],
+      'Strafpunkte für ');
+    this.ui = new Phase10UI(this.colHeadings, this.colSpacings);
+    this.pointsFieldName = this.colHeadings[1].toLowerCase();
   }
 
   startGame() {
@@ -14,7 +16,7 @@ class Phase10 extends gameBase{
 
     document.getElementById("adjustScore").classList.remove('d-none');
     document.getElementById("PlayerNameNI").classList.remove("d-none");
-    this.toggleRowSelection('player0');
+    this.toggleRowSelection('player0', 'playerTableBody', 'table-info', "Strafpunkte für ");
     this.setFocusToElementID('numberInput');
   }
 
@@ -31,10 +33,12 @@ class Phase10 extends gameBase{
 
     let selectedPlayer = this.getSelectedPlayer();
 
-    this.players.get(selectedPlayer).adjustPoints(points);
+    let playerPoints = this.players.get(selectedPlayer).adjustPoints(points);
+    document.getElementById(selectedPlayer + ' - ' + this.pointsFieldName).innerHTML =  playerPoints;
+
     this.endGame();
 
-    this.selectNextPlayer(selectedPlayer);
+    this.selectNextPlayer(selectedPlayer, 'playerTableBody', 'table-info');
     this.setFocusToElementID('numberInput');
   }
 
@@ -42,42 +46,12 @@ class Phase10 extends gameBase{
 
   }
 
-  addPlayer() {
-    let listView = document.getElementById('playerList');
-    let count = this.players.size;
-    let input = document.getElementById('playerNameInput');
-    let playerName = input.value.trim();
-    input.value = '';
+  addPlayerToTable() {
+    let elms = super.addPlayerToTable();
+    //Name is set in parent (elms[0])
+    elms[1].innerText = this.startPoints.toString();
 
-    if (playerName) {
-      let playerTag = 'player' + count.toString();
-      let listElm = document.createElement('li');
-
-      this.players.set(playerTag, new Player(playerName, playerTag, this.startPoints));
-
-      let playerRow = document.createElement('div');
-      playerRow.className = 'row';
-      playerRow.id = playerTag;
-
-      let playerNameField = document.createElement('div');
-      playerNameField.className = 'col-8 col-md-6';
-      playerNameField.id = playerTag + ' - ' + this.colHeadings[0].toLowerCase();
-      playerNameField.innerText = playerName;
-
-      let playerPointsField = document.createElement('div');
-      playerPointsField.className = 'col-4 col-md-3';
-      playerPointsField.id = playerTag + ' - ' + this.colHeadings[1].toLowerCase();
-      playerPointsField.innerText = this.startPoints.toString();
-
-      playerRow.appendChild(playerNameField);
-      playerRow.appendChild(playerPointsField);
-
-      listElm.className = 'dropdown-item';
-      listElm.id = playerTag;
-
-      listView.appendChild(playerRow);
-      this.setFocusToElementID('playerNameInput');
-    }
+    this.setFocusToElementID('playerNameInput');
   }
 
   setUp(){
@@ -85,8 +59,10 @@ class Phase10 extends gameBase{
     document.getElementById("adjustScore").classList.add("d-none");
     document.getElementById("PlayerNameNI").classList.add("d-none");
 
-    document.getElementById('playerList').addEventListener('click', this.toggleRowSelectionEvent.bind(this));
-    document.getElementById('addPlayerBtn').addEventListener('click', this.addPlayer.bind(this));
+    document.getElementById('playerTableBody').addEventListener('click', (event) => {
+      this.toggleRowSelectionEvent.bind(this, event, 'playerTableBody', 'table-info')();
+    });
+    document.getElementById('addPlayerBtn').addEventListener('click', this.addPlayerToTable.bind(this));
     document.getElementById('adjustPointsBtn').addEventListener('click', this.adjustPoints.bind(this));
     document.getElementById('startButton').addEventListener('click', this.startGame.bind(this, this.players));
   }
@@ -97,7 +73,7 @@ window.Phase10 = Phase10;
 class Phase10UI extends UIElements{
   setUp(){
     this.createHeading("Spiel: Phase 10");
-    this.createPlayerList();
+    this.createPlayerTable();
     this.createPlayerNameInput("Spieler Name", "Hinzufügen");
 
     this.createPointsInput("Strafpunkte für: ", "0 Punkte", "Hinzufügen");
