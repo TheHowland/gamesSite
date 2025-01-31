@@ -36,10 +36,16 @@ class Wizard extends gameBase{
 
     document.getElementById("adjustScore").classList.remove('d-none');
     document.getElementById("PlayerNameNI").classList.remove("d-none");
-        this.setFocusToElementID('numberInput');
+    this.setFocusToElementID('numberInput');
 
     let playerID = Array.from(this.players.keys())[this.roundsPlayed % this.players.size];
     this.toggleRowSelection(playerID, 'playerTableBody', 'table-info');
+  }
+
+  resetGame(){
+    this.ui.infoModalTexts("Spiel zurücksetzen?", "Alle Punkte werden auf den Anfangswert zurückgesetzt, alle Spieler bleiben erhalten. Das kann nicht rückgängig gemacht werden.");
+    let myModal = new bootstrap.Modal(document.getElementById('infoModal'));
+    myModal.show();
   }
 
   toggleStartAndEvalRound(){
@@ -186,6 +192,9 @@ class Wizard extends gameBase{
     document.getElementById('startButton').addEventListener('click', this.startGameHandler);
     //correct points with long press
     document.getElementById('longPressModalSaveBtn').addEventListener('click', this.correctSticheHandler);
+
+    //resetButton
+    document.getElementById('resetButton').addEventListener('click', this.resetGame.bind(this));
   }
 }
 
@@ -216,7 +225,7 @@ class WizardUI extends UIElements{
     this.infoModal("Spiel zu Ende");
     this.longPressModal();
     this.longPressModalTexts("Stiche anpassen", "", "neue Stiche Anzahl eingeben", null);
-
+    this.resetButton();
 
   }
 

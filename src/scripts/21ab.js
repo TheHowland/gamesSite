@@ -82,7 +82,7 @@ class TwentyOneDown extends gameBase{
 
     if (isEnding){
       document.getElementById('infoModalText').innerText = "Gewonnen hat: " + winningPlayer + "\n" + modalBody;
-      let myModal = new bootstrap.Modal(document.getElementById('winModal'));
+      let myModal = new bootstrap.Modal(document.getElementById('infoModal'));
       myModal.show();
     }
   }

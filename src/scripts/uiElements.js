@@ -180,7 +180,7 @@ class UIElements{
     */
     let modal = document.createElement('div');
     modal.className = "modal fade";
-    modal.id = "winModal";
+    modal.id = "infoModal";
     modal.setAttribute("data-bs-backdrop", "static");
     modal.setAttribute("data-bs-keyboard", "false");
     modal.tabIndex = "-1";
@@ -240,7 +240,7 @@ class UIElements{
       document.getElementById('infoModalHeading').textContent = heading;
     }
     if (body !== null){
-      document.getElementById('modalText').textContent = body;
+      document.getElementById('infoModalText').textContent = body;
     }
   }
 
@@ -390,6 +390,20 @@ class UIElements{
 
     navbar.appendChild(div);
     document.body.appendChild(navbar);
+  }
+
+  resetButton(){
+    let resetBtnDiv = document.createElement('div');
+    resetBtnDiv.className = "d-flex justify-content-center w-100 mt-3";
+
+    let resetBtn = document.createElement('button');
+    resetBtn.type = "button";
+    resetBtnDiv.id = "resetButton";
+    resetBtn.className = "btn btn-primary w-50";
+    resetBtn.textContent = "Reset";
+
+    resetBtnDiv.appendChild(resetBtn);
+    document.body.appendChild(resetBtnDiv);
   }
 }
 
