@@ -40,12 +40,16 @@ class Wizard extends gameBase{
 
     let playerID = Array.from(this.players.keys())[this.roundsPlayed % this.players.size];
     this.toggleRowSelection(playerID, 'playerTableBody', 'table-info');
+    document.getElementById("PlayerNameNI").innerText = this.inputExplText + this.players.get(playerID).name;
   }
 
   resetGame(){
-    this.ui.infoModalTexts("Spiel zurücksetzen?", "Alle Punkte werden auf den Anfangswert zurückgesetzt, alle Spieler bleiben erhalten. Das kann nicht rückgängig gemacht werden.");
-    let myModal = new bootstrap.Modal(document.getElementById('infoModal'));
-    myModal.show();
+    for (let player of Array.from(this.players.keys())){
+      this.playerStiche.set(player, 0);
+      document.getElementById(player + ' - ' + this.sticheFieldName).innerText = '-';
+      this.players.get(player).points = this.startPoints;
+      document.getElementById(player + ' - ' + this.pointsFieldName).innerText = this.startPoints;
+    }
   }
 
   toggleStartAndEvalRound(){
@@ -70,12 +74,16 @@ class Wizard extends gameBase{
       document.getElementById('longPressModalSaveBtn').addEventListener('click', this.correctPointsHandler);
       this.ui.longPressModalTexts("Punkte anpassen", "", "neue Punkte eingeben", null);
 
-
-      document.getElementById("PlayerNameNI").innerText = "Tatsächliche Stiche von ";
       this.inputExplText = "Tatsächliche Stiche von ";
+      document.getElementById("PlayerNameNI").innerText = this.inputExplText;
+
       strartBtn.childNodes[0].textContent = "Runde abschließen";
     }
     else{
+      if(this.roundsPlayed === 9){
+        this.endGame();
+      }
+
       let adjustPointsBtn = document.getElementById("adjustPointsBtn");
       adjustPointsBtn.removeEventListener('click', this.adjustPointsHandler);
       adjustPointsBtn.addEventListener('click', this.adjustSticheHandler);
@@ -108,6 +116,9 @@ class Wizard extends gameBase{
   adjustPoints(){
 
     let numberInput = this.getNumberInput();
+    if (isNaN(numberInput)){
+      numberInput = 0;
+    }
     let selectedPlayer = this.getSelectedPlayer();
 
     let diffPoints = 0;
@@ -137,7 +148,20 @@ class Wizard extends gameBase{
   }
 
   endGame(){
+    let modalBody = ""
+    let sortedPlayers = Array.from(this.players.values()).sort((player1, player2) => player2.points - player1.points);
+    let winningPlayer = "";
 
+    for (let player of sortedPlayers){
+      modalBody += player.name + " - " + player.points +"\n";
+      console.log(player.points);
+      console.log(player.name);
+      console.log("-------")
+    }
+
+    document.getElementById('infoModalText').innerText = "Gewonnen hat: " + winningPlayer + "\n" + modalBody;
+    let myModal = new bootstrap.Modal(document.getElementById('infoModal'));
+    myModal.show();
   }
 
   adjustStiche(){
@@ -194,7 +218,11 @@ class Wizard extends gameBase{
     document.getElementById('longPressModalSaveBtn').addEventListener('click', this.correctSticheHandler);
 
     //resetButton
-    document.getElementById('resetButton').addEventListener('click', this.resetGame.bind(this));
+    document.getElementById('resetButton').addEventListener('click', () => {
+      let myModal = new bootstrap.Modal(document.getElementById('okModal'));
+      myModal.show();
+    });
+    document.getElementById('okModalSaveBtn').addEventListener('click', this.resetGame.bind(this));
   }
 }
 
@@ -225,6 +253,8 @@ class WizardUI extends UIElements{
     this.infoModal("Spiel zu Ende");
     this.longPressModal();
     this.longPressModalTexts("Stiche anpassen", "", "neue Stiche Anzahl eingeben", null);
+    this.okModal();
+    this.okModalTexts("Spiel zurücksetzen?", "Alle Punkte werden auf den Anfangswert zurückgesetzt, alle Spieler bleiben erhalten. Das kann nicht rückgängig gemacht werden.");
     this.resetButton();
 
   }
