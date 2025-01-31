@@ -128,7 +128,8 @@ window.TwentyOneDown = TwentyOneDown;
 
 class TwentyOneDownUI extends UIElements{
   setUp(){
-    this.createHeading("Spiel: 21ab");
+    this.navbar();
+    document.getElementById('navbarBrand').innerText = "21 ab";
     this.createPlayerTable();
     this.createPlayerNameInput("Spieler Name", "Hinzufügen");
 

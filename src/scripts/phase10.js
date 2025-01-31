@@ -87,7 +87,8 @@ window.Phase10 = Phase10;
 
 class Phase10UI extends UIElements{
   setUp(){
-    this.createHeading("Spiel: Phase 10");
+    this.navbar();
+    document.getElementById('navbarBrand').innerText = "Phase 10";
     this.createPlayerTable();
     this.createPlayerNameInput("Spieler Name", "Hinzufügen");
 

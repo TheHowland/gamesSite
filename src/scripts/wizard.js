@@ -205,7 +205,8 @@ class WizardUI extends UIElements{
   }
 
   setUp() {
-    this.createHeading('Spiel: Wizard');
+    this.navbar();
+    document.getElementById('navbarBrand').innerText = "Wizard";
     this.roundNumber();
     this.createPlayerTable(this.colHeadings, this.colSpacings);
     this.createPlayerNameInput("Spieler Name", "Hinzufügen");

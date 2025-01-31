@@ -356,6 +356,41 @@ class UIElements{
           </div>
         </nav>
     */
+    let navbar = document.createElement('nav');
+    navbar.className = 'navbar navbar-expand-lg navbar-light bg-light';
+    let button = document.createElement('button');
+    button.className = 'navbar-toggler collapsed';
+    button.type = 'button';
+    button.setAttribute('data-bs-toggle', 'collapse');
+    button.setAttribute('data-bs-target', '#navbarNavAltMarkup');
+    button.setAttribute('aria-controls', 'navbarNavAltMarkup');
+    button.setAttribute('aria-expanded', 'false');
+    button.setAttribute('aria-label', 'Toggle navigation');
+    let span = document.createElement('span');
+    span.className = 'navbar-toggler-icon';
+    button.appendChild(span);
+    navbar.appendChild(button);
+    let a = document.createElement('a');
+    a.className = 'navbar-brand';
+    a.id = 'navbarBrand';
+    a.href = '#';
+    a.innerText = 'SetTextViaElementID-navbarBrand';
+    navbar.appendChild(a);
+    let div = document.createElement('div');
+    div.className = 'navbar-collapse collapse';
+    div.id = 'navbarNavAltMarkup';
+    let navLinkDiv = document.createElement('div');
+    navLinkDiv.className = 'navbar-nav';
+    div.appendChild(navLinkDiv);
+    let navLink1 = document.createElement('a');
+    navLink1.className = 'nav-item nav-link active';
+    navLink1.href = 'index.html';
+    navLink1.innerText = "Home";
+    navLinkDiv.appendChild(navLink1);
+
+    navbar.appendChild(div);
+    document.body.appendChild(navbar);
   }
 }
 
+window.UIElements = UIElements;
