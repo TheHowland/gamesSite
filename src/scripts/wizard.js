@@ -34,13 +34,13 @@ class Wizard extends gameBase{
     }
     // Hide the input form and start button
     document.getElementById("playerInput").classList.add("d-none");
-
-    let startBtn = document.getElementById("startButton");
-    startBtn.removeEventListener('click', this.startGameHandler);
-    startBtn.addEventListener('click', this.startRoundHandler);
-    startBtn.textContent = "Stiche einloggen";
+    document.getElementById("startButton").classList.add("d-none");
+    document.getElementById("adjustPointsBtn").classList.add("d-none");
 
     document.getElementById("adjustScore").classList.remove('d-none');
+    document.getElementById("loginSticheBtn").classList.remove("d-none");
+    document.getElementById("adjustSticheBtn").classList.remove('d-none');
+
     document.getElementById("PlayerNameNI").classList.remove("d-none");
     this.setFocusToElementID('numberInput');
 
@@ -70,11 +70,8 @@ class Wizard extends gameBase{
         return;
       }
 
-      //use button to add points
-      let adjustPointsBtn = document.getElementById("adjustPointsBtn");
-      adjustPointsBtn.removeEventListener('click', this.adjustSticheHandler);
-      adjustPointsBtn.addEventListener('click', this.adjustPointsHandler);
-      strartBtn.textContent = "Runde abschließen";
+      document.getElementById("endRoundBtn").classList.remove("d-none");
+      document.getElementById("loginSticheBtn").classList.add("d-none");
 
       //use longpress for points
       document.getElementById('longPressModalSaveBtn').removeEventListener('click', this.correctSticheHandler);
@@ -90,10 +87,8 @@ class Wizard extends gameBase{
         this.endGame();
       }
 
-      let adjustPointsBtn = document.getElementById("adjustPointsBtn");
-      adjustPointsBtn.removeEventListener('click', this.adjustPointsHandler);
-      adjustPointsBtn.addEventListener('click', this.adjustSticheHandler);
-      strartBtn.textContent = "Stiche einloggen";
+      document.getElementById("loginSticheBtn").classList.remove("d-none");
+      document.getElementById("endRoundBtn").classList.add("d-none");
 
       //use longpress for stiche
       document.getElementById('longPressModalSaveBtn').removeEventListener('click', this.correctPointsHandler);
@@ -195,6 +190,74 @@ class Wizard extends gameBase{
     this.setFocusToElementID('playerNameInput');
   }
 
+  startRound(){
+    let totalStiche = 0;
+    for(let stiche of Array.from(this.playerStiche.values())){
+      totalStiche += stiche;
+    }
+    if (totalStiche === (this.roundsPlayed + 1)){
+      let keyArray = Array.from(this.players.keys())
+      let playerIndex = keyArray.indexOf(this.getSelectedPlayer());
+      if (playerIndex === 0){
+        playerIndex = this.players.size-1;
+      }
+      else{
+        playerIndex -= 1;
+      }
+      let playerName = this.players.get(keyArray[playerIndex]).name;
+      this.ui.infoModalTexts("Stiche gleich der Rundenzahl", "Der letze Spieler ("+ playerName + ") der angesagt hat, muss einen mehr oder weniger sagen.");
+      let myModal = new bootstrap.Modal(document.getElementById('infoModal'));
+      myModal.show();
+      console.log("Stiche dürfen nicht aufgehen, letzer spieler der angesagt hat, muss einen mehr oder weniger sagen");
+      return;
+    }
+
+    //remove stiche einloggen btn
+    document.getElementById("loginSticheBtn").classList.add("d-none");
+    // add runde beenden btn
+    document.getElementById("endRoundBtn").classList.remove("d-none");
+    // adjust stiche deaktivieren
+    document.getElementById("adjustSticheBtn").classList.add("d-none");
+    // adjust points aktivieren
+    document.getElementById("adjustPointsBtn").classList.remove("d-none");
+    //use longpress for stiche
+    document.getElementById('longPressModalSaveBtn').removeEventListener('click', this.correctSticheHandler);
+    document.getElementById('longPressModalSaveBtn').addEventListener('click', this.correctPointsHandler);
+    this.ui.longPressModalTexts("Punkte anpassen", "", "neue Punkte eingeben", null);
+
+  }
+
+  endRound(){
+    if(this.roundsPlayed === 9){
+      this.endGame();
+    }
+
+    document.getElementById("endRoundBtn").classList.add("d-none");
+    document.getElementById("loginSticheBtn").classList.remove("d-none");
+    document.getElementById("adjustPointsBtn").classList.add("d-none");
+    document.getElementById("adjustSticheBtn").classList.remove("d-none");
+    //use longpress for points
+    document.getElementById('longPressModalSaveBtn').removeEventListener('click', this.correctPointsHandler);
+    document.getElementById('longPressModalSaveBtn').addEventListener('click', this.correctSticheHandler);
+    this.ui.longPressModalTexts("Stiche anpassen", "", "neue Stiche Anzahl eingeben", null);
+
+    this.inputExplText = "Angesagte Stiche von ";
+    document.getElementById("PlayerNameNI").innerText = this.inputExplText;
+
+
+    //reset Stiche in table
+    for (let playerID of Array.from(this.playerStiche.keys())){
+      this.playerStiche.set(playerID, 0);
+      document.getElementById(playerID + ' - ' + this.sticheFieldName).innerText = '-';
+    }
+
+    //select new player to start with Stiche announcing
+    this.roundsPlayed += 1;
+    document.getElementById('roundNumber').innerText = "Runde: " + (this.roundsPlayed + 1).toString();
+    let playerID = Array.from(this.players.keys())[this.roundsPlayed % this.players.size];
+    this.toggleRowSelection(playerID, 'playerTableBody', 'table-info');
+  }
+
   setUp(){
     this.ui.navbar("Wizard");
     this.ui.roundNumber();
@@ -202,11 +265,15 @@ class Wizard extends gameBase{
     this.ui.longPressModalTexts("Stiche anpassen", "", "neue Stiche Anzahl eingeben", null);
 
     this.ui.createPlayerNameInput("Spieler Name", "Hinzufügen", this.addPlayerToTable.bind(this));
-    this.ui.pointsInput("Angesagte Stiche für", "0 Stiche", "Hinzufügen");
-    this.ui.startBtn("Spiel starten");
+    this.ui.pointsInput("Angesagte Stiche für", "0 Stiche", "Hinzufügen", this.adjustPoints.bind(this));
+    this.ui.adjustSticheBtn(this.adjustStiche.bind(this));
+
+    this.ui.startBtn("Spiel starten", this.startGame.bind(this));
+    this.ui.startRoundBtn(this.startRound.bind(this));
+    this.ui.endRoundBtn(this.endRound.bind(this));
+
     document.getElementById("startButton").classList.add("disabled");
-    document.getElementById('startButton').addEventListener('click', this.startGameHandler);
-    document.getElementById('adjustPointsBtn').addEventListener('click', this.adjustSticheHandler);
+
     //correct points with long press
     document.getElementById('longPressModalSaveBtn').addEventListener('click', this.correctSticheHandler);
 
@@ -230,6 +297,36 @@ class WizardUI extends UIElements{
     h6.id = "roundNumber";
     h6.innerText = "Runde: 1";
     document.body.appendChild(h6);
+  }
+
+  btnFaktory(id, text, className){
+    let button = document.createElement('button');
+    button.type = "button";
+    button.id = id;
+    button.className = className;
+    button.textContent = text;
+    return button;
+  }
+
+  startRoundBtn(btnFkt){
+    let div = document.getElementById('startButtonDiv');
+    div.appendChild(this.btnFaktory("loginSticheBtn", "Stiche einloggen", "btn btn-primary w-50 d-none"));
+
+    document.getElementById("loginSticheBtn").addEventListener('click', btnFkt)
+  }
+
+  endRoundBtn(btnFkt){
+    let div = document.getElementById('startButtonDiv');
+    div.appendChild(this.btnFaktory("endRoundBtn", "Runde beenden", "btn btn-primary w-50 d-none"));
+
+    document.getElementById("endRoundBtn").addEventListener('click', btnFkt)
+  }
+
+  adjustSticheBtn(btnFkt){
+    let div = document.getElementById('adjustPointsBtnDiv');
+    div.appendChild(this.btnFaktory("adjustSticheBtn", "Hinzufügen", "btn btn-primary w-100 d-none"));
+
+    document.getElementById("adjustSticheBtn").addEventListener('click', btnFkt)
   }
 }
 

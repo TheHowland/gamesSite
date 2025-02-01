@@ -128,7 +128,7 @@ class UIElements{
     document.getElementById('addPlayerBtn').addEventListener('click', addPlayerFkt);
   }
 
-  pointsInput(labelText, inputPlaceholder, btnText, div = null) {
+  pointsInput(labelText, inputPlaceholder, btnText, btnFkt, div = null) {
     /*
     <label id="PlayerNameNI">Stiche für </label>
     <div id="adjustScore" className="row w-100 d-flex justify-content-center align-items-center no-gutters mt-3">
@@ -166,6 +166,7 @@ class UIElements{
 
     let col2 = document.createElement('div');
     col2.className = "col-4 col-md-2";
+    col2.id = "adjustPointsBtnDiv";
     let button = document.createElement('button');
     button.id = "adjustPointsBtn";
     button.type = "button";
@@ -182,9 +183,10 @@ class UIElements{
     document.body.appendChild(adjustScore);
     document.getElementById("PlayerNameNI").classList.add("d-none");
     document.getElementById("adjustScore").classList.add("d-none");
+    document.getElementById('adjustPointsBtn').addEventListener('click', btnFkt);
   }
 
-  startBtn(btnText){
+  startBtn(btnText, btnFkt){
     /**
      * disabled on start
      */
@@ -205,6 +207,9 @@ class UIElements{
 
     startButton.appendChild(button);
     document.body.appendChild(startButton);
+
+    document.getElementById("startButton").classList.add("disabled");
+    document.getElementById("startButton").addEventListener('click', btnFkt);
   }
 
   infoModal() {
