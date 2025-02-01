@@ -162,11 +162,12 @@ class UIElements{
     </div>
      */
     let startButton = document.createElement('div');
-    startButton.id = "startButton";
+    startButton.id = "startButtonDiv";
     startButton.className = "d-flex justify-content-center w-100 mt-3";
 
     let button = document.createElement('button');
     button.type = "button";
+    button.id = "startButton"
     button.className = "btn btn-primary w-50";
     button.textContent = btnText;
 
@@ -174,7 +175,7 @@ class UIElements{
     document.body.appendChild(startButton);
   }
 
-  infoModal(modalHeading, modalText = "") {
+  infoModal() {
     /*
 
     */
@@ -197,7 +198,7 @@ class UIElements{
     let h1 = document.createElement('h1');
     h1.className = "modal-title fs-5";
     h1.id = "infoModalHeading";
-    h1.textContent = modalHeading;
+    h1.textContent = "ElementID - infoModalHeading";
     let button = document.createElement('button');
     button.type = "button";
     button.className = "btn-close";
@@ -211,7 +212,7 @@ class UIElements{
     modalBody.className = "modal-body";
     let h5 = document.createElement('h6');
     h5.id = "infoModalText";
-    h5.textContent = modalText;
+    h5.textContent = "ElementID - infoModalText";
     modalBody.appendChild(h5);
 
     let modalFooter = document.createElement('div');

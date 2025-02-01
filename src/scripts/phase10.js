@@ -12,7 +12,7 @@ class Phase10 extends gameBase{
   startGame() {
     // Hide the input form and start button
     document.getElementById("playerInput").classList.add("d-none");
-    document.getElementById("startButton").classList.add("d-none");
+    document.getElementById("startButtonDiv").classList.add("d-none");
 
     document.getElementById("adjustScore").classList.remove('d-none');
     document.getElementById("PlayerNameNI").classList.remove("d-none");

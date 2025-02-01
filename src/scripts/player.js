@@ -63,6 +63,11 @@ class gameBase{
       }
       elms[0].innerText = playerName;
       listView.appendChild(tableRow);
+
+      if (this.players.size >= 2){
+        document.getElementById('startButton').classList.remove('disabled');
+      }
+
       return elms;
     }
     return [];

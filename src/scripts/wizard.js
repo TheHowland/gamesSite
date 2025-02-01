@@ -26,13 +26,19 @@ class Wizard extends gameBase{
   }
 
   startGame() {
+    if (this.players.size < 2){
+      this.ui.infoModalTexts("Spielstart nicht möglich", "Es müssen mindestens 2 Spieler hinzugefügt werden.");
+      let myModal = new bootstrap.Modal(document.getElementById('infoModal'));
+      myModal.show();
+      return;
+    }
     // Hide the input form and start button
     document.getElementById("playerInput").classList.add("d-none");
 
     let startBtn = document.getElementById("startButton");
     startBtn.removeEventListener('click', this.startGameHandler);
     startBtn.addEventListener('click', this.startRoundHandler);
-    startBtn.childNodes[0].textContent = "Stiche einloggen";
+    startBtn.textContent = "Stiche einloggen";
 
     document.getElementById("adjustScore").classList.remove('d-none');
     document.getElementById("PlayerNameNI").classList.remove("d-none");
@@ -54,7 +60,7 @@ class Wizard extends gameBase{
 
   toggleStartAndEvalRound(){
     let strartBtn = document.getElementById("startButton");
-    if (strartBtn.childNodes[0].textContent === "Stiche einloggen"){
+    if (strartBtn.textContent === "Stiche einloggen"){
       let totalStiche = 0;
       for(let stiche of Array.from(this.playerStiche.values())){
         totalStiche += stiche;
@@ -68,6 +74,7 @@ class Wizard extends gameBase{
       let adjustPointsBtn = document.getElementById("adjustPointsBtn");
       adjustPointsBtn.removeEventListener('click', this.adjustSticheHandler);
       adjustPointsBtn.addEventListener('click', this.adjustPointsHandler);
+      strartBtn.textContent = "Runde abschließen";
 
       //use longpress for points
       document.getElementById('longPressModalSaveBtn').removeEventListener('click', this.correctSticheHandler);
@@ -77,7 +84,6 @@ class Wizard extends gameBase{
       this.inputExplText = "Tatsächliche Stiche von ";
       document.getElementById("PlayerNameNI").innerText = this.inputExplText;
 
-      strartBtn.childNodes[0].textContent = "Runde abschließen";
     }
     else{
       if(this.roundsPlayed === 9){
@@ -87,7 +93,7 @@ class Wizard extends gameBase{
       let adjustPointsBtn = document.getElementById("adjustPointsBtn");
       adjustPointsBtn.removeEventListener('click', this.adjustPointsHandler);
       adjustPointsBtn.addEventListener('click', this.adjustSticheHandler);
-      strartBtn.childNodes[0].textContent = "Stiche einloggen";
+      strartBtn.textContent = "Stiche einloggen";
 
       //use longpress for stiche
       document.getElementById('longPressModalSaveBtn').removeEventListener('click', this.correctPointsHandler);
@@ -95,8 +101,9 @@ class Wizard extends gameBase{
       this.ui.longPressModalTexts("Stiche anpassen", "", "neue Stiche Anzahl eingeben", null);
 
 
-      document.getElementById("PlayerNameNI").innerText = "Angesagte Stiche von ";
       this.inputExplText = "Angesagte Stiche von ";
+      document.getElementById("PlayerNameNI").innerText = this.inputExplText;
+
 
       //reset Stiche in table
       for (let playerID of Array.from(this.playerStiche.keys())){
@@ -159,7 +166,7 @@ class Wizard extends gameBase{
       console.log("-------")
     }
 
-    document.getElementById('infoModalText').innerText = "Gewonnen hat: " + winningPlayer + "\n" + modalBody;
+    this.ui.infoModalTexts("Spiel beendet", "Gewonnen hat: " + winningPlayer + "\n" + modalBody);
     let myModal = new bootstrap.Modal(document.getElementById('infoModal'));
     myModal.show();
   }
@@ -218,9 +225,10 @@ class Wizard extends gameBase{
     document.getElementById('longPressModalSaveBtn').addEventListener('click', this.correctSticheHandler);
 
     //resetButton
-    document.getElementById('resetButton').addEventListener('click', () => {
+    document.getElementById('resetButton').addEventListener('click', (event) => {
       let myModal = new bootstrap.Modal(document.getElementById('okModal'));
       myModal.show();
+      event.stopPropagation();
     });
     document.getElementById('okModalSaveBtn').addEventListener('click', this.resetGame.bind(this));
   }
@@ -250,7 +258,9 @@ class WizardUI extends UIElements{
 
     this.createPointsInput("Angesagte Stiche für", "0 Stiche", "Hinzufügen");
     this.createStartBtn("Spiel starten");
-    this.infoModal("Spiel zu Ende");
+    document.getElementById("startButton").classList.add("disabled");
+
+    this.infoModal();
     this.longPressModal();
     this.longPressModalTexts("Stiche anpassen", "", "neue Stiche Anzahl eingeben", null);
     this.okModal();
@@ -258,7 +268,6 @@ class WizardUI extends UIElements{
     this.resetButton();
 
   }
-
 }
 
 window.WizardUI = WizardUI;
