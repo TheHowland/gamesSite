@@ -51,8 +51,7 @@ class TwentyOneDown extends gameBase{
 
     let selectedPlayer = this.getSelectedPlayer();
 
-    let playerPoints = this.players.get(selectedPlayer).adjustPoints(points);
-    document.getElementById(selectedPlayer + ' - ' + this.pointsFieldName).innerHTML =  playerPoints;
+    document.getElementById(selectedPlayer + ' - ' + this.pointsFieldName).innerHTML =  this.players.get(selectedPlayer).adjustPoints(points);
 
     this.endGame();
 

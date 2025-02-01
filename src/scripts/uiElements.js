@@ -445,6 +445,7 @@ class UIElements{
     let h5 = document.createElement('h6');
     h5.id = 'okModalText';
     h5.textContent = "";
+    h5.setAttribute("style", "white-space: pre-line;");
     modalBody.appendChild(h5);
 
     let modalFooter = document.createElement('div');
@@ -546,17 +547,16 @@ class UIElements{
 
     resetBtnDiv.appendChild(resetBtn);
     document.body.appendChild(resetBtnDiv);
-
-    //resetButton
     this.okModal();
-    document.getElementById('resetButton').addEventListener('click', (event) => {
-      this.okModalTexts("Spiel zurücksetzen?", "Alle Punkte werden auf den Anfangswert zurückgesetzt, alle Spieler bleiben erhalten. Das kann nicht rückgängig gemacht werden.");
-      let myModal = new bootstrap.Modal(document.getElementById('okModal'));
-      myModal.show();
-      event.stopPropagation();
-    });
-    document.getElementById('okModalSaveBtn').addEventListener('click', resetGameFkt);
 
+    if (resetGameFkt !== null){
+      document.getElementById('resetButton').addEventListener('click', (event) => {
+        this.okModalTexts("Spiel zurücksetzen?", "Alle Punkte werden auf den Anfangswert zurückgesetzt, alle Spieler bleiben erhalten. Das kann nicht rückgängig gemacht werden.");
+        let myModal = new bootstrap.Modal(document.getElementById('okModal'));
+        myModal.show();
+      });
+      document.getElementById('okModalSaveBtn').addEventListener('click', resetGameFkt);
+    }
   }
 }
 

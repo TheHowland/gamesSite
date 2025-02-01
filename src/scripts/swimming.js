@@ -1,11 +1,12 @@
-class Phase10 extends gameBase{
+class Swimming extends gameBase{
   ui = null;
+  pointsFieldName = null;
   constructor() {
-    super(0, "Strafpunkte für ",
+    super(3, "Stiche für ",
       ["Name", "Punkte"],
       ["col-8 col-md-6", "col-4 col-md-3"],
-      'Strafpunkte für ');
-    this.ui = new Phase10UI(this.colHeadings, this.colSpacings);
+      "Stiche für ");
+    this.ui = new TwentyOneDownUI(this.colHeadings, this.colSpacings);
     this.pointsFieldName = this.colHeadings[1].toLowerCase();
   }
 
@@ -16,45 +17,60 @@ class Phase10 extends gameBase{
 
     document.getElementById("adjustScore").classList.remove('d-none');
     document.getElementById("PlayerNameNI").classList.remove("d-none");
-    this.toggleRowSelection('player0', 'playerTableBody', 'table-info', "Strafpunkte für ");
+    this.toggleRowSelection('player0', 'playerTableBody', 'table-info', "Stiche für ");
     this.setFocusToElementID('numberInput');
   }
 
   adjustPoints(){
+    let isHeartRound = 1;
+    if (document.getElementById('HeartPicture').name === 'heartX2Fill.svg') {
+      isHeartRound = 2;
+    }
 
     let numberInput = this.getNumberInput();
     let points;
     if (!isNaN(numberInput)){
-      points = Number(numberInput);
+      points = points = -1 * Number(numberInput) * isHeartRound;
     }
     else{
-      points = 0;
+      points = 5;
     }
 
     let selectedPlayer = this.getSelectedPlayer();
 
-    let playerPoints = this.players.get(selectedPlayer).adjustPoints(points);
-    document.getElementById(selectedPlayer + ' - ' + this.pointsFieldName).innerHTML =  playerPoints;
+    document.getElementById(selectedPlayer + ' - ' + this.pointsFieldName).innerHTML =  this.players.get(selectedPlayer).adjustPoints(points);
+
+    this.endGame();
 
     this.selectNextPlayer(selectedPlayer, 'playerTableBody', 'table-info');
     this.setFocusToElementID('numberInput');
-
-    this.endGame();
   }
 
   endGame(){
+    let isEnding = false;
+
     let modalBody = ""
     let sortedPlayers = Array.from(this.players.values()).sort((player1, player2) => player1.points - player2.points);
+    let winningPlayer = "";
 
     for (let player of sortedPlayers){
+      if (player.points <= 0){
+        isEnding = true;
+        winningPlayer = player.name
+        player.points = 0;
+      }
+
       modalBody += player.name + ": " + player.points + "\n";
       console.log(player.points);
       console.log(player.name);
       console.log("-------")
     }
 
-    let resetInfoText = "\nMit dem klick auf okay werden alle Punkte auf den Anfangswert zurückgesetzt, alle Spieler bleiben erhalten. Das kann nicht rückgängig gemacht werden."
-    this.ui.okModalTexts("Spiel beendet", "Punkte absteigend:\n" + modalBody + resetInfoText);
+    if (isEnding){
+      this.ui.infoModalTexts("Spiel beendet", "Gewonnen hat: " + winningPlayer + "\n" + modalBody);
+      let myModal = new bootstrap.Modal(document.getElementById('infoModal'));
+      myModal.show();
+    }
   }
 
   addPlayerToTable() {
@@ -66,42 +82,32 @@ class Phase10 extends gameBase{
   }
 
   resetGame(){
-    this.endGame();
     for (let player of Array.from(this.players.keys())){
       super.resetPlayer(player, player + ' - ' + this.pointsFieldName);
     }
   }
 
   setUp(){
-    this.ui.navbar("Phase 10");
+    this.ui.navbar("21 ab");
     this.ui.createPlayerTable(this.toggleRowSelectionEvent.bind(this), this.longHold, this.correctPoints.bind(this));
     this.ui.longPressModalTexts("Punkte anpassen", "", "neue Punkte eingeben", null);
 
     this.ui.createPlayerNameInput("Spieler Name", "Hinzufügen",
       this.addPlayerToTable.bind(this)
     );
-    this.ui.pointsInput("Strafpunkte für ", "0 Strafpunkte", "Hinzufügen",
+    this.ui.pointsInput("Stiche für ", "0 Stiche", "Hinzufügen",
       this.adjustPoints.bind(this),
-      null,
-      null
+      this.ui.heartPicture(),
+      this.toggleHeratPicture.bind(this)
     );
     this.ui.startBtn("Spiel starten", this.startGame.bind(this));
     this.ui.infoModal();
-    this.ui.resetButton(null);
-
-    document.getElementById('resetButton').addEventListener('click', (event) => {
-      let myModal = new bootstrap.Modal(document.getElementById('okModal'));
-      myModal.show();
-    });
-    document.getElementById('okModalSaveBtn').addEventListener('click', this.resetGame.bind(this));
-
+    this.ui.resetButton("Spiel zurücksetzen", this.resetGame.bind(this));
   }
 }
+window.Swimming = Swimming;
 
-window.Phase10 = Phase10;
-
-class Phase10UI extends UIElements{
+class SwimmingUI extends UIElements{
 
 }
-
-window.Phase10UI = Phase10UI;
+window.SwimmingUI = SwimmingUI;
