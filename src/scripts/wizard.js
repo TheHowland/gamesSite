@@ -162,6 +162,7 @@ class Wizard extends gameBase{
     document.getElementById('longPressModalSaveBtn').removeEventListener('click', this.correctSticheHandler);
     document.getElementById('longPressModalSaveBtn').addEventListener('click', this.correctPointsHandler);
     this.ui.longPressModalTexts("Punkte anpassen", "", "neue Punkte eingeben", null);
+    this.setFocusToElementID('numberInput');
 
   }
 
@@ -194,6 +195,8 @@ class Wizard extends gameBase{
     document.getElementById('roundNumber').innerText = "Runde: " + (this.roundsPlayed + 1).toString();
     let playerID = Array.from(this.players.keys())[this.roundsPlayed % this.players.size];
     this.toggleRowSelection(playerID, 'playerTableBody', 'table-info');
+
+    this.setFocusToElementID('numberInput');
   }
 
   setUp(){
