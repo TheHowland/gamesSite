@@ -68,6 +68,7 @@ class UIElements{
         console.log("Timout passed");
         let myModal = new bootstrap.Modal(document.getElementById('longPressModal'));
         myModal.show();
+        document.getElementById('longPressModalInput').focus();
       }, 500);
 
     });
@@ -128,7 +129,7 @@ class UIElements{
     document.getElementById('addPlayerBtn').addEventListener('click', addPlayerFkt);
   }
 
-  pointsInput(labelText, inputPlaceholder, btnText, btnFkt, div = null) {
+  pointsInput(labelText, inputPlaceholder, btnText, btnFkt, div = null, divFkt = null){
     /*
     <label id="PlayerNameNI">Stiche für </label>
     <div id="adjustScore" className="row w-100 d-flex justify-content-center align-items-center no-gutters mt-3">
@@ -184,6 +185,9 @@ class UIElements{
     document.getElementById("PlayerNameNI").classList.add("d-none");
     document.getElementById("adjustScore").classList.add("d-none");
     document.getElementById('adjustPointsBtn').addEventListener('click', btnFkt);
+    if (divFkt) {
+      document.getElementById(div.childNodes[0].id).addEventListener('click', divFkt);
+    }
   }
 
   startBtn(btnText, btnFkt){

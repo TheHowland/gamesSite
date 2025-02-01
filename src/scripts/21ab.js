@@ -74,14 +74,14 @@ class TwentyOneDown extends gameBase{
         player.points = 0;
       }
 
-      modalBody += player.name + " - " + player.points +"\n";
+      modalBody += player.name + " - " + player.points + "\n";
       console.log(player.points);
       console.log(player.name);
       console.log("-------")
     }
 
     if (isEnding){
-      document.getElementById('infoModalText').innerText = "Gewonnen hat: " + winningPlayer + "\n" + modalBody;
+      this.ui.infoModalTexts("Spiel beendet", "Gewonnen hat: " + winningPlayer + "\n" + modalBody);
       let myModal = new bootstrap.Modal(document.getElementById('infoModal'));
       myModal.show();
     }
@@ -96,43 +96,26 @@ class TwentyOneDown extends gameBase{
   }
 
   setUp(){
-    this.ui.setUp();
-    document.getElementById("adjustScore").classList.add("d-none");
-    document.getElementById("PlayerNameNI").classList.add("d-none");
+    this.ui.navbar("21 ab");
+    this.ui.createPlayerTable(this.toggleRowSelectionEvent.bind(this), this.longHold);
+    this.ui.longPressModalTexts("Punkte anpassen", "", "neue Punkte eingeben", null);
 
-    document.getElementById('playerTableBody').addEventListener('click', (event) => {
-      this.toggleRowSelectionEvent.bind(this, event, 'playerTableBody', 'table-info')();
-    });
-
-    //long press
-    document.getElementById('playerTableBody').addEventListener('touchstart', (event) => {
-      this.toggleRowSelectionEvent.bind(this, event, 'playerTableBody', 'table-info')();
-      this.longHold = window.setTimeout(() => {
-        let myModal = new bootstrap.Modal(document.getElementById('longPressModal'));
-        myModal.show();
-      }, 500);
-
-    });
-    document.getElementById('playerTableBody').addEventListener('touchend', (event) => {
-      window.clearTimeout(this.longHold);
-    });
-    document.getElementById('longPressModalSaveBtn').addEventListener('click', this.correctPoints.bind(this));
-
-    document.getElementById('HeartPicture').addEventListener('click', this.toggleHeratPicture.bind(this));
-    document.getElementById('addPlayerBtn').addEventListener('click', this.addPlayerToTable.bind(this));
-    document.getElementById('adjustPointsBtn').addEventListener('click', this.adjustPoints.bind(this));
-    document.getElementById('startButton').addEventListener('click', this.startGame.bind(this, this.players));
+    this.ui.createPlayerNameInput("Spieler Name", "Hinzufügen",
+      this.addPlayerToTable.bind(this)
+    );
+    this.ui.pointsInput("Stiche für ", "0 Stiche", "Hinzufügen",
+      this.adjustPoints.bind(this),
+      this.ui.heartPicture(),
+      this.toggleHeratPicture.bind(this)
+    );
+    this.ui.startBtn("Spiel starten", this.startGame.bind(this));
+    this.ui.infoModal();
   }
 }
 window.TwentyOneDown = TwentyOneDown;
 
 class TwentyOneDownUI extends UIElements{
-  setUp(){
-    this.navbar();
-    document.getElementById('navbarBrand').innerText = "21 ab";
-    this.createPlayerTable();
-    this.createPlayerNameInput("Spieler Name", "Hinzufügen");
-
+  heartPicture(btnFkt){
     let heartPicture = document.createElement("div")
     heartPicture.className = "col-2 col-md-1";
     let img = document.createElement("img");
@@ -143,13 +126,7 @@ class TwentyOneDownUI extends UIElements{
     img.alt="x2";
     heartPicture.appendChild(img);
 
-    this.pointsInput("Stiche für ", "0 Stiche", "Hinzufügen", heartPicture);
-    this.createStartBtn("Spiel starten");
-    this.infoModal("Spiel zu Ende");
-
-    this.longPressModal();
-    this.longPressModalTexts("Punkte anpassen", "", "neue Punkte eingeben", null);
-
+    return heartPicture;
   }
 }
 window.TwentyOneDownUI = TwentyOneDownUI;
