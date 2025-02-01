@@ -73,6 +73,11 @@ class gameBase{
     return [];
   }
 
+  resetPlayer(player, elementID){
+      this.players.get(player).points = this.startPoints;
+      document.getElementById(elementID).innerText = this.startPoints;
+  }
+
   resetBackgroundColor(ElementID, classListArg) {
     let selected = document.getElementById(ElementID).querySelector('.selected');
     if (selected) {

@@ -20,7 +20,7 @@ class UIElements{
     document.body.appendChild(playerList);
   }
 
-  createPlayerTable(toggleFkt, holdVar) {
+  createPlayerTable(toggleFkt, holdVar, longPressFkt) {
 
     if (this.colHeadings.length !== this.colSpacings.length) {
       console.log("Error: Headings and Spacing must be the same length");
@@ -75,6 +75,8 @@ class UIElements{
     document.getElementById('playerTableBody').addEventListener('touchend', (event) => {
       window.clearTimeout(holdVar);
     });
+
+    document.getElementById('longPressModalSaveBtn').addEventListener('click', longPressFkt);
   }
 
   createHeading(headingText){
@@ -257,6 +259,7 @@ class UIElements{
     let h5 = document.createElement('h6');
     h5.id = "infoModalText";
     h5.textContent = "ElementID - infoModalText";
+    h5.setAttribute("style", "white-space: pre-line;");
     modalBody.appendChild(h5);
 
     let modalFooter = document.createElement('div');
@@ -547,6 +550,7 @@ class UIElements{
     //resetButton
     this.okModal();
     document.getElementById('resetButton').addEventListener('click', (event) => {
+      this.okModalTexts("Spiel zurücksetzen?", "Alle Punkte werden auf den Anfangswert zurückgesetzt, alle Spieler bleiben erhalten. Das kann nicht rückgängig gemacht werden.");
       let myModal = new bootstrap.Modal(document.getElementById('okModal'));
       myModal.show();
       event.stopPropagation();

@@ -74,7 +74,7 @@ class TwentyOneDown extends gameBase{
         player.points = 0;
       }
 
-      modalBody += player.name + " - " + player.points + "\n";
+      modalBody += player.name + ": " + player.points + "\n";
       console.log(player.points);
       console.log(player.name);
       console.log("-------")
@@ -95,9 +95,15 @@ class TwentyOneDown extends gameBase{
     this.setFocusToElementID('playerNameInput');
   }
 
+  resetGame(){
+    for (let player of Array.from(this.players.keys())){
+      super.resetPlayer(player, player + ' - ' + this.pointsFieldName);
+    }
+  }
+
   setUp(){
     this.ui.navbar("21 ab");
-    this.ui.createPlayerTable(this.toggleRowSelectionEvent.bind(this), this.longHold);
+    this.ui.createPlayerTable(this.toggleRowSelectionEvent.bind(this), this.longHold, this.correctPoints.bind(this));
     this.ui.longPressModalTexts("Punkte anpassen", "", "neue Punkte eingeben", null);
 
     this.ui.createPlayerNameInput("Spieler Name", "Hinzufügen",
@@ -110,6 +116,7 @@ class TwentyOneDown extends gameBase{
     );
     this.ui.startBtn("Spiel starten", this.startGame.bind(this));
     this.ui.infoModal();
+    this.ui.resetButton("Spiel zurücksetzen", this.resetGame.bind(this));
   }
 }
 window.TwentyOneDown = TwentyOneDown;

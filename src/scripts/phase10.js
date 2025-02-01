@@ -54,52 +54,34 @@ class Phase10 extends gameBase{
     this.setFocusToElementID('playerNameInput');
   }
 
+  resetGame(){
+    for (let player of Array.from(this.players.keys())){
+      super.resetPlayer(player, player + ' - ' + this.pointsFieldName);
+    }
+  }
+
   setUp(){
-    this.ui.setUp();
-    document.getElementById("adjustScore").classList.add("d-none");
-    document.getElementById("PlayerNameNI").classList.add("d-none");
+    this.ui.navbar("Phase 10");
+    this.ui.createPlayerTable(this.toggleRowSelectionEvent.bind(this), this.longHold, this.correctPoints.bind(this));
+    this.ui.longPressModalTexts("Punkte anpassen", "", "neue Punkte eingeben", null);
 
-    document.getElementById('playerTableBody').addEventListener('click', (event) => {
-      this.toggleRowSelectionEvent.bind(this, event, 'playerTableBody', 'table-info')();
-    });
-    document.getElementById('addPlayerBtn').addEventListener('click', this.addPlayerToTable.bind(this));
-    document.getElementById('adjustPointsBtn').addEventListener('click', this.adjustPoints.bind(this));
-    document.getElementById('startButton').addEventListener('click', this.startGame.bind(this, this.players));
-
-    //long press
-    document.getElementById('playerTableBody').addEventListener('touchstart', (event) => {
-      this.toggleRowSelectionEvent.bind(this, event, 'playerTableBody', 'table-info')();
-      this.longHold = window.setTimeout(() => {
-        let myModal = new bootstrap.Modal(document.getElementById('longPressModal'));
-        myModal.show();
-      }, 500);
-
-    });
-    document.getElementById('playerTableBody').addEventListener('touchend', (event) => {
-      window.clearTimeout(this.longHold);
-    });
-    document.getElementById('longPressModalSaveBtn').addEventListener('click', this.correctPoints.bind(this));
-
+    this.ui.createPlayerNameInput("Spieler Name", "Hinzufügen",
+      this.addPlayerToTable.bind(this)
+    );
+    this.ui.pointsInput("Strafpunkte für ", "0 Strafpunkte", "Hinzufügen",
+      this.adjustPoints.bind(this),
+      null,
+      null
+    );
+    this.ui.startBtn("Spiel starten", this.startGame.bind(this));
+    this.ui.infoModal();
+    this.ui.resetButton(this.resetGame.bind(this));
   }
 }
 
 window.Phase10 = Phase10;
 
 class Phase10UI extends UIElements{
-  setUp(){
-    this.navbar();
-    document.getElementById('navbarBrand').innerText = "Phase 10";
-    this.createPlayerTable();
-    this.createPlayerNameInput("Spieler Name", "Hinzufügen");
-
-    this.pointsInput("Strafpunkte für: ", "0 Punkte", "Hinzufügen");
-    this.createStartBtn("Spiel starten");
-    this.infoModal("Spiel zu Ende");
-
-    this.longPressModal();
-    this.longPressModalTexts("Strafpunkte anpassen", "", "neue Punkte eingeben", null);
-
-  }
 
 }
 

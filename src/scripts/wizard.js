@@ -14,10 +14,6 @@ class Wizard extends gameBase{
     this.pointsFieldName = this.colHeadings[1].toLowerCase();
     this.sticheFieldName = this.colHeadings[2].toLowerCase();
 
-    this.startGameHandler = this.startGame.bind(this);
-    this.startRoundHandler = this.toggleStartAndEvalRound.bind(this);
-    this.adjustSticheHandler = this.adjustStiche.bind(this);
-    this.adjustPointsHandler = this.adjustPoints.bind(this);
     this.correctPointsHandler = this.correctPoints.bind(this);
     this.correctSticheHandler = this.correctStiche.bind(this);
 
@@ -53,8 +49,7 @@ class Wizard extends gameBase{
     for (let player of Array.from(this.players.keys())){
       this.playerStiche.set(player, 0);
       document.getElementById(player + ' - ' + this.sticheFieldName).innerText = '-';
-      this.players.get(player).points = this.startPoints;
-      document.getElementById(player + ' - ' + this.pointsFieldName).innerText = this.startPoints;
+      super.resetPlayer(player, player + ' - ' + this.pointsFieldName);
     }
   }
 
@@ -98,7 +93,7 @@ class Wizard extends gameBase{
     let winningPlayer = "";
 
     for (let player of sortedPlayers){
-      modalBody += player.name + " - " + player.points +"\n";
+      modalBody += player.name + ": " + player.points +"\n";
       console.log(player.points);
       console.log(player.name);
       console.log("-------")
@@ -204,7 +199,7 @@ class Wizard extends gameBase{
   setUp(){
     this.ui.navbar("Wizard");
     this.ui.roundNumber();
-    this.ui.createPlayerTable(this.toggleRowSelectionEvent.bind(this), this.longHold);
+    this.ui.createPlayerTable(this.toggleRowSelectionEvent.bind(this), this.longHold, this.correctSticheHandler);
     this.ui.longPressModalTexts("Stiche anpassen", "", "neue Stiche Anzahl eingeben", null);
 
     this.ui.createPlayerNameInput("Spieler Name", "Hinzufügen", this.addPlayerToTable.bind(this));
@@ -221,7 +216,6 @@ class Wizard extends gameBase{
     document.getElementById('longPressModalSaveBtn').addEventListener('click', this.correctSticheHandler);
 
     this.ui.resetButton(this.resetGame.bind(this));
-    this.ui.okModalTexts("Spiel zurücksetzen?", "Alle Punkte werden auf den Anfangswert zurückgesetzt, alle Spieler bleiben erhalten. Das kann nicht rückgängig gemacht werden.");
 
     this.ui.infoModal();
   }
