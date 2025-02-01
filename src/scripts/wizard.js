@@ -58,63 +58,6 @@ class Wizard extends gameBase{
     }
   }
 
-  toggleStartAndEvalRound(){
-    let strartBtn = document.getElementById("startButton");
-    if (strartBtn.textContent === "Stiche einloggen"){
-      let totalStiche = 0;
-      for(let stiche of Array.from(this.playerStiche.values())){
-        totalStiche += stiche;
-      }
-      if (totalStiche === (this.roundsPlayed + 1)){
-        console.log("Stiche dürfen nicht aufgehen, letzer spieler der angesagt hat, muss einen mehr oder weniger sagen");
-        return;
-      }
-
-      document.getElementById("endRoundBtn").classList.remove("d-none");
-      document.getElementById("loginSticheBtn").classList.add("d-none");
-
-      //use longpress for points
-      document.getElementById('longPressModalSaveBtn').removeEventListener('click', this.correctSticheHandler);
-      document.getElementById('longPressModalSaveBtn').addEventListener('click', this.correctPointsHandler);
-      this.ui.longPressModalTexts("Punkte anpassen", "", "neue Punkte eingeben", null);
-
-      this.inputExplText = "Tatsächliche Stiche von ";
-      document.getElementById("PlayerNameNI").innerText = this.inputExplText;
-
-    }
-    else{
-      if(this.roundsPlayed === 9){
-        this.endGame();
-      }
-
-      document.getElementById("loginSticheBtn").classList.remove("d-none");
-      document.getElementById("endRoundBtn").classList.add("d-none");
-
-      //use longpress for stiche
-      document.getElementById('longPressModalSaveBtn').removeEventListener('click', this.correctPointsHandler);
-      document.getElementById('longPressModalSaveBtn').addEventListener('click', this.correctSticheHandler);
-      this.ui.longPressModalTexts("Stiche anpassen", "", "neue Stiche Anzahl eingeben", null);
-
-
-      this.inputExplText = "Angesagte Stiche von ";
-      document.getElementById("PlayerNameNI").innerText = this.inputExplText;
-
-
-      //reset Stiche in table
-      for (let playerID of Array.from(this.playerStiche.keys())){
-        this.playerStiche.set(playerID, 0);
-        document.getElementById(playerID + ' - ' + this.sticheFieldName).innerText = '-';
-      }
-
-      //select new player to start with Stiche announcing
-      this.roundsPlayed += 1;
-      document.getElementById('roundNumber').innerText = "Runde: " + (this.roundsPlayed + 1).toString();
-      let playerID = Array.from(this.players.keys())[this.roundsPlayed % this.players.size];
-      this.toggleRowSelection(playerID, 'playerTableBody', 'table-info');
-    }
-    console.log("Start Round");
-  }
-
   adjustPoints(){
 
     let numberInput = this.getNumberInput();
