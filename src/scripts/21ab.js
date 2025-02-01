@@ -143,7 +143,7 @@ class TwentyOneDownUI extends UIElements{
     img.alt="x2";
     heartPicture.appendChild(img);
 
-    this.createPointsInput("Stiche für ", "0 Stiche", "Hinzufügen", heartPicture);
+    this.pointsInput("Stiche für ", "0 Stiche", "Hinzufügen", heartPicture);
     this.createStartBtn("Spiel starten");
     this.infoModal("Spiel zu Ende");
 

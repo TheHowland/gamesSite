@@ -92,7 +92,7 @@ class Phase10UI extends UIElements{
     this.createPlayerTable();
     this.createPlayerNameInput("Spieler Name", "Hinzufügen");
 
-    this.createPointsInput("Strafpunkte für: ", "0 Punkte", "Hinzufügen");
+    this.pointsInput("Strafpunkte für: ", "0 Punkte", "Hinzufügen");
     this.createStartBtn("Spiel starten");
     this.infoModal("Spiel zu Ende");
 

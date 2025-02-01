@@ -2,6 +2,10 @@ class UIElements{
   colHeadings = null;
   colSpacings = null;
 
+  longPressModalSet = false;
+  okModalSet = false;
+  infoModalSet = false;
+
   constructor(colHeadings, colSpacings){
   this.colHeadings = colHeadings;
   this.colSpacings = colSpacings;
@@ -16,7 +20,7 @@ class UIElements{
     document.body.appendChild(playerList);
   }
 
-  createPlayerTable() {
+  createPlayerTable(toggleFkt, holdVar) {
 
     if (this.colHeadings.length !== this.colSpacings.length) {
       console.log("Error: Headings and Spacing must be the same length");
@@ -51,6 +55,25 @@ class UIElements{
     tableContainer.appendChild(table)
 
     document.body.appendChild(tableContainer);
+
+    document.getElementById('playerTableBody').addEventListener('click', (event) => {
+      toggleFkt(event, 'playerTableBody', 'table-info');
+    });
+
+    //long press
+    this.longPressModal();
+    document.getElementById('playerTableBody').addEventListener('touchstart', (event) => {
+      toggleFkt(event, 'playerTableBody', 'table-info');
+      holdVar = window.setTimeout(() => {
+        console.log("Timout passed");
+        let myModal = new bootstrap.Modal(document.getElementById('longPressModal'));
+        myModal.show();
+      }, 500);
+
+    });
+    document.getElementById('playerTableBody').addEventListener('touchend', (event) => {
+      window.clearTimeout(holdVar);
+    });
   }
 
   createHeading(headingText){
@@ -59,7 +82,10 @@ class UIElements{
     document.body.appendChild(heading);
   }
 
-  createPlayerNameInput(placeholderInput, buttonText){
+  createPlayerNameInput(placeholderInput, buttonText, addPlayerFkt){
+    /**
+     * Hidden on start
+     * */
     /*
     <div id="playerInput" class="row w-100 d-flex justify-content-center align-items-center no-gutters mt-3">
       <!-- Input Column -->
@@ -99,9 +125,10 @@ class UIElements{
     playerInput.appendChild(col2);
 
     document.body.appendChild(playerInput);
+    document.getElementById('addPlayerBtn').addEventListener('click', addPlayerFkt);
   }
 
-  createPointsInput(labelText, inputPlaceholder, btnText,div = null) {
+  pointsInput(labelText, inputPlaceholder, btnText, div = null) {
     /*
     <label id="PlayerNameNI">Stiche für </label>
     <div id="adjustScore" className="row w-100 d-flex justify-content-center align-items-center no-gutters mt-3">
@@ -153,9 +180,14 @@ class UIElements{
     adjustScore.appendChild(col2);
 
     document.body.appendChild(adjustScore);
+    document.getElementById("PlayerNameNI").classList.add("d-none");
+    document.getElementById("adjustScore").classList.add("d-none");
   }
 
-  createStartBtn(btnText){
+  startBtn(btnText){
+    /**
+     * disabled on start
+     */
     /*
     <div id="startButton" class="d-flex justify-content-center w-100 mt-3">
     <button type="button" class="btn btn-primary w-50">Spiel starten</button>
@@ -179,6 +211,9 @@ class UIElements{
     /*
 
     */
+    if (this.infoModalSet){
+      return;
+    }
     let modal = document.createElement('div');
     modal.className = "modal fade";
     modal.id = "infoModal";
@@ -274,6 +309,10 @@ class UIElements{
   }
 
   longPressModal() {
+    if (this.longPressModalSet){
+      return;
+    }
+
     let modal = document.createElement('div');
     modal.className = 'modal fade';
     modal.id = 'longPressModal';
@@ -351,6 +390,10 @@ class UIElements{
   }
 
   okModal() {
+    if (this.okModalSet){
+      return;
+    }
+
     let modal = document.createElement('div');
     modal.className = 'modal fade';
     modal.id = 'okModal';
@@ -421,7 +464,7 @@ class UIElements{
     document.body.appendChild(modal);
   }
 
-  navbar(){
+  navbar(navBarBrandText){
     /*
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
           <button class="navbar-toggler collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
@@ -471,9 +514,15 @@ class UIElements{
 
     navbar.appendChild(div);
     document.body.appendChild(navbar);
+
+    this.navbarBrandText(navBarBrandText);
   }
 
-  resetButton(){
+  navbarBrandText(navBarBrandText){
+    document.getElementById('navbarBrand').innerText = navBarBrandText;
+  }
+
+  resetButton(resetGameFkt){
     let resetBtnDiv = document.createElement('div');
     resetBtnDiv.className = "d-flex justify-content-center w-100 mt-3";
 
@@ -485,6 +534,16 @@ class UIElements{
 
     resetBtnDiv.appendChild(resetBtn);
     document.body.appendChild(resetBtnDiv);
+
+    //resetButton
+    this.okModal();
+    document.getElementById('resetButton').addEventListener('click', (event) => {
+      let myModal = new bootstrap.Modal(document.getElementById('okModal'));
+      myModal.show();
+      event.stopPropagation();
+    });
+    document.getElementById('okModalSaveBtn').addEventListener('click', resetGameFkt);
+
   }
 }
 
