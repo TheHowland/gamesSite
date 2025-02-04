@@ -541,7 +541,7 @@ class UIElements{
 
     let resetBtn = document.createElement('button');
     resetBtn.type = "button";
-    resetBtnDiv.id = "resetButton";
+    resetBtn.id = "resetButton";
     resetBtn.className = "btn btn-primary w-50";
     resetBtn.textContent = "Reset";
 
