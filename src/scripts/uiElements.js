@@ -558,6 +558,15 @@ class UIElements{
       document.getElementById('okModalSaveBtn').addEventListener('click', resetGameFkt);
     }
   }
+
+  btnFaktory(id, text, className){
+    let button = document.createElement('button');
+    button.type = "button";
+    button.id = id;
+    button.className = className;
+    button.textContent = text;
+    return button;
+  }
 }
 
 window.UIElements = UIElements;

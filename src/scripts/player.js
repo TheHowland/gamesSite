@@ -102,6 +102,7 @@ class gameBase{
     let element = event.target.closest('tr');
     if (element.classList.contains('selected')){
       element.classList.remove(classListArg);
+      element.classList.remove('selected');
     }
     else{
       element.classList.add(classListArg);

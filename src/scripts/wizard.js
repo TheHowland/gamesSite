@@ -239,15 +239,6 @@ class WizardUI extends UIElements{
     document.body.appendChild(h6);
   }
 
-  btnFaktory(id, text, className){
-    let button = document.createElement('button');
-    button.type = "button";
-    button.id = id;
-    button.className = className;
-    button.textContent = text;
-    return button;
-  }
-
   startRoundBtn(btnFkt){
     let div = document.getElementById('startButtonDiv');
     div.appendChild(this.btnFaktory("loginSticheBtn", "Stiche einloggen", "btn btn-primary w-50 d-none"));

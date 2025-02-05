@@ -14,6 +14,9 @@ class Swimming extends gameBase{
     // Hide the input form and start button
     document.getElementById("playerInput").classList.add("d-none");
     document.getElementById("startButtonDiv").classList.add("d-none");
+
+    document.getElementById("lostBtn").classList.remove("d-none");
+    document.getElementById("fireBtn").classList.remove("d-none");
     for (let player of Array.from(this.players.keys())){
       this.ui.boar(player, this.toggleBoarPicture.bind(this));
     }
@@ -23,23 +26,10 @@ class Swimming extends gameBase{
   }
 
   adjustPoints(){
-    let isHeartRound = 1;
-    if (document.getElementById('HeartPicture').name === 'heartX2Fill.svg') {
-      isHeartRound = 2;
-    }
-
-    let numberInput = this.getNumberInput();
-    let points;
-    if (!isNaN(numberInput)){
-      points = points = -1 * Number(numberInput) * isHeartRound;
-    }
-    else{
-      points = 5;
-    }
-
     let selectedPlayer = this.getSelectedPlayer();
-
-    document.getElementById(selectedPlayer + ' - ' + this.pointsFieldName).innerHTML =  this.players.get(selectedPlayer).adjustPoints(points);
+    for (let player in selectedPlayer){
+      document.getElementById(selectedPlayer + ' - ' + this.pointsFieldName).innerHTML =  this.players.get(selectedPlayer).adjustPoints(points);
+    }
 
     this.endGame();
 
@@ -49,23 +39,6 @@ class Swimming extends gameBase{
 
   endGame(){
     let isEnding = false;
-
-    let modalBody = ""
-    let sortedPlayers = Array.from(this.players.values()).sort((player1, player2) => player1.points - player2.points);
-    let winningPlayer = "";
-
-    for (let player of sortedPlayers){
-      if (player.points <= 0){
-        isEnding = true;
-        winningPlayer = player.name
-        player.points = 0;
-      }
-
-      modalBody += player.name + ": " + player.points + "\n";
-      console.log(player.points);
-      console.log(player.name);
-      console.log("-------")
-    }
 
     if (isEnding){
       this.ui.infoModalTexts("Spiel beendet", "Gewonnen hat: " + winningPlayer + "\n" + modalBody);
@@ -85,15 +58,26 @@ class Swimming extends gameBase{
   toggleBoarPicture(event){
     let playerID = event.target.closest('tr').id
     let boarPicture = document.getElementById(playerID + " - BoarPicture");
-    if (boarPicture.name === "boar"){
-      boarPicture.name = "boarFill";
-      boarPicture.src = "src/resources/boarFill.svg";
+    if (boarPicture.classList.contains('d-none')){
+      boarPicture.classList.remove('d-none');
     }
     else{
-      boarPicture.name = "boar";
-      boarPicture.src = "src/resources/boar.svg";
+      boarPicture.classList.add('d-none');
     }
     this.setFocusToElementID('numberInput');
+  }
+
+  fire(){
+    let selectedPlayer = this.getSelectedPlayer();
+    if (selectedPlayer.length > 1){
+      console.log("Select only one player")
+    }
+    console.log("Dont adjust points for " + selectedPlayer)
+    for (let player in Array.from(this.players.keys())){
+      if (player !== selectedPlayer){
+        console.log("Adjust Points for " + player)
+      }
+    }
   }
 
   resetGame(){
@@ -117,6 +101,7 @@ class Swimming extends gameBase{
     );
     this.ui.startBtn("Spiel starten", this.startGame.bind(this));
     this.ui.infoModal();
+    this.ui.lostAndFireBtns(this.adjustPoints.bind(this), this.fire.bind(this));
     this.ui.resetButton(this.resetGame.bind(this));
   }
 }
@@ -129,14 +114,29 @@ class SwimmingUI extends UIElements{
     let img = document.createElement("img");
     img.id = playerID + " - BoarPicture";
     img.name="boar";
-    img.src="src/resources/boar.svg";
-    img.className="img-fluid";
+    img.src="src/resources/boarFill.svg";
+    img.className="img-fluid d-none";
     img.alt="wild";
     boarPicture.appendChild(img);
 
     let boarElem = document.getElementById(playerID + ' - wild');
     boarElem.appendChild(boarPicture);
     boarElem.addEventListener('click', eventFkt);
+  }
+
+  lostAndFireBtns(lostFkt, fireFkt){
+    let lost = this.btnFaktory("lostBtn", "Verloren", "btn btn-primary w-50 d-none");
+    let fire = this.btnFaktory("fireBtn", "Feuer", "btn btn-primary w-50 d-none");
+
+    let div = document.createElement('div')
+    div.classList.add('mt-3')
+    div.appendChild(lost);
+    div.appendChild(fire);
+
+    lost.addEventListener('click', lostFkt);
+    fire.addEventListener('click', fireFkt);
+
+    document.body.appendChild(div);
   }
 }
 window.SwimmingUI = SwimmingUI;
