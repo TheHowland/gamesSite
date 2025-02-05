@@ -115,7 +115,7 @@ class TwentyOneDown extends gameBase{
     );
     this.ui.startBtn("Spiel starten", this.startGame.bind(this));
     this.ui.infoModal();
-    this.ui.resetButton("Spiel zurücksetzen", this.resetGame.bind(this));
+    this.ui.resetButton(this.resetGame.bind(this));
   }
 }
 window.TwentyOneDown = TwentyOneDown;

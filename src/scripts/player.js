@@ -87,13 +87,29 @@ class gameBase{
   }
 
   toggleRowSelectionEvent(event, ElementID, classListArg) {
-    let playerID = event.target.parentNode.id;
+    let playerID = event.target.closest('tr').id
     console.log(playerID);
     this.toggleRowSelection(playerID, ElementID, classListArg);
   }
 
+
   toggleRowSelection(playerID, ElementID, classListArg) {
     this.resetBackgroundColor(ElementID, classListArg);
+    this.selectRow(playerID, classListArg);
+  }
+
+  multiSelectRowEvent(event, playerID, classListArg) {
+    let element = event.target.closest('tr');
+    if (element.classList.contains('selected')){
+      element.classList.remove(classListArg);
+    }
+    else{
+      element.classList.add(classListArg);
+      element.classList.add('selected');
+    }
+  }
+
+  selectRow(playerID, classListArg) {
     let elmRow = document.getElementById(playerID);
 
     elmRow.classList.add(classListArg);

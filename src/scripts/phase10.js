@@ -87,21 +87,21 @@ class Phase10 extends gameBase{
     );
     this.ui.startBtn("Spiel starten", this.startGame.bind(this));
     this.ui.infoModal();
-    this.ui.resetButton(null);
-
-    document.getElementById('resetButton').addEventListener('click', (event) => {
-      let myModal = new bootstrap.Modal(document.getElementById('okModal'));
-      myModal.show();
-    });
-    document.getElementById('okModalSaveBtn').addEventListener('click', this.resetGame.bind(this));
-
+    this.ui.resetButton(this.resetGame.bind(this));
   }
 }
 
 window.Phase10 = Phase10;
 
 class Phase10UI extends UIElements{
-
+    resetButton(resetFkt){
+      super.resetButton(null);
+      document.getElementById('resetButton').addEventListener('click', (event) => {
+        let myModal = new bootstrap.Modal(document.getElementById('okModal'));
+        myModal.show();
+      });
+      document.getElementById('okModalSaveBtn').addEventListener('click', resetFkt);
+    }
 }
 
 window.Phase10UI = Phase10UI;

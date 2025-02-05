@@ -3,10 +3,10 @@ class Swimming extends gameBase{
   pointsFieldName = null;
   constructor() {
     super(3, "Stiche für ",
-      ["Name", "Punkte"],
-      ["col-8 col-md-6", "col-4 col-md-3"],
+      ["Name", "Leben", "Wild"],
+      ["col-7", "col-1", "col-4"],
       "Stiche für ");
-    this.ui = new TwentyOneDownUI(this.colHeadings, this.colSpacings);
+    this.ui = new SwimmingUI(this.colHeadings, this.colSpacings);
     this.pointsFieldName = this.colHeadings[1].toLowerCase();
   }
 
@@ -14,9 +14,10 @@ class Swimming extends gameBase{
     // Hide the input form and start button
     document.getElementById("playerInput").classList.add("d-none");
     document.getElementById("startButtonDiv").classList.add("d-none");
+    for (let player of Array.from(this.players.keys())){
+      this.ui.boar(player, this.toggleBoarPicture.bind(this));
+    }
 
-    document.getElementById("adjustScore").classList.remove('d-none');
-    document.getElementById("PlayerNameNI").classList.remove("d-none");
     this.toggleRowSelection('player0', 'playerTableBody', 'table-info', "Stiche für ");
     this.setFocusToElementID('numberInput');
   }
@@ -81,6 +82,20 @@ class Swimming extends gameBase{
     this.setFocusToElementID('playerNameInput');
   }
 
+  toggleBoarPicture(event){
+    let playerID = event.target.closest('tr').id
+    let boarPicture = document.getElementById(playerID + " - BoarPicture");
+    if (boarPicture.name === "boar"){
+      boarPicture.name = "boarFill";
+      boarPicture.src = "src/resources/boarFill.svg";
+    }
+    else{
+      boarPicture.name = "boar";
+      boarPicture.src = "src/resources/boar.svg";
+    }
+    this.setFocusToElementID('numberInput');
+  }
+
   resetGame(){
     for (let player of Array.from(this.players.keys())){
       super.resetPlayer(player, player + ' - ' + this.pointsFieldName);
@@ -88,8 +103,8 @@ class Swimming extends gameBase{
   }
 
   setUp(){
-    this.ui.navbar("21 ab");
-    this.ui.createPlayerTable(this.toggleRowSelectionEvent.bind(this), this.longHold, this.correctPoints.bind(this));
+    this.ui.navbar("Schwimmen");
+    this.ui.createPlayerTable(this.multiSelectRowEvent.bind(this), this.longHold, this.correctPoints.bind(this));
     this.ui.longPressModalTexts("Punkte anpassen", "", "neue Punkte eingeben", null);
 
     this.ui.createPlayerNameInput("Spieler Name", "Hinzufügen",
@@ -97,17 +112,31 @@ class Swimming extends gameBase{
     );
     this.ui.pointsInput("Stiche für ", "0 Stiche", "Hinzufügen",
       this.adjustPoints.bind(this),
-      this.ui.heartPicture(),
-      this.toggleHeratPicture.bind(this)
+      null,
+      null
     );
     this.ui.startBtn("Spiel starten", this.startGame.bind(this));
     this.ui.infoModal();
-    this.ui.resetButton("Spiel zurücksetzen", this.resetGame.bind(this));
+    this.ui.resetButton(this.resetGame.bind(this));
   }
 }
 window.Swimming = Swimming;
 
 class SwimmingUI extends UIElements{
+  boar(playerID, eventFkt){
+    let boarPicture = document.createElement("div")
+    boarPicture.className = "col-3";
+    let img = document.createElement("img");
+    img.id = playerID + " - BoarPicture";
+    img.name="boar";
+    img.src="src/resources/boar.svg";
+    img.className="img-fluid";
+    img.alt="wild";
+    boarPicture.appendChild(img);
 
+    let boarElem = document.getElementById(playerID + ' - wild');
+    boarElem.appendChild(boarPicture);
+    boarElem.addEventListener('click', eventFkt);
+  }
 }
 window.SwimmingUI = SwimmingUI;
