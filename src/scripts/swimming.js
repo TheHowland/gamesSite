@@ -40,9 +40,21 @@ class Swimming extends gameBase{
 
   endGame(){
     let isEnding = false;
+    let countPlayers = 0;
+    let winningPlayer ="";
+
+    for (let player of Array.from(this.players.keys())){
+      if (this.players.get(player).points >= 0){
+        countPlayers++;
+        winningPlayer = this.players.get(player).name;
+      }
+    }
+    if (countPlayers === 1){
+      isEnding = true;
+    }
 
     if (isEnding){
-      this.ui.infoModalTexts("Spiel beendet", "Gewonnen hat: " + winningPlayer + "\n" + modalBody);
+      this.ui.infoModalTexts("Spiel beendet", "Gewonnen hat: " + winningPlayer + "\n");
       let myModal = new bootstrap.Modal(document.getElementById('infoModal'));
       myModal.show();
     }
@@ -71,16 +83,19 @@ class Swimming extends gameBase{
   fire(){
     let selectedPlayer = this.getSelectedPlayer();
     if (document.getElementsByClassName('selected').length > 1){
-      this.ui.infoModalTexts("Fehler", "Bitte nur einen Spieler auswählen");
+      this.ui.infoModalTexts("Fehler", "Bitte nur den Spieler auswählen der Feuer hat");
       let myModal = new bootstrap.Modal(document.getElementById('infoModal'));
       myModal.show();
       return;
     }
-    console.log("Dont adjust points for " + selectedPlayer)
+
     for (let player of Array.from(this.players.keys())){
       if (player !== selectedPlayer){
         let isWild = !document.getElementById(player + ' - BoarPicture').classList.contains('d-none');
         document.getElementById(player + ' - ' + this.pointsFieldName).innerHTML =  this.players.get(player).adjustPoints(-1 - 1 * Boolean(isWild));
+        if (this.players.get(player).points <= 0){
+          document.getElementById(player).classList.add('d-none');
+        }
       }
     }
     this.resetBackgroundColor();
