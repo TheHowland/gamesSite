@@ -79,10 +79,10 @@ class gameBase{
   }
 
   resetBackgroundColor(ElementID, classListArg) {
-    let selected = document.getElementById(ElementID).querySelector('.selected');
-    if (selected) {
-      selected.classList.remove(classListArg);
-      selected.classList.remove('selected');
+    let selected = document.getElementsByClassName('selected');
+    for (let element of Array.from(selected)) {
+      element.classList.remove(classListArg);
+      element.classList.remove('selected');
     }
   }
 

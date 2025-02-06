@@ -20,21 +20,19 @@ class Swimming extends gameBase{
     for (let player of Array.from(this.players.keys())){
       this.ui.boar(player, this.toggleBoarPicture.bind(this));
     }
-
-    this.toggleRowSelection('player0', 'playerTableBody', 'table-info', "Stiche für ");
-    this.setFocusToElementID('numberInput');
   }
 
   adjustPoints(){
-    let selectedPlayer = this.getSelectedPlayer();
-    for (let player in selectedPlayer){
-      document.getElementById(selectedPlayer + ' - ' + this.pointsFieldName).innerHTML =  this.players.get(selectedPlayer).adjustPoints(points);
+    let selectedPlayer = document.getElementsByClassName('selected');
+    for (let player of selectedPlayer){
+      let isWild = !document.getElementById(player.id + ' - BoarPicture').classList.contains('d-none');
+      document.getElementById(player.id + ' - ' + this.pointsFieldName).innerHTML =  this.players.get(player.id).adjustPoints(-1 - 1 * Boolean(isWild));
     }
 
     this.endGame();
 
-    this.selectNextPlayer(selectedPlayer, 'playerTableBody', 'table-info');
-    this.setFocusToElementID('numberInput');
+    this.resetBackgroundColor('playerTableBody', 'table-info');
+    this.resetWild();
   }
 
   endGame(){
@@ -69,14 +67,26 @@ class Swimming extends gameBase{
 
   fire(){
     let selectedPlayer = this.getSelectedPlayer();
-    if (selectedPlayer.length > 1){
-      console.log("Select only one player")
+    if (document.getElementsByClassName('selected').length > 1){
+      this.ui.infoModalTexts("Fehler", "Bitte nur einen Spieler auswählen");
+      let myModal = new bootstrap.Modal(document.getElementById('infoModal'));
+      myModal.show();
+      return;
     }
     console.log("Dont adjust points for " + selectedPlayer)
-    for (let player in Array.from(this.players.keys())){
+    for (let player of Array.from(this.players.keys())){
       if (player !== selectedPlayer){
-        console.log("Adjust Points for " + player)
+        let isWild = !document.getElementById(player + ' - BoarPicture').classList.contains('d-none');
+        document.getElementById(player + ' - ' + this.pointsFieldName).innerHTML =  this.players.get(player).adjustPoints(-1 - 1 * Boolean(isWild));
       }
+    }
+    this.resetBackgroundColor();
+    this.resetWild();
+  }
+
+  resetWild(){
+    for (let player of Array.from(this.players.keys())){
+      document.getElementById(player + ' - BoarPicture').classList.add('d-none');
     }
   }
 
