@@ -4,7 +4,7 @@ class Swimming extends gameBase{
   constructor() {
     super(3, "Stiche für ",
       ["Name", "Leben", "Wild"],
-      ["col-7", "col-1", "col-4"],
+      ["col-6", "col-3", "col-3"],
       "Stiche für ");
     this.ui = new SwimmingUI(this.colHeadings, this.colSpacings);
     this.pointsFieldName = this.colHeadings[1].toLowerCase();
@@ -19,6 +19,7 @@ class Swimming extends gameBase{
     document.getElementById("fireBtn").classList.remove("d-none");
     for (let player of Array.from(this.players.keys())){
       this.ui.boar(player, this.toggleBoarPicture.bind(this));
+      document.getElementById(player + " - BoarPicture").classList.add('d-none');
     }
   }
 
@@ -149,13 +150,12 @@ class SwimmingUI extends UIElements{
   boar(playerID, eventFkt){
     let emoji = document.createElement("div");
     emoji.id = playerID + " - BoarPicture";
-    emoji.className = "col-3";
     emoji.style.fontSize = "x-large";
-    emoji.padding = "0";
     emoji.innerHTML = "🐗";
     emoji.alt="wild";
 
     let boarElem = document.getElementById(playerID + ' - wild');
+    boarElem.style.padding = "0";
     boarElem.appendChild(emoji);
     boarElem.addEventListener('click', eventFkt);
   }
