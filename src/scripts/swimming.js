@@ -26,7 +26,13 @@ class Swimming extends gameBase{
     let selectedPlayer = document.getElementsByClassName('selected');
     for (let player of selectedPlayer){
       let isWild = !document.getElementById(player.id + ' - BoarPicture').classList.contains('d-none');
-      document.getElementById(player.id + ' - ' + this.pointsFieldName).innerHTML =  this.players.get(player.id).adjustPoints(-1 - 1 * Boolean(isWild));
+      let elm = document.getElementById(player.id + ' - ' + this.pointsFieldName);
+      elm.innerHTML =  this.players.get(player.id).adjustPoints(-1 - 1 * Boolean(isWild));
+      if (this.players.get(player.id).points === 0){
+        elm.innerHTML = "🏊‍♀️";
+        elm.style.padding = "0";
+        elm.style.fontSize = "x-large";
+      }
       if (this.players.get(player.id).points < 0){
         player.classList.add('d-none');
       }
@@ -112,6 +118,9 @@ class Swimming extends gameBase{
     for (let player of Array.from(this.players.keys())){
       super.resetPlayer(player, player + ' - ' + this.pointsFieldName);
       document.getElementById(player).classList.remove('d-none');
+      let elm = document.getElementById(player + ' - ' + this.pointsFieldName)
+      elm.style.padding = "";
+      elm.style.fontSize = "";
     }
   }
 
