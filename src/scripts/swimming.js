@@ -147,18 +147,16 @@ window.Swimming = Swimming;
 
 class SwimmingUI extends UIElements{
   boar(playerID, eventFkt){
-    let boarPicture = document.createElement("div")
-    boarPicture.className = "col-3";
-    let img = document.createElement("img");
-    img.id = playerID + " - BoarPicture";
-    img.name="boar";
-    img.src="src/resources/boarFill.svg";
-    img.className="img-fluid d-none";
-    img.alt="wild";
-    boarPicture.appendChild(img);
+    let emoji = document.createElement("div");
+    emoji.id = playerID + " - BoarPicture";
+    emoji.className = "col-3";
+    emoji.style.fontSize = "x-large";
+    emoji.padding = "0";
+    emoji.innerHTML = "🐗";
+    emoji.alt="wild";
 
     let boarElem = document.getElementById(playerID + ' - wild');
-    boarElem.appendChild(boarPicture);
+    boarElem.appendChild(emoji);
     boarElem.addEventListener('click', eventFkt);
   }
 
