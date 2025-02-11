@@ -61,6 +61,7 @@ class Swimming extends gameBase{
     }
 
     if (isEnding){
+      this.confetti.addConfetti();
       this.ui.infoModalTexts("Spiel beendet", "Gewonnen hat: " + winningPlayer + "\n");
       let myModal = new bootstrap.Modal(document.getElementById('infoModal'));
       myModal.show();

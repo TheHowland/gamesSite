@@ -80,6 +80,7 @@ class TwentyOneDown extends gameBase{
     }
 
     if (isEnding){
+      this.confetti.addConfetti();
       this.ui.infoModalTexts("Spiel beendet", "Gewonnen hat: " + winningPlayer + "\n" + modalBody);
       let myModal = new bootstrap.Modal(document.getElementById('infoModal'));
       myModal.show();

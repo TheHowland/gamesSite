@@ -72,6 +72,10 @@ class Phase10 extends gameBase{
     }
   }
 
+  ejectConfetti(){
+    this.confetti.addConfetti();
+  }
+
   setUp(){
     this.ui.navbar("Phase 10");
     this.ui.createPlayerTable(this.toggleRowSelectionEvent.bind(this), this.longHold, this.correctPoints.bind(this));
@@ -87,20 +91,24 @@ class Phase10 extends gameBase{
     );
     this.ui.startBtn("Spiel starten", this.startGame.bind(this));
     this.ui.infoModal();
-    this.ui.resetButton(this.resetGame.bind(this));
+    this.ui.resetButton(this.resetGame.bind(this), this.ejectConfetti.bind(this));
   }
 }
 
 window.Phase10 = Phase10;
 
 class Phase10UI extends UIElements{
-    resetButton(resetFkt){
+    resetButton(resetFkt, confettiFkt){
       super.resetButton(null);
-      document.getElementById('resetButton').addEventListener('click', (event) => {
+      let resetBtn = document.getElementById('resetButton');
+      resetBtn.addEventListener('click', (event) => {
+        confettiFkt();
         let myModal = new bootstrap.Modal(document.getElementById('okModal'));
         myModal.show();
       });
+      resetBtn.innerText = "Beenden / Reset";
       document.getElementById('okModalSaveBtn').addEventListener('click', resetFkt);
+
     }
 }
 

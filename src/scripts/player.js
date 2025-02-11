@@ -36,6 +36,7 @@ class gameBase{
     this.colHeadings = colHeadings;
     this.colSpacings = colSpacings;
     this.inputExplText = inputExplText;
+    this.confetti = new JSConfetti();
   }
 
   addPlayerToTable() {
