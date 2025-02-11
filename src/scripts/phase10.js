@@ -54,7 +54,7 @@ class Phase10 extends gameBase{
     }
 
     let resetInfoText = "\nMit dem klick auf okay werden alle Punkte auf den Anfangswert zurückgesetzt, alle Spieler bleiben erhalten. Das kann nicht rückgängig gemacht werden."
-    this.ui.okModalTexts("Spiel beendet", "Punkte absteigend:\n" + modalBody + resetInfoText);
+    this.ui.okModalTexts("Spiel Auswertung", "Punkte absteigend:\n" + modalBody + resetInfoText);
   }
 
   addPlayerToTable() {
