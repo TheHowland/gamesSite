@@ -42,7 +42,7 @@ class TwentyOneDown extends gameBase{
 
     let numberInput = this.getNumberInput();
     let points;
-    if (!isNaN(numberInput)){
+    if (!isNaN(numberInput) && numberInput !== 0){
       points = points = -1 * Number(numberInput) * isHeartRound;
     }
     else{
@@ -102,21 +102,18 @@ class TwentyOneDown extends gameBase{
   }
 
   setUp(){
-    this.ui.navbar("21 ab");
-    this.ui.createPlayerTable(this.toggleRowSelectionEvent.bind(this), this.longHold, this.correctPoints.bind(this), this.resetBackgroundColor.bind(this));
-    this.ui.longPressModalTexts("Punkte anpassen", "", "neue Punkte eingeben", null);
-
-    this.ui.createPlayerNameInput("Spieler Name", "Hinzufügen",
-      this.addPlayerToTable.bind(this)
-    );
-    this.ui.pointsInput("Stiche für ", "0 Stiche", "Hinzufügen",
-      this.adjustPoints.bind(this),
-      this.ui.heartPicture(),
-      this.toggleHeratPicture.bind(this)
-    );
-    this.ui.startBtn("Spiel starten", this.startGame.bind(this));
-    this.ui.infoModal();
-    this.ui.resetButton(this.resetGame.bind(this));
+   this.ui.setUp(
+     "21 ab", //site name
+     this.toggleRowSelectionEvent.bind(this),this.resetBackgroundColor.bind(this), this.longHold, this.correctPoints.bind(this),
+     this.addPlayerToTable.bind(this), this.adjustPoints.bind(this),
+     this.startGame.bind(this),
+     this.resetGame.bind(this),
+     this.ui.heartPicture(),
+     this.toggleHeratPicture.bind(this)
+   )
+   this.ui.playerNameInputTexts("Spieler Name", "Hinzufügen");
+   this.ui.setPointsInputTexts("Stiche für ", "0 Stiche", "Hinzufügen",)
+   this.ui.longPressModalTexts("Punkte anpassen", "", "neue Punkte eingeben", null);
   }
 }
 window.TwentyOneDown = TwentyOneDown;
