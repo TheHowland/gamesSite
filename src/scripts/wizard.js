@@ -51,6 +51,8 @@ class Wizard extends gameBase{
       document.getElementById(player + ' - ' + this.sticheFieldName).innerText = '-';
       super.resetPlayer(player, player + ' - ' + this.pointsFieldName);
     }
+    this.roundsPlayed = 0;
+    document.getElementById('roundNumber').innerText = "Runde: " + (this.roundsPlayed + 1).toString();
   }
 
   adjustPoints(){
@@ -163,6 +165,11 @@ class Wizard extends gameBase{
     document.getElementById('longPressModalSaveBtn').removeEventListener('click', this.correctSticheHandler);
     document.getElementById('longPressModalSaveBtn').addEventListener('click', this.correctPointsHandler);
     this.ui.longPressModalTexts("Punkte anpassen", "", "neue Punkte eingeben", null);
+
+    this.inputExplText = "Tatsächliche Stiche von ";
+    let playerID = this.getSelectedPlayer();
+    document.getElementById("PlayerNameNI").innerText = this.inputExplText + this.players.get(playerID).name;
+
     this.setFocusToElementID('numberInput');
 
   }
@@ -181,9 +188,6 @@ class Wizard extends gameBase{
     document.getElementById('longPressModalSaveBtn').addEventListener('click', this.correctSticheHandler);
     this.ui.longPressModalTexts("Stiche anpassen", "", "neue Stiche Anzahl eingeben", null);
 
-    this.inputExplText = "Angesagte Stiche von ";
-    document.getElementById("PlayerNameNI").innerText = this.inputExplText;
-
 
     //reset Stiche in table
     for (let playerID of Array.from(this.playerStiche.keys())){
@@ -195,33 +199,28 @@ class Wizard extends gameBase{
     this.roundsPlayed += 1;
     document.getElementById('roundNumber').innerText = "Runde: " + (this.roundsPlayed + 1).toString();
     let playerID = Array.from(this.players.keys())[this.roundsPlayed % this.players.size];
+    this.inputExplText = "Angesagte Stiche von ";
     this.toggleRowSelection(playerID, 'playerTableBody', 'table-info');
 
     this.setFocusToElementID('numberInput');
   }
 
   setUp(){
-    this.ui.navbar("Wizard");
-    this.ui.roundNumber();
-    this.ui.createPlayerTable(this.toggleRowSelectionEvent.bind(this), this.longHold, this.correctSticheHandler, this.resetBackgroundColor.bind(this));
-    this.ui.longPressModalTexts("Stiche anpassen", "", "neue Stiche Anzahl eingeben", null);
-
-    this.ui.createPlayerNameInput("Spieler Name", "Hinzufügen", this.addPlayerToTable.bind(this));
-    this.ui.pointsInput("Angesagte Stiche für", "0 Stiche", "Hinzufügen", this.adjustPoints.bind(this));
+    this.ui.setUp(
+      "Wizard",
+      this.toggleRowSelectionEvent.bind(this), this.resetBackgroundColor.bind(this), this.longHold,  this.correctSticheHandler,
+      this.addPlayerToTable.bind(this), this.adjustPoints.bind(this),
+      this.startGame.bind(this),
+      this.resetGame.bind(this)
+    )
+    this.ui.activateRoundNumber();
     this.ui.adjustSticheBtn(this.adjustStiche.bind(this));
-
-    this.ui.startBtn("Spiel starten", this.startGame.bind(this));
     this.ui.startRoundBtn(this.startRound.bind(this));
     this.ui.endRoundBtn(this.endRound.bind(this));
 
-    document.getElementById("startButton").classList.add("disabled");
-
-    //correct points with long press
-    document.getElementById('longPressModalSaveBtn').addEventListener('click', this.correctSticheHandler);
-
-    this.ui.resetButton(this.resetGame.bind(this));
-
-    this.ui.infoModal();
+    this.ui.playerNameInputTexts("Spieler Name", "Hinzufügen");
+    this.ui.setPointsInputTexts("Stiche für ", "0 Stiche", "Hinzufügen",)
+    this.ui.longPressModalTexts("Stiche anpassen", "", "neue Stiche eingeben", null);
   }
 }
 
@@ -233,11 +232,8 @@ class WizardUI extends UIElements{
     super(colHeadings, colSpacing);
   }
 
-  roundNumber(){
-    let h6 = document.createElement('h6');
-    h6.id = "roundNumber";
-    h6.innerText = "Runde: 1";
-    document.body.appendChild(h6);
+  activateRoundNumber(){
+    document.getElementById("roundNumber").classList.remove("d-none");
   }
 
   startRoundBtn(btnFkt){

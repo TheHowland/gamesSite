@@ -590,9 +590,19 @@ class UIElements{
     return button;
   }
 
+  roundNumber(){
+    let h6 = document.createElement('h6');
+    h6.id = "roundNumber";
+    h6.innerText = "Runde: 1";
+    h6.classList.add("d-none");
+    document.body.appendChild(h6);
+  }
+
   setUp(siteName, toggleRowSelection,resetBackgroundColor, longHoldVar, correctPoints,
         addPlayerToTable, adjustPoints, strtGameFkt, resetFkt, thirdColDiv = null, thirdColFkt = null){
+
     this.navbar(siteName);
+    this.roundNumber();
     this.createPlayerTable(toggleRowSelection, longHoldVar, correctPoints, resetBackgroundColor);
 
     this.createPlayerNameInput(addPlayerToTable);
