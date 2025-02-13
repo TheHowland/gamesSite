@@ -103,7 +103,7 @@ class TwentyOneDown extends gameBase{
 
   setUp(){
     this.ui.navbar("21 ab");
-    this.ui.createPlayerTable(this.toggleRowSelectionEvent.bind(this), this.longHold, this.correctPoints.bind(this));
+    this.ui.createPlayerTable(this.toggleRowSelectionEvent.bind(this), this.longHold, this.correctPoints.bind(this), this.resetBackgroundColor.bind(this));
     this.ui.longPressModalTexts("Punkte anpassen", "", "neue Punkte eingeben", null);
 
     this.ui.createPlayerNameInput("Spieler Name", "Hinzufügen",

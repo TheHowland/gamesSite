@@ -20,7 +20,7 @@ class UIElements{
     document.body.appendChild(playerList);
   }
 
-  createPlayerTable(toggleFkt, holdVar, longPressFkt){
+  createPlayerTable(toggleFkt, holdVar, longPressFkt, resetFkt){
 
     if (this.colHeadings.length !== this.colSpacings.length) {
       console.log("Error: Headings and Spacing must be the same length");
@@ -64,6 +64,7 @@ class UIElements{
     this.longPressModal();
     document.getElementById('playerTableBody').addEventListener('touchstart', (event) => {
       holdVar = window.setTimeout(() => {
+        resetFkt('playerTableBody', 'table-info');
         toggleFkt(event, 'playerTableBody', 'table-info');
         console.log("Timout passed");
         let myModal = new bootstrap.Modal(document.getElementById('longPressModal'));

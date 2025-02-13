@@ -100,9 +100,15 @@ class Swimming extends gameBase{
     for (let player of Array.from(this.players.keys())){
       if (player !== selectedPlayer){
         let isWild = !document.getElementById(player + ' - BoarPicture').classList.contains('d-none');
-        document.getElementById(player + ' - ' + this.pointsFieldName).innerHTML =  this.players.get(player).adjustPoints(-1 - 1 * Boolean(isWild));
+        let elm = document.getElementById(player + ' - ' + this.pointsFieldName);
+        elm.innerHTML =  this.players.get(player).adjustPoints(-1 - 1 * Boolean(isWild));
         if (this.players.get(player).points < 0){
           document.getElementById(player).classList.add('d-none');
+        }
+        if (this.players.get(player.id).points === 0){
+          elm.innerHTML = "🏊‍♀️";
+          elm.style.padding = "0";
+          elm.style.fontSize = "x-large";
         }
       }
     }
@@ -128,7 +134,7 @@ class Swimming extends gameBase{
 
   setUp(){
     this.ui.navbar("Schwimmen");
-    this.ui.createPlayerTable(this.multiSelectRowEvent.bind(this), this.longHold, this.correctPoints.bind(this));
+    this.ui.createPlayerTable(this.multiSelectRowEvent.bind(this), this.longHold, this.correctPoints.bind(this), this.resetBackgroundColor.bind(this));
     this.ui.longPressModalTexts("Punkte anpassen", "", "neue Punkte eingeben", null);
 
     this.ui.createPlayerNameInput("Spieler Name", "Hinzufügen",

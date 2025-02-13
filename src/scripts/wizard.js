@@ -203,7 +203,7 @@ class Wizard extends gameBase{
   setUp(){
     this.ui.navbar("Wizard");
     this.ui.roundNumber();
-    this.ui.createPlayerTable(this.toggleRowSelectionEvent.bind(this), this.longHold, this.correctSticheHandler);
+    this.ui.createPlayerTable(this.toggleRowSelectionEvent.bind(this), this.longHold, this.correctSticheHandler, this.resetBackgroundColor.bind(this));
     this.ui.longPressModalTexts("Stiche anpassen", "", "neue Stiche Anzahl eingeben", null);
 
     this.ui.createPlayerNameInput("Spieler Name", "Hinzufügen", this.addPlayerToTable.bind(this));
