@@ -74,6 +74,15 @@ class gameBase{
     return [];
   }
 
+  importSavedPlayers(){
+    for (let player of document.getElementById('savedPlayersModalList').querySelectorAll('li')){
+      if (player.classList.contains('active')){
+        document.getElementById('playerNameInput').value = player.innerText;
+        this.addPlayerToTable();
+      }
+    }
+  }
+
   resetPlayer(player, elementID){
       this.players.get(player).points = this.startPoints;
       document.getElementById(elementID).innerText = this.startPoints;

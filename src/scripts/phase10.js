@@ -83,7 +83,8 @@ class Phase10 extends gameBase{
       this.addPlayerToTable.bind(this),
       this.adjustPoints.bind(this),
       this.startGame.bind(this),
-      this.resetGame.bind(this)
+      this.resetGame.bind(this),
+      this.importSavedPlayers.bind(this),
     )
     this.ui.resetButton(this.resetGame.bind(this), this.ejectConfetti.bind(this));
     this.ui.playerNameInputTexts("Spieler Name", "Hinzufügen");

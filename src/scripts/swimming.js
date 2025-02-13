@@ -105,7 +105,7 @@ class Swimming extends gameBase{
         if (this.players.get(player).points < 0){
           document.getElementById(player).classList.add('d-none');
         }
-        if (this.players.get(player.id).points === 0){
+        if (this.players.get(player).points === 0){
           elm.innerHTML = "🏊‍♀️";
           elm.style.padding = "0";
           elm.style.fontSize = "x-large";
@@ -133,22 +133,25 @@ class Swimming extends gameBase{
   }
 
   setUp(){
-    this.ui.navbar("Schwimmen");
-    this.ui.createPlayerTable(this.multiSelectRowEvent.bind(this), this.longHold, this.correctPoints.bind(this), this.resetBackgroundColor.bind(this));
-    this.ui.longPressModalTexts("Punkte anpassen", "", "neue Punkte eingeben", null);
-
-    this.ui.createPlayerNameInput("Spieler Name", "Hinzufügen",
-      this.addPlayerToTable.bind(this)
-    );
-    this.ui.pointsInput("Stiche für ", "0 Stiche", "Hinzufügen",
+    this.ui.setUp(
+      "Schwimmen",
+      this.multiSelectRowEvent.bind(this), this.resetBackgroundColor.bind(this), this.longHold, this.correctPoints.bind(this),
+      this.addPlayerToTable.bind(this),
       this.adjustPoints.bind(this),
-      null,
-      null
-    );
-    this.ui.startBtn("Spiel starten", this.startGame.bind(this));
-    this.ui.infoModal();
+      this.startGame.bind(this),
+      this.resetGame.bind(this),
+      this.importSavedPlayers.bind(this)
+    )
+
     this.ui.lostAndFireBtns(this.adjustPoints.bind(this), this.fire.bind(this));
-    this.ui.resetButton(this.resetGame.bind(this));
+    this.ui.playerNameInputTexts("Spieler Name", "Hinzufügen");
+    this.ui.longPressModalTexts("Leben anpassen", "", "neue Leben eingeben", null);
+
+    let lostAndFireBtns = document.getElementById('lostAndFireBtns');
+    let resetBtn = document.getElementById('resetButtonDiv');
+    let parent = document.body
+    parent.insertBefore(lostAndFireBtns, resetBtn);
+
   }
 }
 window.Swimming = Swimming;
@@ -172,6 +175,7 @@ class SwimmingUI extends UIElements{
     let fire = this.btnFaktory("fireBtn", "Feuer", "btn btn-primary w-50 d-none");
 
     let div = document.createElement('div')
+    div.id = "lostAndFireBtns";
     div.classList.add('mt-3')
     div.appendChild(lost);
     div.appendChild(fire);

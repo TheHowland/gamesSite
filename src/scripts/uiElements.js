@@ -329,7 +329,7 @@ class UIElements{
     }
   }
 
-  okModalTexts(heading, body, placeholder, value){
+  okModalTexts(heading, body){
     if (heading !== null){
       document.getElementById('okModalHeading').textContent = heading;
     }
@@ -499,6 +499,119 @@ class UIElements{
     document.body.appendChild(modal);
   }
 
+  savedPlayersModal(okBtnFkt) {
+
+    let modal = document.createElement('div');
+    modal.className = 'modal fade';
+    modal.id = 'savedPlayersModal';
+    modal.setAttribute('data-bs-backdrop', 'static');
+    modal.setAttribute('data-bs-keyboard', 'false');
+    modal.tabIndex = '-1';
+    modal.setAttribute('aria-labelledby', 'staticBackdropLabel');
+    modal.setAttribute('aria-hidden', 'true');
+
+    let modalDialog = document.createElement('div');
+    modalDialog.className = 'modal-dialog';
+
+    let modalContent = document.createElement('div');
+    modalContent.className = 'modal-content';
+    let modalHeader = document.createElement('div');
+    modalHeader.className = 'modal-header';
+    let h1 = document.createElement('h1');
+    h1.className = 'modal-title fs-5';
+    h1.id = 'savedPlayersModalHeading';
+    h1.textContent = "";
+
+    /*
+    <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>;
+    <button type="button" className="btn btn-primary">Save changes</button>;
+    */
+    let buttonClose = document.createElement('button');
+    buttonClose.type = 'button';
+    buttonClose.className = 'btn-close';
+    buttonClose.setAttribute('data-bs-dismiss', 'modal');
+    buttonClose.setAttribute('aria-label', 'Close');
+
+    modalHeader.appendChild(h1);
+    modalHeader.appendChild(buttonClose);
+
+    let modalBody = document.createElement('div');
+    modalBody.className = 'modal-body';
+    let playersList = document.createElement('ul');
+    playersList.id = 'savedPlayersModalList';
+    playersList.className = "list-group";
+    modalBody.appendChild(playersList);
+
+    let modalFooter = document.createElement('div');
+    modalFooter.className = 'modal-footer';
+
+    let buttonCancle = document.createElement('button');
+    buttonCancle.type = 'button';
+    buttonCancle.className = 'btn btn-cancel';
+    buttonCancle.setAttribute('data-bs-dismiss', 'modal');
+    buttonCancle.textContent = 'Abbrechen';
+
+    let saveButton = document.createElement('button');
+    saveButton.type = 'button';
+    saveButton.className = 'btn btn-primary';
+    saveButton.setAttribute('data-bs-dismiss', 'modal');
+    saveButton.textContent = 'Okay';
+    saveButton.id = 'savedPlayersModalSaveBtn';
+    saveButton.addEventListener('click', okBtnFkt);
+
+    modalFooter.appendChild(buttonCancle);
+    modalFooter.appendChild(saveButton);
+
+    modalContent.appendChild(modalHeader);
+    modalContent.appendChild(modalBody);
+    modalContent.appendChild(modalFooter);
+
+    modalDialog.appendChild(modalContent);
+    modal.appendChild(modalDialog);
+
+    document.body.appendChild(modal);
+  }
+
+  updatePlayersListModalList() {
+    let list = document.getElementById('savedPlayersModalList');
+    list.innerHTML = "";
+
+    let playerNames = ""
+    for (let cookie of document.cookie.split(';')) {
+      if (cookie.startsWith(" SavedPlayers=")) {
+        playerNames = cookie.replace(" SavedPlayers=", "")
+      }
+    }
+
+    for (let player of playerNames.split("~")) {
+      if (player === "") {
+        continue;
+      }
+      let listItem = document.createElement('li');
+      listItem.className = "list-group-item";
+      listItem.innerText = player;
+      listItem.addEventListener("click",
+        (event) => {
+          if (event.target.classList.contains("active")) {
+            event.target.classList.remove("active");
+          } else {
+            event.target.classList.add("active");
+          }
+
+        });
+      list.appendChild(listItem);
+
+    }
+  }
+
+  addSavedPlayers(){
+    this.savedPlayersModal();
+    this.updatePlayersListModalList();
+
+    let myModal = new bootstrap.Modal(document.getElementById('savedPlayersModal'));
+    myModal.show();
+  }
+
   navbar(navBarBrandText){
     /*
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
@@ -545,7 +658,14 @@ class UIElements{
     navLink1.className = 'nav-item nav-link active';
     navLink1.href = 'index.html';
     navLink1.innerText = "Home";
+    let navLink2 = document.createElement('a');
+    navLink2.className = 'nav-item nav-link';
+    navLink2.id = 'savedPlayersNavBar';
+    navLink2.innerText = "Gespeicherte Spieler"
+    navLink2.addEventListener('click', this.addSavedPlayers.bind(this));
+
     navLinkDiv.appendChild(navLink1);
+    navLinkDiv.appendChild(navLink2);
 
     navbar.appendChild(div);
     document.body.appendChild(navbar);
@@ -560,6 +680,7 @@ class UIElements{
   resetButton(resetGameFkt){
     let resetBtnDiv = document.createElement('div');
     resetBtnDiv.className = "d-flex justify-content-center w-100 mt-3";
+    resetBtnDiv.id = "resetButtonDiv";
 
     let resetBtn = document.createElement('button');
     resetBtn.type = "button";
@@ -598,12 +719,13 @@ class UIElements{
     document.body.appendChild(h6);
   }
 
-  setUp(siteName, toggleRowSelection,resetBackgroundColor, longHoldVar, correctPoints,
-        addPlayerToTable, adjustPoints, strtGameFkt, resetFkt, thirdColDiv = null, thirdColFkt = null){
+  setUp(siteName, toggleRowSelection,resetBackgroundColor, longHoldVar, modalOkFkt,
+        addPlayerToTable, adjustPoints, strtGameFkt, resetFkt, importSavedPlayersFkt,
+        thirdColDiv = null, thirdColFkt = null){
 
     this.navbar(siteName);
     this.roundNumber();
-    this.createPlayerTable(toggleRowSelection, longHoldVar, correctPoints, resetBackgroundColor);
+    this.createPlayerTable(toggleRowSelection, longHoldVar, modalOkFkt, resetBackgroundColor);
 
     this.createPlayerNameInput(addPlayerToTable);
     this.pointsInput(
@@ -614,6 +736,7 @@ class UIElements{
     this.startBtn("Spiel starten", strtGameFkt);
     this.infoModal();
     this.resetButton(resetFkt);
+    this.savedPlayersModal(importSavedPlayersFkt);
   }
 }
 

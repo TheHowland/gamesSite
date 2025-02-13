@@ -211,7 +211,8 @@ class Wizard extends gameBase{
       this.toggleRowSelectionEvent.bind(this), this.resetBackgroundColor.bind(this), this.longHold,  this.correctSticheHandler,
       this.addPlayerToTable.bind(this), this.adjustPoints.bind(this),
       this.startGame.bind(this),
-      this.resetGame.bind(this)
+      this.resetGame.bind(this),
+      this.importSavedPlayers.bind(this)
     )
     this.ui.activateRoundNumber();
     this.ui.adjustSticheBtn(this.adjustStiche.bind(this));

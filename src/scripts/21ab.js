@@ -108,6 +108,7 @@ class TwentyOneDown extends gameBase{
      this.addPlayerToTable.bind(this), this.adjustPoints.bind(this),
      this.startGame.bind(this),
      this.resetGame.bind(this),
+     this.importSavedPlayers.bind(this),
      this.ui.heartPicture(),
      this.toggleHeratPicture.bind(this)
    )
@@ -115,6 +116,7 @@ class TwentyOneDown extends gameBase{
    this.ui.setPointsInputTexts("Stiche für ", "0 Stiche", "Hinzufügen",)
    this.ui.longPressModalTexts("Punkte anpassen", "", "neue Punkte eingeben", null);
   }
+
 }
 window.TwentyOneDown = TwentyOneDown;
 
