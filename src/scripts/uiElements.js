@@ -589,6 +589,22 @@ class UIElements{
     button.textContent = text;
     return button;
   }
+
+  setUp(siteName, toggleRowSelection,resetBackgroundColor, longHoldVar, correctPoints,
+        addPlayerToTable, adjustPoints, strtGameFkt, resetFkt, thirdColDiv = null, thirdColFkt = null){
+    this.navbar(siteName);
+    this.createPlayerTable(toggleRowSelection, longHoldVar, correctPoints, resetBackgroundColor);
+
+    this.createPlayerNameInput(addPlayerToTable);
+    this.pointsInput(
+      adjustPoints,
+      thirdColDiv,
+      thirdColFkt
+    );
+    this.startBtn("Spiel starten", strtGameFkt);
+    this.infoModal();
+    this.resetButton(resetFkt);
+  }
 }
 
 window.UIElements = UIElements;
