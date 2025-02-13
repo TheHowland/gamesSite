@@ -86,7 +86,16 @@ class UIElements{
     document.body.appendChild(heading);
   }
 
-  createPlayerNameInput(placeholderInput, buttonText, addPlayerFkt){
+  playerNameInputTexts(placeholder, buttonText){
+    if (placeholder !== null){
+      document.getElementById('playerNameInput').placeholder = placeholder;
+    }
+    if (buttonText !== null){
+      document.getElementById('addPlayerBtn').textContent = buttonText;
+    }
+  }
+
+  createPlayerNameInput(addPlayerFkt){
     /**
      * Hidden on start
      * */
@@ -111,7 +120,7 @@ class UIElements{
     let input = document.createElement('input');
     input.id = "playerNameInput";
     input.type = "text";
-    input.placeholder = placeholderInput;
+    input.placeholder = "Text not set";
     input.value = "";
     input.className = "form-control";
     col1.appendChild(input);
@@ -122,7 +131,7 @@ class UIElements{
     button.id = "addPlayerBtn";
     button.type = "button";
     button.className = "btn btn-primary w-100";
-    button.textContent = buttonText;
+    button.textContent = "Button name not set";
     col2.appendChild(button);
 
     playerInput.appendChild(col1);
@@ -132,7 +141,19 @@ class UIElements{
     document.getElementById('addPlayerBtn').addEventListener('click', addPlayerFkt);
   }
 
-  pointsInput(labelText, inputPlaceholder, btnText, btnFkt, div = null, divFkt = null){
+  setPointsInputTexts(labelText, inputPlaceholder, btnText){
+    if (labelText !== null){
+      document.getElementById('PlayerNameNI').textContent = labelText;
+    }
+    if (inputPlaceholder !== null){
+      document.getElementById('numberInput').placeholder = inputPlaceholder;
+    }
+    if (btnText !== null){
+      document.getElementById('adjustPointsBtn').textContent = btnText;
+    }
+  }
+
+  pointsInput(btnFkt, div = null, divFkt = null){
     /*
     <label id="PlayerNameNI">Stiche für </label>
     <div id="adjustScore" className="row w-100 d-flex justify-content-center align-items-center no-gutters mt-3">
@@ -150,7 +171,7 @@ class UIElements{
     </div>
     */
     let label = document.createElement('label');
-    label.textContent = labelText;
+    label.textContent = "Text not set";
     label.id = "PlayerNameNI";
     document.body.appendChild(label);
 
@@ -162,7 +183,7 @@ class UIElements{
     col1.className = "col-6 col-md-6";
     let input = document.createElement('input');
     input.id = "numberInput";
-    input.placeholder = inputPlaceholder
+    input.placeholder = "Text not set"
     input.type = "number";
     input.value = "";
     input.className =  "form-control";
@@ -175,7 +196,7 @@ class UIElements{
     button.id = "adjustPointsBtn";
     button.type = "button";
     button.className = "btn btn-primary w-100";
-    button.textContent = btnText;
+    button.textContent = "Btn name not set";
     col2.appendChild(button);
 
     adjustScore.appendChild(col1);
