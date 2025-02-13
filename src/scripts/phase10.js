@@ -77,21 +77,18 @@ class Phase10 extends gameBase{
   }
 
   setUp(){
-    this.ui.navbar("Phase 10");
-    this.ui.createPlayerTable(this.toggleRowSelectionEvent.bind(this), this.longHold, this.correctPoints.bind(this), this.resetBackgroundColor.bind(this));
-    this.ui.longPressModalTexts("Punkte anpassen", "", "neue Punkte eingeben", null);
-
-    this.ui.createPlayerNameInput("Spieler Name", "Hinzufügen",
-      this.addPlayerToTable.bind(this)
-    );
-    this.ui.pointsInput("Strafpunkte für ", "0 Strafpunkte", "Hinzufügen",
+    this.ui.setUp(
+      "Phase 10",
+      this.toggleRowSelectionEvent.bind(this), this.resetBackgroundColor.bind(this), this.longHold, this.correctPoints.bind(this),
+      this.addPlayerToTable.bind(this),
       this.adjustPoints.bind(this),
-      null,
-      null
-    );
-    this.ui.startBtn("Spiel starten", this.startGame.bind(this));
-    this.ui.infoModal();
+      this.startGame.bind(this),
+      this.resetGame.bind(this)
+    )
     this.ui.resetButton(this.resetGame.bind(this), this.ejectConfetti.bind(this));
+    this.ui.playerNameInputTexts("Spieler Name", "Hinzufügen");
+    this.ui.setPointsInputTexts("Strafpunkte für ", "0 Strafpunkte", "Hinzufügen",)
+    this.ui.longPressModalTexts("Punkte anpassen", "", "neue Punkte eingeben", null);
   }
 }
 
@@ -101,11 +98,11 @@ class Phase10UI extends UIElements{
     resetButton(resetFkt, confettiFkt){
       super.resetButton(null);
       let resetBtn = document.getElementById('resetButton');
-      resetBtn.addEventListener('click', (event) => {
+      resetBtn.onclick = () => {
         confettiFkt();
         let myModal = new bootstrap.Modal(document.getElementById('okModal'));
         myModal.show();
-      });
+      }
       resetBtn.innerText = "Beenden / Reset";
       document.getElementById('okModalSaveBtn').addEventListener('click', resetFkt);
 
