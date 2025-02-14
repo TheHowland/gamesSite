@@ -74,6 +74,8 @@ class SavedPlayers extends gameBase{
       super.addPlayerToTable()
     }
     document.getElementById('savedPlayersNavBar').classList.add('d-none');
+    document.getElementById('managePlayersNavBar').classList.add('d-none');
+    document.getElementById('resetButtonDiv').classList.add('d-none');
   }
 }
 window.SavedPlayers = SavedPlayers;

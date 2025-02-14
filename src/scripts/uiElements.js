@@ -691,9 +691,15 @@ class UIElements{
     navLink2.id = 'savedPlayersNavBar';
     navLink2.innerText = "Gespeicherte Spieler"
     navLink2.addEventListener('click', this.addSavedPlayers.bind(this));
+    let navLink3 = document.createElement('a');
+    navLink3.className = 'nav-item nav-link active';
+    navLink3.id = "managePlayersNavBar";
+    navLink3.href = 'savedPlayers.html';
+    navLink3.innerText = "Spieler verwalten";
 
     navLinkDiv.appendChild(navLink1);
     navLinkDiv.appendChild(navLink2);
+    navLinkDiv.appendChild(navLink3);
 
     navbar.appendChild(div);
     document.body.appendChild(navbar);
