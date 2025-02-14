@@ -520,7 +520,7 @@ class UIElements{
     let h1 = document.createElement('h1');
     h1.className = 'modal-title fs-5';
     h1.id = 'savedPlayersModalHeading';
-    h1.textContent = "";
+    h1.textContent = "Spieler zum importieren auswählen";
 
     /*
     <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>;

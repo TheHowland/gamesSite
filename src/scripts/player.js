@@ -74,12 +74,37 @@ class gameBase{
     return [];
   }
 
+  shuffle(array) {
+    let copy = [], n = array.length, i;
+
+    // While there remain elements to shuffle…
+    while (n) {
+
+      // Pick a remaining element…
+      i = Math.floor(Math.random() * array.length);
+
+      // If not already shuffled, move it to the new array.
+      if (i in array) {
+        copy.push(array[i]);
+        delete array[i];
+        n--;
+      }
+    }
+
+    return copy;
+  }
+
   importSavedPlayers(){
+    let playersToImport = [];
     for (let player of document.getElementById('savedPlayersModalList').querySelectorAll('li')){
       if (player.classList.contains('active')){
-        document.getElementById('playerNameInput').value = player.innerText;
-        this.addPlayerToTable();
+        playersToImport.push(player.innerText);
       }
+    }
+    playersToImport = this.shuffle(playersToImport);
+    for (let player of playersToImport){
+      document.getElementById('playerNameInput').value = player;
+      this.addPlayerToTable();
     }
   }
 

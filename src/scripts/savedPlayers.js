@@ -24,13 +24,13 @@ class SavedPlayers extends gameBase{
   }
 
   getSavedPlayersString(){
-    let playerNames = ""
-    for (let cookie of document.cookie.split(';')) {
-      if (cookie.startsWith(" SavedPlayers=")) {
-        playerNames = cookie.replace(" SavedPlayers=", "")
-      }
+    let match = document.cookie.match("SavedPlayers=(?<playerNames>.*);*$")
+    if (match !== null){
+      return match.groups.playerNames;
     }
-    return playerNames;
+    else{
+      return "";
+    }
   }
 
   removePlayer(){
