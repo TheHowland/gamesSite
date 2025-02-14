@@ -101,7 +101,10 @@ class gameBase{
         playersToImport.push(player.innerText);
       }
     }
-    playersToImport = this.shuffle(playersToImport);
+    if (document.getElementById('randomizeSwitch').classList.contains('active')){
+      playersToImport = this.shuffle(playersToImport);
+    }
+
     for (let player of playersToImport){
       document.getElementById('playerNameInput').value = player;
       this.addPlayerToTable();

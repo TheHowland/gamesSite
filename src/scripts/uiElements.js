@@ -499,6 +499,16 @@ class UIElements{
     document.body.appendChild(modal);
   }
 
+  toggleRandomizeSwitch(){
+    let randomSwitch = document.getElementById('randomizeSwitch')
+    if (randomSwitch.classList.contains('active')){
+      randomSwitch.classList.remove('active');
+    }
+    else {
+      randomSwitch.classList.add('active');
+    }
+  }
+
   savedPlayersModal(okBtnFkt) {
 
     let modal = document.createElement('div');
@@ -541,6 +551,24 @@ class UIElements{
     playersList.id = 'savedPlayersModalList';
     playersList.className = "list-group";
     modalBody.appendChild(playersList);
+    let switchDiv = document.createElement('div');
+    switchDiv.className = "form-check form-switch";
+    let switchInput = document.createElement('input');
+    switchInput.type = "checkbox";
+    switchInput.className = "form-check-input";
+    switchInput.id = "randomizeSwitch";
+    switchInput.addEventListener('click', this.toggleRandomizeSwitch.bind(this));
+    switchInput.click();
+    
+    let switchLabel = document.createElement('label');
+    switchLabel.className = "form-check-label";
+    switchLabel.setAttribute("for", "randomizeSwitch");
+    switchLabel.textContent = "In zufälliger Reihenfolge einfügen";
+    switchDiv.appendChild(switchInput);
+    switchDiv.appendChild(switchLabel);
+    modalBody.appendChild(switchDiv);
+
+
 
     let modalFooter = document.createElement('div');
     modalFooter.className = 'modal-footer';
