@@ -559,7 +559,7 @@ class UIElements{
     switchInput.id = "randomizeSwitch";
     switchInput.addEventListener('click', this.toggleRandomizeSwitch.bind(this));
     switchInput.click();
-    
+
     let switchLabel = document.createElement('label');
     switchLabel.className = "form-check-label";
     switchLabel.setAttribute("for", "randomizeSwitch");
@@ -637,6 +637,7 @@ class UIElements{
 
     let myModal = new bootstrap.Modal(document.getElementById('savedPlayersModal'));
     myModal.show();
+    document.querySelector('nav').querySelector('button').click();
   }
 
   navbar(navBarBrandText){
