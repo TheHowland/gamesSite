@@ -576,11 +576,10 @@ class UIElements{
     let list = document.getElementById('savedPlayersModalList');
     list.innerHTML = "";
 
-    let playerNames = ""
-    for (let cookie of document.cookie.split(';')) {
-      if (cookie.startsWith(" SavedPlayers=")) {
-        playerNames = cookie.replace(" SavedPlayers=", "")
-      }
+    let playerNames = "";
+    let match = document.cookie.match("SavedPlayers=(?<playerNames>.*);*$")
+    if (match !== null){
+       playerNames = match.groups.playerNames;
     }
 
     for (let player of playerNames.split("~")) {
