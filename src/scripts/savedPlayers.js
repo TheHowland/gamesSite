@@ -13,7 +13,7 @@ class SavedPlayers extends gameBase{
     document.getElementById('playerNameInput').focus();
     let playerName = this.players.get(Array.from(this.players.keys()).pop()).name;
     let playerNames = this.getSavedPlayersString();
-    this.savePlayers(playerNames + "~" + playerName + "~");
+    this.savePlayers(playerNames + playerName + "~");
   }
 
   toggleRowSelectionEvent(event, ElementID, classListArg) {
