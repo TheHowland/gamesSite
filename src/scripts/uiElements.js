@@ -5,6 +5,8 @@ class UIElements{
   longPressModalSet = false;
   okModalSet = false;
   infoModalSet = false;
+  savedPlayersModalSet = false;
+
 
   constructor(colHeadings, colSpacings){
   this.colHeadings = colHeadings;
@@ -510,6 +512,10 @@ class UIElements{
   }
 
   savedPlayersModal(okBtnFkt) {
+    if(this.savedPlayersModalSet){
+      return
+    }
+    this.savedPlayersModalSet = true;
 
     let modal = document.createElement('div');
     modal.className = 'modal fade';
@@ -558,7 +564,7 @@ class UIElements{
     switchInput.className = "form-check-input";
     switchInput.id = "randomizeSwitch";
     switchInput.addEventListener('click', this.toggleRandomizeSwitch.bind(this));
-    switchInput.click();
+    //switchInput.click();
 
     let switchLabel = document.createElement('label');
     switchLabel.className = "form-check-label";
