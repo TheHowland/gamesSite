@@ -619,6 +619,7 @@ class UIElements{
   }
 
   updatePlayersListModalList() {
+    document.getElementById('playerOrderSavedPlayersModal').innerHTML = "";
     let list = document.getElementById('savedPlayersModalList');
     list.innerHTML = "";
 
