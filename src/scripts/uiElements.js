@@ -505,9 +505,13 @@ class UIElements{
     let randomSwitch = document.getElementById('randomizeSwitch')
     if (randomSwitch.classList.contains('active')){
       randomSwitch.classList.remove('active');
+      document.getElementById('playerOrderHeadingSavedPlayersModal').classList.remove('d-none');
+      document.getElementById('playerOrderSavedPlayersModal').classList.remove('d-none');
     }
     else {
       randomSwitch.classList.add('active');
+      document.getElementById('playerOrderHeadingSavedPlayersModal').classList.add('d-none');
+      document.getElementById('playerOrderSavedPlayersModal').classList.add('d-none');
     }
   }
 
@@ -574,6 +578,14 @@ class UIElements{
     switchDiv.appendChild(switchLabel);
     modalBody.appendChild(switchDiv);
 
+    let playerOrderHeading = document.createElement('h6')
+    playerOrderHeading.textContent = "Spieler Reihenfolge: ";
+    playerOrderHeading.id = "playerOrderHeadingSavedPlayersModal";
+    modalBody.appendChild(playerOrderHeading);
+    let playerOrder = document.createElement('p')
+    playerOrder.id = "playerOrderSavedPlayersModal";
+    modalBody.appendChild(playerOrder);
+
 
 
     let modalFooter = document.createElement('div');
@@ -625,10 +637,17 @@ class UIElements{
       listItem.innerText = player;
       listItem.addEventListener("click",
         (event) => {
+          let textElm = document.getElementById('playerOrderSavedPlayersModal')
           if (event.target.classList.contains("active")) {
             event.target.classList.remove("active");
+            let testText = textElm.innerHTML;
+            let replacedText = testText.replace(event.target.innerHTML + ", ", "");
+            textElm.innerHTML = replacedText;
+
           } else {
             event.target.classList.add("active");
+
+            textElm.textContent = textElm.textContent + event.target.innerHTML + ", ";
           }
 
         });
