@@ -96,13 +96,17 @@ class gameBase{
 
   importSavedPlayers(){
     let playersToImport = [];
-    for (let player of document.getElementById('savedPlayersModalList').querySelectorAll('li')){
-      if (player.classList.contains('active')){
-        playersToImport.push(player.innerText);
-      }
-    }
+
     if (document.getElementById('randomizeSwitch').classList.contains('active')){
+      for (let player of document.getElementById('savedPlayersModalList').querySelectorAll('li')){
+        if (player.classList.contains('active')){
+          playersToImport.push(player.innerText);
+        }
+      }
       playersToImport = this.shuffle(playersToImport);
+    }
+    else {
+      playersToImport = document.getElementById('playerOrderSavedPlayersModal').innerHTML.split(', ');
     }
 
     for (let player of playersToImport){
