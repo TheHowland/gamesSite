@@ -205,6 +205,15 @@ class Wizard extends gameBase{
     this.setFocusToElementID('numberInput');
   }
 
+  adjustRoundNumber(){
+    let myModal = new bootstrap.Modal(document.getElementById('adjustRoundModal'));
+    myModal.show();
+  }
+
+  setRoundNumber(){
+    document.getElementById('roundNumber').innerText = "Runde: " + document.getElementById('adjustRoundModalInput').value;
+  }
+
   setUp(){
     this.ui.setUp(
       "Wizard",
@@ -214,7 +223,7 @@ class Wizard extends gameBase{
       this.resetGame.bind(this),
       this.importSavedPlayers.bind(this)
     )
-    this.ui.activateRoundNumber();
+    this.ui.activateRoundNumber(this.adjustRoundNumber.bind(this));
     this.ui.adjustSticheBtn(this.adjustStiche.bind(this));
     this.ui.startRoundBtn(this.startRound.bind(this));
     this.ui.endRoundBtn(this.endRound.bind(this));
@@ -222,6 +231,7 @@ class Wizard extends gameBase{
     this.ui.playerNameInputTexts("Spieler Name", "Hinzufügen");
     this.ui.setPointsInputTexts("Stiche für ", "0 Stiche", "Hinzufügen",)
     this.ui.longPressModalTexts("Stiche anpassen", "", "neue Stiche eingeben", null);
+    this.ui.adjustRoundModal(this.setRoundNumber.bind(this));
   }
 }
 
@@ -233,8 +243,9 @@ class WizardUI extends UIElements{
     super(colHeadings, colSpacing);
   }
 
-  activateRoundNumber(){
+  activateRoundNumber(btnFkt){
     document.getElementById("roundNumber").classList.remove("d-none");
+    document.getElementById("roundNumber").addEventListener('click', btnFkt)
   }
 
   startRoundBtn(btnFkt){
@@ -256,6 +267,85 @@ class WizardUI extends UIElements{
     div.appendChild(this.btnFaktory("adjustSticheBtn", "Hinzufügen", "btn btn-primary w-100 d-none"));
 
     document.getElementById("adjustSticheBtn").addEventListener('click', btnFkt)
+  }
+
+  adjustRoundModal(okBtnFkt) {
+    let modal = document.createElement('div');
+    modal.className = 'modal fade';
+    modal.id = 'adjustRoundModal';
+    modal.setAttribute('data-bs-backdrop', 'static');
+    modal.setAttribute('data-bs-keyboard', 'false');
+    modal.tabIndex = '-1';
+    modal.setAttribute('aria-labelledby', 'staticBackdropLabel');
+    modal.setAttribute('aria-hidden', 'true');
+
+    let modalDialog = document.createElement('div');
+    modalDialog.className = 'modal-dialog';
+
+    let modalContent = document.createElement('div');
+    modalContent.className = 'modal-content';
+    let modalHeader = document.createElement('div');
+    modalHeader.className = 'modal-header';
+    let h1 = document.createElement('h1');
+    h1.className = 'modal-title fs-5';
+    h1.id = 'adjustRoundModalHeading';
+    h1.textContent = "Runde anpassen";
+
+    /*
+    <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>;
+    <button type="button" className="btn btn-primary">Save changes</button>;
+    */
+    let buttonClose = document.createElement('button');
+    buttonClose.type = 'button';
+    buttonClose.className = 'btn-close';
+    buttonClose.setAttribute('data-bs-dismiss', 'modal');
+    buttonClose.setAttribute('aria-label', 'Close');
+
+    modalHeader.appendChild(h1);
+    modalHeader.appendChild(buttonClose);
+
+    let modalBody = document.createElement('div');
+    modalBody.className = 'modal-body';
+    let h5 = document.createElement('h6');
+    h5.id = 'adjustRoundModalText';
+    h5.textContent = "Setzt die Rundenzahl auf die eingegebene Zahl";
+    modalBody.appendChild(h5);
+    let input = document.createElement('input');
+    input.type = 'number';
+    input.id = 'adjustRoundModalInput';
+    input.className = 'form-control';
+    input.placeholder = 'Runde eingeben';
+    modalBody.appendChild(input);
+
+    let modalFooter = document.createElement('div');
+    modalFooter.className = 'modal-footer';
+
+    let buttonCancle = document.createElement('button');
+    buttonCancle.type = 'button';
+    buttonCancle.className = 'btn btn-cancel';
+    buttonCancle.setAttribute('data-bs-dismiss', 'modal');
+    buttonCancle.textContent = 'Abbrechen';
+
+    let saveButton = document.createElement('button');
+    saveButton.type = 'button';
+    saveButton.className = 'btn btn-primary';
+    saveButton.setAttribute('data-bs-dismiss', 'modal');
+    saveButton.textContent = 'Okay';
+    saveButton.id = 'adjustRoundModalSaveBtn';
+
+    modalFooter.appendChild(buttonCancle);
+    modalFooter.appendChild(saveButton);
+
+    modalContent.appendChild(modalHeader);
+    modalContent.appendChild(modalBody);
+    modalContent.appendChild(modalFooter);
+
+    modalDialog.appendChild(modalContent);
+    modal.appendChild(modalDialog);
+
+    document.body.appendChild(modal);
+
+    document.getElementById('adjustRoundModalSaveBtn').addEventListener('click', okBtnFkt);
   }
 }
 
