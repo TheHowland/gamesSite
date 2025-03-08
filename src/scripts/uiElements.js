@@ -263,7 +263,7 @@ class UIElements{
     modal.setAttribute("aria-hidden", "true");
 
     let modalDialog = document.createElement('div');
-    modalDialog.className = "modal-dialog";
+    modalDialog.className = "modal-dialog modal-dialog-centered";
 
     let modalContent = document.createElement('div');
     modalContent.className = "modal-content";
@@ -363,7 +363,7 @@ class UIElements{
     modal.setAttribute('aria-hidden', 'true');
 
     let modalDialog = document.createElement('div');
-    modalDialog.className = 'modal-dialog';
+    modalDialog.className = 'modal-dialog modal-dialog-centered';
 
     let modalContent = document.createElement('div');
     modalContent.className = 'modal-content';
@@ -444,7 +444,7 @@ class UIElements{
     modal.setAttribute('aria-hidden', 'true');
 
     let modalDialog = document.createElement('div');
-    modalDialog.className = 'modal-dialog';
+    modalDialog.className = 'modal-dialog modal-dialog-centered';
 
     let modalContent = document.createElement('div');
     modalContent.className = 'modal-content';
@@ -535,7 +535,7 @@ class UIElements{
     modal.setAttribute('aria-hidden', 'true');
 
     let modalDialog = document.createElement('div');
-    modalDialog.className = 'modal-dialog';
+    modalDialog.className = 'modal-dialog modal-dialog-centered';
 
     let modalContent = document.createElement('div');
     modalContent.className = 'modal-content';

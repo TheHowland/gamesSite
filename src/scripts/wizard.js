@@ -16,11 +16,10 @@ class Wizard extends gameBase{
 
     this.correctPointsHandler = this.correctPoints.bind(this);
     this.correctSticheHandler = this.correctStiche.bind(this);
+    this.sortPlayers = this.ui.sortPlayers.bind(this);
     this.nextStep = null;
 
     this.playerStiche = new Map();
-    this.playerUpdated = new Map();
-
   }
 
   startGame() {
@@ -34,15 +33,17 @@ class Wizard extends gameBase{
     document.getElementById("playerInput").classList.add("d-none");
     document.getElementById("startButton").classList.add("d-none");
     document.getElementById("adjustPointsBtn").classList.add("d-none");
+    document.getElementById("sortButtonDiv").classList.add("d-none");
 
     document.getElementById("adjustScore").classList.remove('d-none');
     document.getElementById("loginSticheBtn").classList.remove("d-none");
     document.getElementById("adjustSticheBtn").classList.remove('d-none');
+    document.getElementById('resetButtonDiv').classList.remove('d-none');
 
     document.getElementById("PlayerNameNI").classList.remove("d-none");
     this.setFocusToElementID('numberInput');
 
-    this.nextStep = this.showContinueToPointsInputModal.bind(this);
+    this.nextStep = this.showStartRoudPopUp.bind(this);
 
     let playerID = Array.from(this.players.keys())[this.roundsPlayed % this.players.size];
     this.toggleRowSelection(playerID, 'playerTableBody', 'table-info');
@@ -90,7 +91,6 @@ class Wizard extends gameBase{
     else{
       diffPoints = -1 * Math.abs(this.playerStiche.get(selectedPlayer) - numberInput) * 10;
     }
-
     let playerPoints = this.players.get(selectedPlayer).adjustPoints(diffPoints);
     document.getElementById(selectedPlayer + ' - ' + this.pointsFieldName).innerHTML =  playerPoints;
 
@@ -105,6 +105,7 @@ class Wizard extends gameBase{
       points = 0;
     }
     this.playerStiche.set(selectedPlayer, points);
+    this.players.get(selectedPlayer).updated = true;
     document.getElementById(selectedPlayer + ' - ' + this.sticheFieldName).innerHTML =  points.toString();
     this.ui.longPressModalTexts(null, null, null, "");
   }
@@ -152,10 +153,19 @@ class Wizard extends gameBase{
     this.setFocusToElementID('playerNameInput');
   }
 
+  setAllPlayersNotUpdated(){
+    for (let player of Array.from(this.players.values())){
+      player.updated = false;
+    }
+  }
+
   startRound(){
     let totalStiche = 0;
     for(let stiche of Array.from(this.playerStiche.values())){
       totalStiche += stiche;
+    }
+    if (!this.allUpdated()){
+
     }
     if (totalStiche === (this.roundsPlayed + 1)){
       let keyArray = Array.from(this.players.keys())
@@ -190,7 +200,8 @@ class Wizard extends gameBase{
     this.inputExplText = "Tatsächliche Stiche von ";
     let playerID = this.getSelectedPlayer();
     document.getElementById("PlayerNameNI").innerText = this.inputExplText + this.players.get(playerID).name;
-    this.nextStep = this.showContinueToPointsInputModal.bind(this);
+    this.nextStep = this.showEndRoundPopUp.bind(this);
+    this.setAllPlayersNotUpdated();
 
     this.setFocusToElementID('numberInput');
 
@@ -230,6 +241,8 @@ class Wizard extends gameBase{
     let playerID = Array.from(this.players.keys())[this.roundsPlayed % this.players.size];
     this.inputExplText = "Angesagte Stiche von ";
     this.toggleRowSelection(playerID, 'playerTableBody', 'table-info');
+    this.nextStep = this.showStartRoudPopUp.bind(this);
+    this.setAllPlayersNotUpdated();
 
     this.setFocusToElementID('numberInput');
   }
@@ -245,8 +258,13 @@ class Wizard extends gameBase{
     this.roundsPlayed = parseInt(newRound) - 1;
   }
 
-  showContinueToPointsInputModal(){
+  showStartRoudPopUp(){
     let myModal = new bootstrap.Modal(document.getElementById('continueToPointsInputModal'));
+    myModal.show();
+  }
+
+  showEndRoundPopUp(){
+    let myModal = new bootstrap.Modal(document.getElementById('continueToSticheInputModal'));
     myModal.show();
   }
 
@@ -268,10 +286,11 @@ class Wizard extends gameBase{
     this.ui.setPointsInputTexts("Stiche für ", "0 Stiche", "Hinzufügen",)
     this.ui.longPressModalTexts("Stiche anpassen", "", "neue Stiche eingeben", null);
     this.ui.adjustRoundModal(this.setRoundNumber.bind(this));
-    this.ui.continueToPointsInput(this.startRound.bind(this));
-    this.ui.continueToSticheInput(this.endRound.bind(this));
+    this.ui.startRoundPopUpModal(this.startRound.bind(this));
+    this.ui.endRoundPopUpModal(this.endRound.bind(this));
 
     document.getElementById('adjustSticheBtn').addEventListener('click', this.autoSwitchEndRoundStartRound.bind(this));
+    document.getElementById('adjustPointsBtn').addEventListener('click', this.autoSwitchEndRoundStartRound.bind(this));
   }
 }
 
@@ -320,7 +339,7 @@ class WizardUI extends UIElements{
     modal.setAttribute('aria-hidden', 'true');
 
     let modalDialog = document.createElement('div');
-    modalDialog.className = 'modal-dialog';
+    modalDialog.className = 'modal-dialog modal-dialog-centered';
 
     let modalContent = document.createElement('div');
     modalContent.className = 'modal-content';
@@ -388,7 +407,7 @@ class WizardUI extends UIElements{
     document.getElementById('adjustRoundModalSaveBtn').addEventListener('click', okBtnFkt);
   }
 
-  continueToPointsInput(okBtnFkt) {
+  startRoundPopUpModal(okBtnFkt) {
     let modal = document.createElement('div');
     modal.className = 'modal fade';
     modal.id = 'continueToPointsInputModal';
@@ -399,7 +418,7 @@ class WizardUI extends UIElements{
     modal.setAttribute('aria-hidden', 'true');
 
     let modalDialog = document.createElement('div');
-    modalDialog.className = 'modal-dialog';
+    modalDialog.className = 'modal-dialog modal-dialog-centered';
 
     let modalContent = document.createElement('div');
     modalContent.className = 'modal-content';
@@ -461,7 +480,7 @@ class WizardUI extends UIElements{
     document.getElementById('continueToPointsInputModalSaveBtn').addEventListener('click', okBtnFkt);
   }
 
-  continueToSticheInput(okBtnFkt) {
+  endRoundPopUpModal(okBtnFkt) {
     let modal = document.createElement('div');
     modal.className = 'modal fade';
     modal.id = 'continueToSticheInputModal';
@@ -472,7 +491,7 @@ class WizardUI extends UIElements{
     modal.setAttribute('aria-hidden', 'true');
 
     let modalDialog = document.createElement('div');
-    modalDialog.className = 'modal-dialog';
+    modalDialog.className = 'modal-dialog modal-dialog-centered';
 
     let modalContent = document.createElement('div');
     modalContent.className = 'modal-content';
@@ -481,7 +500,7 @@ class WizardUI extends UIElements{
     let h1 = document.createElement('h1');
     h1.className = 'modal-title fs-5';
     h1.id = 'continueToSticheInputModalHeading';
-    h1.textContent = "Weiter zur nächsten Runde";
+    h1.textContent = "Runde beenden";
 
     /*
     <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>;
@@ -534,6 +553,8 @@ class WizardUI extends UIElements{
 
     document.getElementById('continueToSticheInputModalSaveBtn').addEventListener('click', okBtnFkt);
   }
+
+
 }
 
 window.WizardUI = WizardUI;
