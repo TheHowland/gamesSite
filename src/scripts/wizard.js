@@ -250,7 +250,7 @@ class Wizard extends gameBase{
     }
 
     //select new player to start with Stiche announcing
-    this.setRoundNumber(this.roundsPlayed + 1);
+    this.setRoundNumber(this.roundsPlayed + 2);
     let playerID = Array.from(this.players.keys())[this.roundsPlayed % this.players.size];
     this.inputExplText = "Angesagte Stiche von ";
     this.toggleRowSelection(playerID, 'playerTableBody', 'table-info');
