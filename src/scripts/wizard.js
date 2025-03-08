@@ -58,7 +58,7 @@ class Wizard extends gameBase{
       super.resetPlayer(player, player + ' - ' + this.pointsFieldName);
     }
     this.roundsPlayed = 0;
-    document.getElementById('roundNumber').innerText = "Runde: " + (this.roundsPlayed + 1).toString();
+    this.setRoundNumber(0);
   }
 
   allUpdated(){
@@ -149,6 +149,7 @@ class Wizard extends gameBase{
     elms[2].innerText = '-';
 
     this.playerStiche.set(Array.from(this.players.values()).pop().playerID, 0);
+    this.setRoundNumber(1);
 
     this.setFocusToElementID('playerNameInput');
   }
@@ -223,7 +224,7 @@ class Wizard extends gameBase{
   }
 
   endRound(){
-    if(this.roundsPlayed === 9){
+    if(this.roundsPlayed === Math.floor(60/this.players.size)-1){
       this.endGame();
     }
     if (!this.allUpdated()){
@@ -249,8 +250,7 @@ class Wizard extends gameBase{
     }
 
     //select new player to start with Stiche announcing
-    this.roundsPlayed += 1;
-    document.getElementById('roundNumber').innerText = "Runde: " + (this.roundsPlayed + 1).toString();
+    this.setRoundNumber(this.roundsPlayed + 1);
     let playerID = Array.from(this.players.keys())[this.roundsPlayed % this.players.size];
     this.inputExplText = "Angesagte Stiche von ";
     this.toggleRowSelection(playerID, 'playerTableBody', 'table-info');
@@ -260,15 +260,19 @@ class Wizard extends gameBase{
     this.setFocusToElementID('numberInput');
   }
 
+  setRoundNumber(number){
+    document.getElementById('roundNumber').innerText = "Runde: " + number.toString() + " / " + Math.floor(60/this.players.size).toString();
+    this.roundsPlayed = number - 1;
+  }
+
   showRoundNumberModal(){
     let myModal = new bootstrap.Modal(document.getElementById('adjustRoundModal'));
     myModal.show();
   }
 
-  setRoundNumber(){
-    let newRound = document.getElementById('adjustRoundModalInput').value;
-    document.getElementById('roundNumber').innerText = "Runde: " + document.getElementById('adjustRoundModalInput').value;
-    this.roundsPlayed = parseInt(newRound) - 1;
+  correctRoundNumber(){
+    let newRound = Number(document.getElementById('adjustRoundModalInput').value);
+    this.setRoundNumber(newRound);
   }
 
   showStartRoudPopUp(){
@@ -298,7 +302,7 @@ class Wizard extends gameBase{
     this.ui.playerNameInputTexts("Spieler Name", "Hinzufügen");
     this.ui.setPointsInputTexts("Stiche für ", "0 Stiche", "Hinzufügen",)
     this.ui.longPressModalTexts("Stiche anpassen", "", "neue Stiche eingeben", null);
-    this.ui.adjustRoundModal(this.setRoundNumber.bind(this));
+    this.ui.adjustRoundModal(this.correctRoundNumber.bind(this));
     this.ui.startRoundPopUpModal(this.startRound.bind(this));
     this.ui.endRoundPopUpModal(this.endRound.bind(this));
 
