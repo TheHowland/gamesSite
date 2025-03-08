@@ -2,6 +2,7 @@ class Player{
   playerID = null
   name = null;
   points = 0;
+  updated = false;
 
   constructor(name, playerID, points){
     this.name = name;
@@ -11,10 +12,12 @@ class Player{
   }
 
   setPoints(points){
+    this.updated = true;
     this.points = points;
   }
 
   adjustPoints(points, fieldName){
+    this.updated = true;
     this.points += points;
     return this.points;
   }
