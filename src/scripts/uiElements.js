@@ -34,7 +34,11 @@ class UIElements{
     tableContainer.className = 'container-fluid w-100 justify-content-center';
     let table = document.createElement('table');
     table.id = 'playerTable';
-    table.className = 'table borderless table-striped';
+    table.className = 'table borderless table-striped data-reorderable-rows';
+    table.setAttribute("data-pagination", "true");
+    table.setAttribute("data-show-toggle", "true");
+    table.setAttribute("data-use-row-attr-func", "true");
+    table.setAttribute("data-reorderable-rows", "true");
 
     let tableHeadRow = document.createElement('tr');
     tableHeadRow.className = 'row-col-' + this.colHeadings.length.toString();
@@ -618,18 +622,34 @@ class UIElements{
     document.body.appendChild(modal);
   }
 
-  updatePlayersListModalList() {
+  loadPlayersFromCookie(){
+    let playerNames = "";
+    let match = document.cookie.match("SavedPlayers=(?<playerNames>.*);*$")
+    if (match !== null){
+      playerNames = match.groups.playerNames;
+      return playerNames.split("~");
+    }
+    else {
+      return [];
+    }
+
+  }
+
+  readPlayersFromTable(){
+    let playerNames = [];
+    let table = document.getElementById('playerTableBody');
+    for (let row of table.children){
+      playerNames.push(row.children[0].innerText);
+    }
+    return playerNames;
+  }
+
+  updatePlayersListModalList(playerNames) {
     document.getElementById('playerOrderSavedPlayersModal').innerHTML = "";
     let list = document.getElementById('savedPlayersModalList');
     list.innerHTML = "";
 
-    let playerNames = "";
-    let match = document.cookie.match("SavedPlayers=(?<playerNames>.*);*$")
-    if (match !== null){
-       playerNames = match.groups.playerNames;
-    }
-
-    for (let player of playerNames.split("~")) {
+    for (let player of playerNames) {
       if (player === "") {
         continue;
       }
@@ -641,9 +661,7 @@ class UIElements{
           let textElm = document.getElementById('playerOrderSavedPlayersModal')
           if (event.target.classList.contains("active")) {
             event.target.classList.remove("active");
-            let testText = textElm.innerHTML;
-            let replacedText = testText.replace(event.target.innerHTML + ", ", "");
-            textElm.innerHTML = replacedText;
+            textElm.innerHTML = textElm.innerHTML.replace(event.target.innerHTML + ", ", "");
 
           } else {
             event.target.classList.add("active");
@@ -657,13 +675,24 @@ class UIElements{
     }
   }
 
-  addSavedPlayers(){
-    this.savedPlayersModal();
-    this.updatePlayersListModalList();
+  importPlayers(){
+    document.getElementById('savedPlayersModalHeading').innerText = "Spieler importieren";
+    this.updatePlayersListModalList(this.loadPlayersFromCookie());
+    this.showSavedPlayersModal();
+    document.querySelector('nav').querySelector('button').click();
+  }
 
+  sortPlayers(){
+    document.getElementById('savedPlayersModalHeading').innerText = "Spieler neu anordnen";
+    let playerNames = this.readPlayersFromTable();
+    document.getElementById('playerTableBody').innerHTML = "";
+    this.updatePlayersListModalList(playerNames);
+    this.showSavedPlayersModal();
+  }
+
+  showSavedPlayersModal(){
     let myModal = new bootstrap.Modal(document.getElementById('savedPlayersModal'));
     myModal.show();
-    document.querySelector('nav').querySelector('button').click();
   }
 
   navbar(navBarBrandText){
@@ -716,7 +745,7 @@ class UIElements{
     navLink2.className = 'nav-item nav-link';
     navLink2.id = 'savedPlayersNavBar';
     navLink2.innerText = "Gespeicherte Spieler"
-    navLink2.addEventListener('click', this.addSavedPlayers.bind(this));
+    navLink2.addEventListener('click', this.importPlayers.bind(this));
     let navLink3 = document.createElement('a');
     navLink3.className = 'nav-item nav-link active';
     navLink3.id = "managePlayersNavBar";
@@ -739,7 +768,7 @@ class UIElements{
 
   resetButton(resetGameFkt){
     let resetBtnDiv = document.createElement('div');
-    resetBtnDiv.className = "d-flex justify-content-center w-100 mt-3";
+    resetBtnDiv.className = "d-flex justify-content-center w-100 mt-3 d-none";
     resetBtnDiv.id = "resetButtonDiv";
 
     let resetBtn = document.createElement('button');
@@ -779,25 +808,36 @@ class UIElements{
     document.body.appendChild(h6);
   }
 
-  setUp(siteName, toggleRowSelection,resetBackgroundColor, longHoldVar, modalOkFkt,
-        addPlayerToTable, adjustPoints, strtGameFkt, resetFkt, importSavedPlayersFkt,
-        thirdColDiv = null, thirdColFkt = null){
+  sortBtn() {
+      let div = document.createElement('div');
+      div.className = "d-flex justify-content-center w-100 mt-3";
+      div.id = "sortButtonDiv";
+      let sortBtn = this.btnFaktory("sortBtn", "neu sortieren", "btn btn-primary w-50");
+      div.appendChild(sortBtn)
+      document.body.appendChild(div);
+      document.getElementById('sortBtn').addEventListener('click', this.sortPlayers.bind(this));
+      }
 
-    this.navbar(siteName);
-    this.roundNumber();
-    this.createPlayerTable(toggleRowSelection, longHoldVar, modalOkFkt, resetBackgroundColor);
+      setUp(siteName, toggleRowSelection,resetBackgroundColor, longHoldVar, modalOkFkt,
+      addPlayerToTable, adjustPoints, strtGameFkt, resetFkt, importSavedPlayersFkt,
+      thirdColDiv = null, thirdColFkt = null){
 
-    this.createPlayerNameInput(addPlayerToTable);
-    this.pointsInput(
-      adjustPoints,
-      thirdColDiv,
-      thirdColFkt
-    );
-    this.startBtn("Spiel starten", strtGameFkt);
-    this.infoModal();
-    this.resetButton(resetFkt);
-    this.savedPlayersModal(importSavedPlayersFkt);
-  }
+        this.navbar(siteName);
+        this.roundNumber();
+        this.createPlayerTable(toggleRowSelection, longHoldVar, modalOkFkt, resetBackgroundColor);
+
+        this.createPlayerNameInput(addPlayerToTable);
+        this.pointsInput(
+        adjustPoints,
+        thirdColDiv,
+        thirdColFkt
+        );
+        this.startBtn("Spiel starten", strtGameFkt);
+        this.infoModal();
+        this.resetButton(resetFkt);
+        this.sortBtn();
+        this.savedPlayersModal(importSavedPlayersFkt);
+    }
 }
 
 window.UIElements = UIElements;
