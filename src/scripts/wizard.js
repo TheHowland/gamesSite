@@ -53,7 +53,7 @@ class Wizard extends gameBase{
   resetGame(){
     for (let player of Array.from(this.players.keys())){
       this.playerStiche.set(player, 0);
-      player.updated = false
+      this.players.get(player).updated = false
       document.getElementById(player + ' - ' + this.sticheFieldName).innerText = '-';
       super.resetPlayer(player, player + ' - ' + this.pointsFieldName);
     }
