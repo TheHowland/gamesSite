@@ -159,13 +159,28 @@ class Wizard extends gameBase{
     }
   }
 
+  notAllPlayersUpdatedInfoModal(){
+    let updatePlayer = "" +
+      "Nicht alle Spieler wurden aktualisiert.\n" +
+      "Folgende Spieler wurden vergessen:\n";
+    for (let player of Array.from(this.players.values())){
+      if (!player.updated){
+        updatePlayer += player.name + "\n";
+      }
+    }
+    this.ui.infoModalTexts("Fehler", updatePlayer);
+    let myModal = new bootstrap.Modal(document.getElementById('infoModal'));
+    myModal.show();
+  }
+
   startRound(){
     let totalStiche = 0;
-    for(let stiche of Array.from(this.playerStiche.values())){
+    for(let stiche of Array.from(this.playerStiche.values())) {
       totalStiche += stiche;
     }
     if (!this.allUpdated()){
-
+      this.notAllPlayersUpdatedInfoModal();
+      return;
     }
     if (totalStiche === (this.roundsPlayed + 1)){
       let keyArray = Array.from(this.players.keys())
@@ -212,9 +227,7 @@ class Wizard extends gameBase{
       this.endGame();
     }
     if (!this.allUpdated()){
-      this.ui.infoModalTexts("Fehler", "Nicht alle Stiche wurden eingeloggt.");
-      let myModal = new bootstrap.Modal(document.getElementById('infoModal'));
-      myModal.show();
+      this.notAllPlayersUpdatedInfoModal();
       return;
     }
 
@@ -520,7 +533,7 @@ class WizardUI extends UIElements{
     let h5 = document.createElement('h6');
     h5.id = 'continueToSticheInputModalText';
     h5.textContent = "Wenn okay geklickt wird können die Punkte nicht mehr angepasst werden und" +
-      "und es geht weiter mit der nächsten Runde.";
+      "es geht weiter mit der nächsten Runde.";
     modalBody.appendChild(h5);
 
     let modalFooter = document.createElement('div');
@@ -553,8 +566,6 @@ class WizardUI extends UIElements{
 
     document.getElementById('continueToSticheInputModalSaveBtn').addEventListener('click', okBtnFkt);
   }
-
-
 }
 
 window.WizardUI = WizardUI;
