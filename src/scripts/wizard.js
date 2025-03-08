@@ -52,7 +52,7 @@ class Wizard extends gameBase{
   resetGame(){
     for (let player of Array.from(this.players.keys())){
       this.playerStiche.set(player, 0);
-      this.playerUpdated.set(player, false);
+      player.updated = false
       document.getElementById(player + ' - ' + this.sticheFieldName).innerText = '-';
       super.resetPlayer(player, player + ' - ' + this.pointsFieldName);
     }
@@ -61,12 +61,18 @@ class Wizard extends gameBase{
   }
 
   allUpdated(){
-    for (let updated of Array.from(this.playerUpdated.values())){
-      if (!updated){
-        return;
+    for (let player of Array.from(this.players.values())){
+      if (!player.updated){
+        return false;
       }
     }
-    this.nextStep();
+    return true
+  }
+
+  autoSwitchEndRoundStartRound(){
+    if (this.allUpdated()){
+      this.nextStep();
+    }
   }
 
   adjustPoints(){
@@ -128,7 +134,7 @@ class Wizard extends gameBase{
     }
     let selectedPlayer = this.getSelectedPlayer()
     this.playerStiche.set(selectedPlayer, stiche);
-    this.playerUpdated.set(selectedPlayer, true);
+    this.players.get(selectedPlayer).updated = true;
     document.getElementById(selectedPlayer + ' - ' + this.sticheFieldName).innerHTML = stiche.toString();
     this.selectNextPlayer(selectedPlayer, 'playerTableBody', 'table-info');
     this.setFocusToElementID('numberInput');
@@ -142,7 +148,6 @@ class Wizard extends gameBase{
     elms[2].innerText = '-';
 
     this.playerStiche.set(Array.from(this.players.values()).pop().playerID, 0);
-    this.playerUpdated.set(Array.from(this.players.values()).pop().playerID, false);
 
     this.setFocusToElementID('playerNameInput');
   }
@@ -195,6 +200,12 @@ class Wizard extends gameBase{
     if(this.roundsPlayed === 9){
       this.endGame();
     }
+    if (!this.allUpdated()){
+      this.ui.infoModalTexts("Fehler", "Nicht alle Stiche wurden eingeloggt.");
+      let myModal = new bootstrap.Modal(document.getElementById('infoModal'));
+      myModal.show();
+      return;
+    }
 
     document.getElementById("endRoundBtn").classList.add("d-none");
     document.getElementById("loginSticheBtn").classList.remove("d-none");
@@ -209,7 +220,7 @@ class Wizard extends gameBase{
     //reset Stiche in table
     for (let playerID of Array.from(this.playerStiche.keys())){
       this.playerStiche.set(playerID, 0);
-      this.playerUpdated.set(playerID, false);
+      this.players.get(playerID).updated = false;
       document.getElementById(playerID + ' - ' + this.sticheFieldName).innerText = '-';
     }
 
@@ -229,16 +240,14 @@ class Wizard extends gameBase{
   }
 
   setRoundNumber(){
+    let newRound = document.getElementById('adjustRoundModalInput').value;
     document.getElementById('roundNumber').innerText = "Runde: " + document.getElementById('adjustRoundModalInput').value;
+    this.roundsPlayed = parseInt(newRound) - 1;
   }
 
   showContinueToPointsInputModal(){
     let myModal = new bootstrap.Modal(document.getElementById('continueToPointsInputModal'));
     myModal.show();
-  }
-
-  continueToPointsInput(){
-    this.startRound();
   }
 
   setUp(){
@@ -259,9 +268,10 @@ class Wizard extends gameBase{
     this.ui.setPointsInputTexts("Stiche für ", "0 Stiche", "Hinzufügen",)
     this.ui.longPressModalTexts("Stiche anpassen", "", "neue Stiche eingeben", null);
     this.ui.adjustRoundModal(this.setRoundNumber.bind(this));
-    this.ui.continueToPointsInput(this.continueToPointsInput.bind(this));
+    this.ui.continueToPointsInput(this.startRound.bind(this));
+    this.ui.continueToSticheInput(this.endRound.bind(this));
 
-    document.getElementById('adjustSticheBtn').addEventListener('click', this.allUpdated.bind(this));
+    document.getElementById('adjustSticheBtn').addEventListener('click', this.autoSwitchEndRoundStartRound.bind(this));
   }
 }
 
@@ -449,6 +459,80 @@ class WizardUI extends UIElements{
     document.body.appendChild(modal);
 
     document.getElementById('continueToPointsInputModalSaveBtn').addEventListener('click', okBtnFkt);
+  }
+
+  continueToSticheInput(okBtnFkt) {
+    let modal = document.createElement('div');
+    modal.className = 'modal fade';
+    modal.id = 'continueToSticheInputModal';
+    modal.setAttribute('data-bs-backdrop', 'static');
+    modal.setAttribute('data-bs-keyboard', 'false');
+    modal.tabIndex = '-1';
+    modal.setAttribute('aria-labelledby', 'staticBackdropLabel');
+    modal.setAttribute('aria-hidden', 'true');
+
+    let modalDialog = document.createElement('div');
+    modalDialog.className = 'modal-dialog';
+
+    let modalContent = document.createElement('div');
+    modalContent.className = 'modal-content';
+    let modalHeader = document.createElement('div');
+    modalHeader.className = 'modal-header';
+    let h1 = document.createElement('h1');
+    h1.className = 'modal-title fs-5';
+    h1.id = 'continueToSticheInputModalHeading';
+    h1.textContent = "Weiter zur nächsten Runde";
+
+    /*
+    <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>;
+    <button type="button" className="btn btn-primary">Save changes</button>;
+    */
+    let buttonClose = document.createElement('button');
+    buttonClose.type = 'button';
+    buttonClose.className = 'btn-close';
+    buttonClose.setAttribute('data-bs-dismiss', 'modal');
+    buttonClose.setAttribute('aria-label', 'Close');
+
+    modalHeader.appendChild(h1);
+    modalHeader.appendChild(buttonClose);
+
+    let modalBody = document.createElement('div');
+    modalBody.className = 'modal-body';
+    let h5 = document.createElement('h6');
+    h5.id = 'continueToSticheInputModalText';
+    h5.textContent = "Wenn okay geklickt wird können die Punkte nicht mehr angepasst werden und" +
+      "und es geht weiter mit der nächsten Runde.";
+    modalBody.appendChild(h5);
+
+    let modalFooter = document.createElement('div');
+    modalFooter.className = 'modal-footer';
+
+    let buttonCancle = document.createElement('button');
+    buttonCancle.type = 'button';
+    buttonCancle.className = 'btn btn-cancel';
+    buttonCancle.setAttribute('data-bs-dismiss', 'modal');
+    buttonCancle.textContent = 'Abbrechen';
+
+    let saveButton = document.createElement('button');
+    saveButton.type = 'button';
+    saveButton.className = 'btn btn-primary';
+    saveButton.setAttribute('data-bs-dismiss', 'modal');
+    saveButton.textContent = 'Okay';
+    saveButton.id = 'continueToSticheInputModalSaveBtn';
+
+    modalFooter.appendChild(buttonCancle);
+    modalFooter.appendChild(saveButton);
+
+    modalContent.appendChild(modalHeader);
+    modalContent.appendChild(modalBody);
+    modalContent.appendChild(modalFooter);
+
+    modalDialog.appendChild(modalContent);
+    modal.appendChild(modalDialog);
+
+    document.body.appendChild(modal);
+
+    document.getElementById('continueToSticheInputModalSaveBtn').addEventListener('click', okBtnFkt);
   }
 }
 
