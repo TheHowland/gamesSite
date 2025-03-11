@@ -25,11 +25,11 @@ class TwentyOneDown extends gameBase{
     let heartPicture = document.getElementById('HeartPicture')
     if (heartPicture.name === "heartX2.svg"){
       heartPicture.name = "heartX2Fill.svg";
-      heartPicture.src = "src/resources/heartX2Fill.svg";
+      heartPicture.src = "../resources/heartX2Fill.svg";
     }
     else{
       heartPicture.name = "heartX2.svg";
-      heartPicture.src = "src/resources/heartX2.svg";
+      heartPicture.src = "../resources/heartX2.svg";
     }
     this.setFocusToElementID('numberInput');
   }

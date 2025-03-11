@@ -739,7 +739,7 @@ class UIElements{
     div.appendChild(navLinkDiv);
     let navLink1 = document.createElement('a');
     navLink1.className = 'nav-item nav-link active';
-    navLink1.href = 'index.html';
+    navLink1.href = '../../index.html';
     navLink1.innerText = "Home";
     let navLink2 = document.createElement('a');
     navLink2.className = 'nav-item nav-link';
