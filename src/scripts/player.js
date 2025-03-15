@@ -97,7 +97,7 @@ class gameBase{
     return copy;
   }
 
-  importSavedPlayers(){
+  getSavedPlayers(){
     let playersToImport = [];
 
     if (document.getElementById('randomizeSwitch').classList.contains('active')){
@@ -111,7 +111,12 @@ class gameBase{
     else {
       playersToImport = document.getElementById('playerOrderSavedPlayersModal').innerHTML.split(', ');
     }
+    playersToImport.pop();
+    return playersToImport;
+  }
 
+  importSavedPlayers(){
+    let playersToImport = this.getSavedPlayers()
     for (let player of playersToImport){
       document.getElementById('playerNameInput').value = player;
       this.addPlayerToTable();

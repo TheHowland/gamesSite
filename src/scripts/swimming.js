@@ -132,6 +132,11 @@ class Swimming extends gameBase{
     }
   }
 
+  reorderPlayers(){
+    this.players = new Map()
+    this.importSavedPlayers()
+  }
+
   setUp(){
     this.ui.setUp(
       "Schwimmen",
@@ -140,7 +145,7 @@ class Swimming extends gameBase{
       this.adjustPoints.bind(this),
       this.startGame.bind(this),
       this.resetGame.bind(this),
-      this.importSavedPlayers.bind(this)
+      this.reorderPlayers.bind(this)
     )
 
     this.ui.lostAndFireBtns(this.adjustPoints.bind(this), this.fire.bind(this));

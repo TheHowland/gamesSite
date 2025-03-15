@@ -14,9 +14,11 @@ class TwentyOneDown extends gameBase{
     // Hide the input form and start button
     document.getElementById("playerInput").classList.add("d-none");
     document.getElementById("startButtonDiv").classList.add("d-none");
+    document.getElementById("sortBtn").classList.add("d-none");
 
     document.getElementById("adjustScore").classList.remove('d-none');
     document.getElementById("PlayerNameNI").classList.remove("d-none");
+    document.getElementById('resetButtonDiv').classList.remove("d-none");
     this.toggleRowSelection('player0', 'playerTableBody', 'table-info', "Stiche für ");
     this.setFocusToElementID('numberInput');
   }
@@ -101,6 +103,12 @@ class TwentyOneDown extends gameBase{
     }
   }
 
+  reorderPlayers(){
+    this.players = new Map()
+    this.importSavedPlayers()
+  }
+
+
   setUp(){
    this.ui.setUp(
      "21 ab", //site name
@@ -108,7 +116,7 @@ class TwentyOneDown extends gameBase{
      this.addPlayerToTable.bind(this), this.adjustPoints.bind(this),
      this.startGame.bind(this),
      this.resetGame.bind(this),
-     this.importSavedPlayers.bind(this),
+     this.reorderPlayers.bind(this),
      this.ui.heartPicture(),
      this.toggleHeratPicture.bind(this)
    )

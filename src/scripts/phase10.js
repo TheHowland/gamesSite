@@ -76,6 +76,11 @@ class Phase10 extends gameBase{
     this.confetti.addConfetti();
   }
 
+  reorderPlayers(){
+    this.players = new Map()
+    this.importSavedPlayers()
+  }
+
   setUp(){
     this.ui.setUp(
       "Phase 10",
@@ -84,7 +89,7 @@ class Phase10 extends gameBase{
       this.adjustPoints.bind(this),
       this.startGame.bind(this),
       this.resetGame.bind(this),
-      this.importSavedPlayers.bind(this),
+      this.reorderPlayers.bind(this),
     )
     this.ui.playerNameInputTexts("Spieler Name", "Hinzufügen");
     this.ui.setPointsInputTexts("Strafpunkte für ", "0 Strafpunkte", "Hinzufügen",)

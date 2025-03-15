@@ -285,6 +285,20 @@ class Wizard extends gameBase{
     myModal.show();
   }
 
+  importSavedPlayers(){
+    let playersToImport = this.getSavedPlayers();
+    for (let player of playersToImport){
+      document.getElementById('playerNameInput').value = player;
+      this.addPlayerToTable();
+    }
+  }
+
+  reorderPlayers(){
+    this.players = new Map()
+    this.playerStiche = new Map();
+    this.importSavedPlayers()
+  }
+
   setUp(){
     this.ui.setUp(
       "Wizard",
@@ -292,7 +306,7 @@ class Wizard extends gameBase{
       this.addPlayerToTable.bind(this), this.adjustPoints.bind(this),
       this.startGame.bind(this),
       this.resetGame.bind(this),
-      this.importSavedPlayers.bind(this)
+      this.reorderPlayers.bind(this)
     )
     this.ui.activateRoundNumber(this.showRoundNumberModal.bind(this));
     this.ui.adjustSticheBtn(this.adjustStiche.bind(this));

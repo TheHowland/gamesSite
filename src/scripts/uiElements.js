@@ -816,28 +816,28 @@ class UIElements{
       div.appendChild(sortBtn)
       document.body.appendChild(div);
       document.getElementById('sortBtn').addEventListener('click', this.sortPlayers.bind(this));
-      }
+  }
 
-      setUp(siteName, toggleRowSelection,resetBackgroundColor, longHoldVar, modalOkFkt,
-      addPlayerToTable, adjustPoints, strtGameFkt, resetFkt, importSavedPlayersFkt,
-      thirdColDiv = null, thirdColFkt = null){
+  setUp(siteName, toggleRowSelection,resetBackgroundColor, longHoldVar, modalOkFkt,
+  addPlayerToTable, adjustPoints, strtGameFkt, resetFkt, importSavedPlayersFkt,
+  thirdColDiv = null, thirdColFkt = null){
 
-        this.navbar(siteName);
-        this.roundNumber();
-        this.createPlayerTable(toggleRowSelection, longHoldVar, modalOkFkt, resetBackgroundColor);
+    this.navbar(siteName);
+    this.roundNumber();
+    this.createPlayerTable(toggleRowSelection, longHoldVar, modalOkFkt, resetBackgroundColor);
 
-        this.createPlayerNameInput(addPlayerToTable);
-        this.pointsInput(
-        adjustPoints,
-        thirdColDiv,
-        thirdColFkt
-        );
-        this.startBtn("Spiel starten", strtGameFkt);
-        this.infoModal();
-        this.resetButton(resetFkt);
-        this.sortBtn();
-        this.savedPlayersModal(importSavedPlayersFkt);
-    }
+    this.createPlayerNameInput(addPlayerToTable);
+    this.pointsInput(
+    adjustPoints,
+    thirdColDiv,
+    thirdColFkt
+    );
+    this.startBtn("Spiel starten", strtGameFkt);
+    this.infoModal();
+    this.resetButton(resetFkt);
+    this.sortBtn();
+    this.savedPlayersModal(importSavedPlayersFkt);
+  }
 }
 
 window.UIElements = UIElements;
