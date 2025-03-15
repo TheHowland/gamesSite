@@ -127,7 +127,7 @@ class TwentyOneDownUI extends UIElements{
     let img = document.createElement("img");
     img.id = "HeartPicture";
     img.name="heartX2.svg";
-    img.src="src/resources/heartX2.svg";
+    img.src="../resources/heartX2.svg";
     img.className="img-fluid";
     img.alt="x2";
     heartPicture.appendChild(img);
