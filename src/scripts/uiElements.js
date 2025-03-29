@@ -129,6 +129,7 @@ class UIElements{
     input.placeholder = "Text not set";
     input.value = "";
     input.className = "form-control";
+    input.style.marginLeft = "10px";
     col1.appendChild(input);
 
     let col2 = document.createElement('div');
@@ -179,6 +180,7 @@ class UIElements{
     let label = document.createElement('label');
     label.textContent = "Text not set";
     label.id = "PlayerNameNI";
+    label.style.marginLeft = "10px";
     document.body.appendChild(label);
 
     let adjustScore = document.createElement('div');
@@ -193,6 +195,7 @@ class UIElements{
     input.type = "number";
     input.value = "";
     input.className =  "form-control";
+    input.style.marginLeft = "10px";
     col1.appendChild(input);
 
     let col2 = document.createElement('div');
@@ -712,7 +715,7 @@ class UIElements{
         </nav>
     */
     let navbar = document.createElement('nav');
-    navbar.className = 'navbar navbar-expand-lg navbar-light bg-light';
+    navbar.className = 'navbar navbar-expand-lg';
     let button = document.createElement('button');
     button.className = 'navbar-toggler collapsed';
     button.type = 'button';

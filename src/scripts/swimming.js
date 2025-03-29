@@ -14,9 +14,11 @@ class Swimming extends gameBase{
     // Hide the input form and start button
     document.getElementById("playerInput").classList.add("d-none");
     document.getElementById("startButtonDiv").classList.add("d-none");
+    document.getElementById('sortButtonDiv').classList.add("d-none");
 
     document.getElementById("lostBtn").classList.remove("d-none");
     document.getElementById("fireBtn").classList.remove("d-none");
+    document.getElementById('resetButtonDiv').classList.remove('d-none');
     for (let player of Array.from(this.players.keys())){
       this.ui.boar(player, this.toggleBoarPicture.bind(this));
       document.getElementById(player + " - BoarPicture").classList.add('d-none');
@@ -182,6 +184,7 @@ class SwimmingUI extends UIElements{
     let div = document.createElement('div')
     div.id = "lostAndFireBtns";
     div.classList.add('mt-3')
+    div.classList.add('mx-3')
     div.appendChild(lost);
     div.appendChild(fire);
 

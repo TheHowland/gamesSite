@@ -13,9 +13,11 @@ class Phase10 extends gameBase{
     // Hide the input form and start button
     document.getElementById("playerInput").classList.add("d-none");
     document.getElementById("startButtonDiv").classList.add("d-none");
+    document.getElementById('sortButtonDiv').classList.add("d-none");
 
     document.getElementById("adjustScore").classList.remove('d-none');
     document.getElementById("PlayerNameNI").classList.remove("d-none");
+    document.getElementById('resetButtonDiv').classList.remove('d-none');
     this.toggleRowSelection('player0', 'playerTableBody', 'table-info', "Strafpunkte für ");
     this.setFocusToElementID('numberInput');
   }
@@ -114,7 +116,7 @@ class Phase10UI extends UIElements{
         let myModal = new bootstrap.Modal(document.getElementById('okModal'));
         myModal.show();
       }
-      resetBtn.innerText = "Beenden / Reset";
+      resetBtn.innerText = "Auswerten / Reset";
       document.getElementById('okModalSaveBtn').addEventListener('click', this.resetGameFkt.bind(this));
 
     }
